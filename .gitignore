@@ -7,3 +7,6 @@ __pycache__/
 backend/java/build/
 models/*.task
 .env
+models/*.download
+tests/assets/*.jpg
+tests/assets/*.download

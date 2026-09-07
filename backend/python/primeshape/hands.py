@@ -8,19 +8,24 @@ FINGERS = (("polegar", 1, 2, 3, 4), ("indicador", 5, 6, 7, 8), ("medio", 9, 10, 
 
 def analyze_hand(hand, width, height):
     points, world = hand["points"], hand["world"]
+    projected = points[:, :2] * [width, height]
     palm = max(distance(world[0], world[9]), 1e-6)
     fingers = []
     for name, base, joint, distal, tip in FINGERS:
         proximal_angle = angle(world[base], world[joint], world[distal])
         distal_angle = angle(world[joint], world[distal], world[tip])
         reach = distance(world[tip], world[0]) / max(distance(world[joint], world[0]), 1e-6)
+        projected_angle = angle(projected[base], projected[joint], projected[distal])
+        projected_distal = angle(projected[joint], projected[distal], projected[tip])
+        projected_reach = distance(projected[tip], projected[0]) / max(distance(projected[joint], projected[0]), 1e-6)
         if name == "polegar":
             spread = distance(world[tip], world[5]) / palm
             extended = proximal_angle > 145 and distal_angle > 145 and spread > 0.45
         else:
             extended = proximal_angle > 150 and distal_angle > 145 and reach > 1.15
+            extended = extended or (projected_angle > 160 and projected_distal > 155 and projected_reach > 1.2)
         straightness = clamp((min(proximal_angle, distal_angle) - 100) / 65)
-        fingers.append({"nome": name, "estendido": bool(extended), "angulo_graus": round(proximal_angle, 1), "extensao": round(straightness, 3)})
+        fingers.append({"nome": name, "estendido": bool(extended), "angulo_graus": round(proximal_angle, 1), "angulo_projecao_graus": round(projected_angle, 1), "extensao_3d": round(straightness, 3)})
     center = points[[0, 5, 9, 13, 17], :2].mean(axis=0)
     vertical = "acima" if center[1] < 0.33 else "abaixo" if center[1] > 0.67 else "ao centro"
     horizontal = "esquerda" if center[0] < 0.33 else "direita" if center[0] > 0.67 else "centro"

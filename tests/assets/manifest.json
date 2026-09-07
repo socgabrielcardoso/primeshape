@@ -1,0 +1,8 @@
+{
+  "hands.jpg": {
+    "url": "https://raw.githubusercontent.com/tensorflow/tfjs-models/master/hand-pose-detection/test_data/hands.jpg",
+    "sha256": "240c082e80128ff1ca8a83ce645e2ba4d8bc30f0967b7991cf5fa375bab489e1",
+    "bytes": 54888,
+    "source": "https://github.com/tensorflow/tfjs-models/blob/master/hand-pose-detection/test_data/hands.jpg"
+  }
+}

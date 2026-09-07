@@ -125,3 +125,26 @@ def test_invalid_requests_do_not_poison_next_frame(server):
 def test_missing_session(server):
     client, _ = server
     assert client.post("/analyze",content=jpeg(),headers={"Content-Type":"image/jpeg","X-Frame-Id":"1"}).status_code == 401
+
+
+@pytest.mark.parametrize("mirrored", [False, True])
+def test_real_hands_and_handedness(server, mirrored):
+    client, _ = server
+    photo = ROOT / "tests/assets/hands.jpg"
+    if not photo.is_file():
+        pytest.skip("Execute python scripts/download_test_assets.py para a fotografia de controle.")
+    frame = cv2.imread(str(photo))
+    if mirrored:
+        frame = cv2.flip(frame, 1)
+    data = cv2.imencode(".jpg",frame)[1].tobytes()
+    token = client.post("/sessions").json()["sessao_id"]
+    try:
+        response = client.post("/analyze",content=data,headers={"X-Session-Id":token,"X-Frame-Id":"1","Content-Type":"image/jpeg"})
+        assert response.status_code == 200, response.text
+        result = response.json()
+        assert result["quantidade_maos"] == 2
+        assert all(len(hand["pontos"]) == 21 for hand in result["maos"])
+        assert all(hand["lado"] == ("Direita" if mirrored else "Esquerda") for hand in result["maos"])
+        assert all(hand["dedos_estendidos"] == 5 for hand in result["maos"])
+    finally:
+        client.delete("/sessions",headers={"X-Session-Id":token})
