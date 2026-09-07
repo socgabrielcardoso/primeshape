@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#000000">
+  <title>PrimeShape</title>
+  <link rel="stylesheet" href="./frontend/css/style.css">
+</head>
+<body>
+  <main class="viewer">
+    <video id="camera" autoplay muted playsinline></video>
+    <canvas id="visionCanvas"></canvas>
+
+    <section class="results">
+      <article class="result">
+        <span>FORMA</span>
+        <strong id="shapeName">NENHUMA</strong>
+      </article>
+      <article class="result">
+        <span>ESTADO</span>
+        <strong id="eyeState">AGUARDANDO</strong>
+      </article>
+    </section>
+
+    <button id="startButton" type="button">CARREGANDO</button>
+  </main>
+
+  <script type="module" src="./frontend/js/app.js"></script>
+</body>
+</html>
