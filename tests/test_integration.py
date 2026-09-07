@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 import socket
+import signal
 import subprocess
 import sys
 import time
@@ -30,7 +31,8 @@ def server(tmp_path_factory):
     env.update(PRIMESHAPE_API_PORT=str(api_port), PRIMESHAPE_VISION_PORT=str(vision_port))
     log_path = tmp_path_factory.mktemp("services") / "services.log"
     with log_path.open("w") as output:
-        process = subprocess.Popen([sys.executable, str(ROOT / "scripts/run.py")], cwd=ROOT, env=env, stdout=output, stderr=output)
+        flags = subprocess.CREATE_NEW_PROCESS_GROUP if os.name == "nt" else 0
+        process = subprocess.Popen([sys.executable, str(ROOT / "scripts/run.py")], cwd=ROOT, env=env, stdout=output, stderr=output, creationflags=flags)
         client = httpx.Client(base_url=f"http://127.0.0.1:{api_port}/api", timeout=12, trust_env=False)
         ready = False
         try:
@@ -46,7 +48,10 @@ def server(tmp_path_factory):
             yield client, vision_port
         finally:
             client.close()
-            process.terminate()
+            if os.name == "nt":
+                process.send_signal(signal.CTRL_BREAK_EVENT)
+            else:
+                process.terminate()
             try:
                 process.wait(timeout=12)
             except subprocess.TimeoutExpired:
@@ -125,6 +130,24 @@ def test_invalid_requests_do_not_poison_next_frame(server):
 def test_missing_session(server):
     client, _ = server
     assert client.post("/analyze",content=jpeg(),headers={"Content-Type":"image/jpeg","X-Frame-Id":"1"}).status_code == 401
+
+
+def test_session_limit_releases_capacity(server):
+    client, _ = server
+    tokens = []
+    try:
+        for _ in range(4):
+            response = client.post("/sessions")
+            assert response.status_code == 201
+            tokens.append(response.json()["sessao_id"])
+        assert client.post("/sessions").status_code == 429
+        client.delete("/sessions",headers={"X-Session-Id":tokens.pop()})
+        response = client.post("/sessions")
+        assert response.status_code == 201
+        tokens.append(response.json()["sessao_id"])
+    finally:
+        for token in tokens:
+            client.delete("/sessions",headers={"X-Session-Id":token})
 
 
 @pytest.mark.parametrize("mirrored", [False, True])

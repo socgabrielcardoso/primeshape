@@ -38,8 +38,12 @@ export class VisionAPI {
     const session = this.session;
     this.session = null;
     if (!session) return;
-    try {
-      await fetch(this.base + "/sessions", { method: "DELETE", headers: { "X-Session-Id": session }, keepalive: true, signal: AbortSignal.timeout(3000) });
-    } catch {}
+    for (let attempt = 0; attempt < 8; attempt++) {
+      try {
+        const response = await fetch(this.base + "/sessions", { method: "DELETE", headers: { "X-Session-Id": session }, keepalive: true, signal: AbortSignal.timeout(3000) });
+        if (response.status !== 409) return;
+      } catch { return; }
+      await new Promise(resolve => setTimeout(resolve, Math.min(250 * (attempt + 1), 1500)));
+    }
   }
 }

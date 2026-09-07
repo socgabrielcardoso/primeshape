@@ -1,7 +1,6 @@
 import threading
 import time
 from dataclasses import dataclass, field
-import numpy as np
 from .config import SETTINGS
 from .expressions import classify_expressions
 from .face_metrics import measure_face

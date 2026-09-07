@@ -93,6 +93,7 @@ public final class Gateway {
             if (reply.status() == 200) session.complete(frame, millis);
             exchange.getResponseHeaders().set("X-Analysis-Millis", Long.toString(Math.round(millis)));
             exchange.getResponseHeaders().set("X-Session-Frames", Long.toString(session.frames));
+            exchange.getResponseHeaders().set("X-Session-Average-Millis", Long.toString(Math.round(session.averageMillis)));
             HttpSupport.send(exchange, reply.status(), reply.body());
         } finally {
             session.busy.set(false);

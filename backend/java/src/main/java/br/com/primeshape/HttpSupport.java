@@ -35,7 +35,7 @@ final class HttpSupport {
             exchange.getResponseHeaders().set("Vary", "Origin");
             exchange.getResponseHeaders().set("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
             exchange.getResponseHeaders().set("Access-Control-Allow-Headers", "Content-Type, X-Session-Id, X-Frame-Id");
-            exchange.getResponseHeaders().set("Access-Control-Expose-Headers", "X-Analysis-Millis, X-Session-Frames");
+            exchange.getResponseHeaders().set("Access-Control-Expose-Headers", "X-Analysis-Millis, X-Session-Frames, X-Session-Average-Millis");
             exchange.getResponseHeaders().set("Access-Control-Allow-Private-Network", "true");
             exchange.getResponseHeaders().set("Access-Control-Max-Age", "600");
         }

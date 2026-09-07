@@ -73,6 +73,8 @@ def run():
 
 if __name__ == "__main__":
     signal.signal(signal.SIGTERM, lambda *_: sys.exit(0))
+    if hasattr(signal, "SIGBREAK"):
+        signal.signal(signal.SIGBREAK, lambda *_: sys.exit(0))
     try:
         run()
     except KeyboardInterrupt:

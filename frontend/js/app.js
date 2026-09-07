@@ -14,6 +14,7 @@ let controller = null;
 let timer = null;
 let result = null;
 let capturedAt = 0;
+let lastLatency = 0;
 let generation = 0;
 let staleCleared = false;
 
@@ -42,6 +43,7 @@ async function step(current) {
     capturedAt = captureTime;
     staleCleared = false;
     const latency = performance.now() - captureTime;
+    lastLatency = latency;
     presentation.update(result, latency, overlay.mirror);
     status("JAVA + PYTHON CONECTADOS", result.qualidade.avisos.join(" · ") || "Processamento local · Estados aparentes não são diagnósticos.");
   } catch (error) {
@@ -53,6 +55,7 @@ async function step(current) {
       delay = 500;
     } else {
       await api.close();
+      if (!active || current !== generation) return;
       status("BACKEND DESCONECTADO", error.status ? error.message : "Câmera disponível. Execute iniciar.bat; a conexão será tentada novamente.");
       delay = 2500;
     }
@@ -122,7 +125,10 @@ byId("startButton").addEventListener("click", start);
 byId("stopButton").addEventListener("click", () => stop());
 byId("detailsButton").addEventListener("click", () => toggleDetails(byId("detailPanel").hidden));
 byId("closeDetails").addEventListener("click", () => toggleDetails(false));
-byId("mirrorToggle").addEventListener("change", event => { overlay.mirror = event.target.checked; });
+byId("mirrorToggle").addEventListener("change", event => {
+  overlay.mirror = event.target.checked;
+  if (result && performance.now() - capturedAt < 1000) presentation.update(result, lastLatency, overlay.mirror);
+});
 byId("pointsToggle").addEventListener("change", event => { overlay.showPoints = event.target.checked; });
 document.addEventListener("keydown", event => { if (event.key === "Escape" && !byId("detailPanel").hidden) toggleDetails(false); });
 document.addEventListener("visibilitychange", () => { if (document.hidden && (active || starting)) stop("Câmera pausada ao sair da aba. Clique em iniciar para retomar."); });
