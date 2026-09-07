@@ -1,5 +1,7 @@
 import numpy as np
+import cv2
 from .geometry import angle, bounds, clamp, distance, serial_points, signal
+from .shape_geometry import quadrilateral
 
 FINGERS = (("polegar", 1, 2, 3, 4), ("indicador", 5, 6, 7, 8), ("medio", 9, 10, 11, 12), ("anelar", 13, 14, 15, 16), ("minimo", 17, 18, 19, 20))
 
@@ -89,9 +91,25 @@ def bimanual_gestures(hands, width, height):
         points = [a[8], b[8], (a[4] + b[4]) / 2]
         label = "Triângulo com as mãos"
     elif index_close and thumb_close:
-        points = [a[8], a[4], b[4], b[8]]
-        label = "Contorno fechado com as mãos"
-    if not points:
+        arc = np.concatenate([a[[8,7,6,5,2,3,4]], b[[8,7,6,5,2,3,4]]])
+        low, high = arc.min(axis=0), arc.max(axis=0)
+        center = (low + high) / 2
+        radius = (high - low) / 2
+        t = np.linspace(0, 2 * np.pi, 40, endpoint=False)
+        points = np.c_[center[0] + radius[0] * np.cos(t), center[1] + radius[1] * np.sin(t), np.zeros(40)]
+        ratio = radius[0] / max(radius[1], 1)
+        label = "Círculo aproximado com as mãos" if .85 < ratio < 1.18 else "Oval aproximado com as mãos"
+    else:
+        tips = np.array([a[8], b[8], b[4], a[4]])
+        center = tips[:, :2].mean(axis=0)
+        tips = tips[np.argsort(np.arctan2(tips[:,1]-center[1], tips[:,0]-center[0]))]
+        polygon = tips[:, :2].astype(np.float32).reshape(-1,1,2)
+        if cv2.contourArea(polygon) > scale ** 2 * .4 and cv2.isContourConvex(polygon):
+            classified = quadrilateral(tips[:, :2])
+            if classified:
+                label = classified[0] + " aproximado com as mãos"
+                points = tips
+    if len(points) == 0:
         return []
     normalized = np.asarray(points) / np.array([width, height, width])
     return [{**signal("forma_bimanual", label, 0.65, "inferencia", ["Proximidade dos indicadores e polegares das duas mãos"]), "pontos": serial_points(normalized)}]
