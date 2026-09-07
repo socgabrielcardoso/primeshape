@@ -47,7 +47,7 @@ def classify_convex(contour):
         result = quadrilateral(polygon[:, 0, :])
         if result:
             return (*result, count)
-    if count in POLYGONS and all(len(p) == count for p in approximations) and cv2.isContourConvex(polygon):
+    if count in POLYGONS and sum(len(p) == count for p in approximations) >= 2 and cv2.isContourConvex(polygon):
         points = polygon[:, 0, :].astype(float)
         sides = np.linalg.norm(np.roll(points, -1, axis=0) - points, axis=1)
         regularity = float(np.std(sides) / max(np.mean(sides), 1))
@@ -62,6 +62,7 @@ def classify_convex(contour):
         x = p[:, 0] * math.cos(theta) + p[:, 1] * math.sin(theta)
         y = -p[:, 0] * math.sin(theta) + p[:, 1] * math.cos(theta)
         error = float(np.mean(np.abs(np.sqrt((2 * x / a) ** 2 + (2 * y / b) ** 2) - 1)))
-        if error < 0.035:
+        ellipse_area_ratio = area / max(np.pi * a * b / 4, 1)
+        if error < 0.035 and 0.92 < ellipse_area_ratio < 1.06:
             return ("Círculo" if max(a, b) / min(a, b) < 1.13 else "Oval"), clamp(0.95 - 4 * error), 0
     return None
