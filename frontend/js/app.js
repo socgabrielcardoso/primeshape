@@ -116,8 +116,12 @@ function toggleDetails(open) {
   else byId("detailsButton").focus();
 }
 
+function isFresh(now) {
+  return result && now - capturedAt < Math.min(5000, Math.max(1000, lastLatency * 2 + 250));
+}
+
 function render(now) {
-  const fresh = result && now - capturedAt < 1000;
+  const fresh = isFresh(now);
   overlay.render(fresh ? result : null);
   if (result && !fresh && !staleCleared) {
     presentation.clear("ATUALIZANDO");
@@ -132,7 +136,7 @@ byId("detailsButton").addEventListener("click", () => toggleDetails(byId("detail
 byId("closeDetails").addEventListener("click", () => toggleDetails(false));
 byId("mirrorToggle").addEventListener("change", event => {
   overlay.mirror = event.target.checked;
-  if (result && performance.now() - capturedAt < 1000) presentation.update(result, lastLatency, overlay.mirror);
+  if (isFresh(performance.now())) presentation.update(result, lastLatency, overlay.mirror);
 });
 byId("pointsToggle").addEventListener("change", event => { overlay.showPoints = event.target.checked; });
 byId("engineSelect").addEventListener("change", event => {

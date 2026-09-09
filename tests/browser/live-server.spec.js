@@ -1,6 +1,10 @@
 import { test, expect } from "@playwright/test";
 import { readFile } from "node:fs/promises";
 
+test.afterEach(async ({ page }, testInfo) => {
+  if (testInfo.status !== testInfo.expectedStatus) console.log(await page.locator("body").innerText());
+});
+
 test("ZIP estático: câmera, formas, mãos, dedos e encerramento sem backend", async ({ page }) => {
   const photo = (await readFile(new URL("./hands.jpg",import.meta.url))).toString("base64");
   const failures = [];
