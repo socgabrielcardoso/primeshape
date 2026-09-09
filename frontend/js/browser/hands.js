@@ -48,16 +48,3 @@ export function analyzeHands(result, width, height) {
     return hand;
   });
 }
-
-export function bimanual(hands, width, height) {
-  if (hands.length !== 2 || hands.some(h => h.parcial)) return [];
-  const [a, b] = hands.map(h => h.pontos.map(p => [p[0] * width, p[1] * height]));
-  const scale = Math.max(distance(a[0], a[9]), distance(b[0], b[9]), 1);
-  if (Math.min(distance(a[8], a[4]), distance(b[8], b[4])) / scale < 0.55) return [];
-  const indexClose = distance(a[8], b[8]) / scale < 0.45;
-  const thumbClose = distance(a[4], b[4]) / scale < 0.45;
-  if (indexClose === thumbClose) return [];
-  const middle = (p, q) => p.map((value, i) => (value + q[i]) / 2);
-  const points = indexClose ? [middle(a[8], b[8]), a[4], b[4]] : [a[8], b[8], middle(a[4], b[4])];
-  return [{ ...signal("forma_bimanual", "Triângulo com as mãos", 0.65, "inferencia"), pontos: points.map(p => [p[0] / width, p[1] / height]) }];
-}

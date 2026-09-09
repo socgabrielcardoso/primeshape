@@ -6,6 +6,7 @@ export class BrowserVision {
     this.pending = new Map();
     this.sequence = 0;
     this.local = true;
+    this.objects = false;
   }
 
   async connect(signal) {
@@ -43,7 +44,7 @@ export class BrowserVision {
   }
 
   analyze(image, signal) {
-    return this.request({ type: "frame", image, timestamp: performance.now() },signal,15000,[image.data.buffer]);
+    return this.request({ type: "frame", image, objects:this.objects, timestamp: performance.now() },signal,15000,[image.data.buffer]);
   }
 
   fail(error) {
