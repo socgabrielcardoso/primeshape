@@ -34,17 +34,21 @@ span {
 
 #camera {
   position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
   pointer-events: none;
 }
 
 #visionCanvas {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  pointer-events: none;
 }
 
 .results {
@@ -208,7 +212,16 @@ select { width: 100%; padding: 8px; border: 1px solid #bbb; border-radius: 6px; 
 .guide summary { cursor: pointer; font-weight: 700; }
 .guide code { overflow-wrap: anywhere; }
 
+.shape-guide { position: absolute; left: 24px; right: 24px; bottom: 152px; max-width: 700px; pointer-events: none; }
+.shape-guide > span { display: inline-block; padding: 4px 7px; border-radius: 4px; background: rgba(0,0,0,.6); font-size: 10px; letter-spacing: .08em; }
+#handShapeCatalog { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+#handShapeCatalog span { padding: 5px 8px; border: 1px solid rgba(255,255,255,.2); border-radius: 6px; background: rgba(0,0,0,.66); color: #eee; font-size: 12px; }
+#handShapeCatalog .active { background: #b9f5ff; border-color: #b9f5ff; color: #102b36; }
+.hand-help { color: #444; }
+
 @media (max-width: 760px) {
+  .shape-guide { left: 12px; right: 12px; bottom: 210px; }
+  #handShapeCatalog span { font-size: 10px; padding: 3px 6px; }
   .results { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); left: 12px; right: 12px; bottom: 12px; gap: 8px; }
   .result { padding: 9px 12px; }
   .result strong { font-size: 14px; }
@@ -223,6 +236,7 @@ select { width: 100%; padding: 8px; border: 1px solid #bbb; border-radius: 6px; 
 }
 
 @media (max-height: 520px) {
+  .shape-guide { top: 78px; bottom: auto; max-width: 430px; }
   .detail-panel { top: 12px; bottom: 12px; z-index: 3; }
   .notice { font-size: 12px; }
 }

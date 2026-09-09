@@ -11,7 +11,7 @@
 <body>
   <main class="viewer">
     <video id="camera" autoplay muted playsinline></video>
-    <canvas id="visionCanvas" aria-label="Imagem da câmera com contornos, pontos faciais e estrutura das mãos"></canvas>
+    <canvas id="visionCanvas" aria-label="Formas entre os dedos e marcações nas pontas dos dedos"></canvas>
     <header class="toolbar">
       <div class="runtime"><b>PRIMESHAPE</b><span id="backendStatus" role="status">PRONTO PARA INICIAR</span></div>
       <div class="actions">
@@ -24,6 +24,10 @@
       <p id="startHint">Permita a câmera. Os detectores carregam automaticamente pela internet e processam a imagem neste navegador.</p>
     </div>
     <p class="notice" id="notice" role="status">Processamento local. A aplicação não grava imagens.</p>
+    <section class="shape-guide" aria-label="Formas possíveis com as mãos">
+      <span>USE OS POLEGARES E INDICADORES</span>
+      <div id="handShapeCatalog"></div>
+    </section>
     <section class="results" aria-label="Resultados da análise">
       <article class="result"><span>FORMAS</span><strong id="shapeName">NENHUMA</strong></article>
       <article class="result"><span>ESTADO APARENTE</span><strong id="eyeState">AGUARDANDO</strong></article>
@@ -36,17 +40,20 @@
         <label for="engineSelect">Processamento</label>
         <select id="engineSelect"><option value="browser" selected>Navegador — iniciar diretamente</option><option value="services">Serviços Python + Java</option></select>
         <label><input id="mirrorToggle" type="checkbox" checked> Espelhar câmera</label>
-        <label><input id="pointsToggle" type="checkbox" checked> Exibir pontos</label>
+        <label><input id="pointsToggle" type="checkbox" checked> Pontas dos dedos</label>
+        <label><input id="objectsToggle" type="checkbox"> Detectar formas em objetos (mais processamento)</label>
         <label for="fpsSelect">Análises por segundo</label>
-        <select id="fpsSelect"><option value="5">Até 5</option><option value="10" selected>Até 10</option><option value="15">Até 15</option></select>
+        <select id="fpsSelect"><option value="5">Até 5</option><option value="10">Até 10</option><option value="15" selected>Até 15, ajuste automático</option></select>
       </div>
       <p id="performance">Aguardando quadros.</p>
       <h2>Rosto, olhos e boca</h2>
       <p id="faceMetrics">Nenhuma análise disponível.</p>
       <ul id="signalsList" class="signal-list"></ul>
       <h2>Mãos e gestos</h2>
+      <p class="hand-help">Quatro pontas separadas formam um quadrilátero. Aproxime dois cantos para um triângulo; una os indicadores acima e os polegares abaixo para círculo ou oval. Uma pinça também forma um círculo pequeno.</p>
       <div id="handsDetails">Nenhuma análise disponível.</div>
       <h2>Formas na imagem</h2>
+      <p>Ative a detecção em objetos para analisar contornos de formas desenhadas ou recortadas. As formas com os dedos funcionam no modo leve padrão.</p>
       <ul id="shapesList" class="signal-list"></ul>
       <details class="guide">
         <summary>Executar e interpretar</summary>

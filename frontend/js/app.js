@@ -3,12 +3,14 @@ import { BrowserVision } from "./browser-api.js";
 import { Camera } from "./camera.js";
 import { Overlay } from "./overlay.js";
 import { Presentation } from "./presentation.js";
+import { HAND_SHAPES, HandShapeTracker } from "./hand-shapes.js";
 
 const byId = id => document.getElementById(id);
 let api = new BrowserVision(message => status("CARREGANDO DETECTORES", message));
 const camera = new Camera(byId("camera"));
 const overlay = new Overlay(byId("visionCanvas"), byId("camera"));
 const presentation = new Presentation();
+const handShapes = new HandShapeTracker();
 let active = false;
 let starting = false;
 let controller = null;
@@ -18,6 +20,14 @@ let capturedAt = 0;
 let lastLatency = 0;
 let generation = 0;
 let staleCleared = false;
+let lastVideoTime = -1;
+
+for (const name of HAND_SHAPES) {
+  const chip=document.createElement("span");
+  chip.dataset.handShape=name;
+  chip.textContent=name;
+  byId("handShapeCatalog").append(chip);
+}
 
 function status(text, note) {
   byId("backendStatus").textContent = text;
@@ -36,18 +46,25 @@ async function step(current) {
       await engine.connect(engine.local ? signal : AbortSignal.any([signal, AbortSignal.timeout(10000)]));
       if (!active || current !== generation) { await engine.close(); return; }
     }
-    const frame = engine.local ? camera.pixels() : await camera.capture();
+    if (camera.video.currentTime===lastVideoTime) return;
+    lastVideoTime=camera.video.currentTime;
+    engine.objects=byId("objectsToggle").checked;
+    const frame = engine.local ? camera.pixels(engine.objects?640:480) : await camera.capture();
     if (!frame) throw new Error("A câmera ainda não disponibilizou um quadro.");
     const captureTime = performance.now();
     const response = await engine.analyze(frame, AbortSignal.any([signal, AbortSignal.timeout(15000)]));
     if (!active || current !== generation) return;
     result = response;
+    const tracked=handShapes.update(result.maos,camera.video.videoWidth,camera.video.videoHeight,performance.now());
+    result.maos=tracked.hands;
+    result.formas_maos=tracked.shapes;
     capturedAt = captureTime;
     staleCleared = false;
     const latency = performance.now() - captureTime;
     lastLatency = latency;
+    delay=Math.max(delay,result.intervalo_sugerido_ms||0);
     presentation.update(result, latency, overlay.mirror);
-    status(engine.local ? "DETECÇÃO NO NAVEGADOR" : "JAVA + PYTHON CONECTADOS", result.qualidade.avisos.join(" · ") || "Processamento local · Estados aparentes não são diagnósticos.");
+    status(engine.local ? "DETECÇÃO NO NAVEGADOR" : "JAVA + PYTHON CONECTADOS", result.qualidade.avisos.join(" · ") || "Afaste os polegares e indicadores para formar os cantos. Expressões são estimativas.");
   } catch (error) {
     if (!active || current !== generation) return;
     result = null;
@@ -103,6 +120,8 @@ function stop(message = "Câmera encerrada. Nenhuma imagem foi gravada.") {
   camera.stop();
   api.close();
   result = null;
+  handShapes.reset();
+  lastVideoTime=-1;
   presentation.clear("PARADO");
   byId("startArea").hidden = false;
   byId("stopButton").hidden = true;
@@ -114,10 +133,11 @@ function toggleDetails(open) {
   byId("detailsButton").setAttribute("aria-expanded", String(open));
   if (open) byId("closeDetails").focus();
   else byId("detailsButton").focus();
+  if (open && isFresh(performance.now())) presentation.update(result,lastLatency,overlay.mirror,true);
 }
 
 function isFresh(now) {
-  return result && now - capturedAt < Math.min(5000, Math.max(1000, lastLatency * 2 + 250));
+  return result && now - capturedAt < Math.min(1500, Math.max(500, lastLatency * 2 + 200));
 }
 
 function render(now) {

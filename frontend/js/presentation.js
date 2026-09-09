@@ -1,15 +1,18 @@
 const TYPES = { medicao: "Medição", inferencia: "Inferência", estado_aparente: "Estado aparente" };
 const STATE_ORDER = ["possivel_sono", "possivel_sonolencia", "possivel_bocejo", "fechamento_prolongado", "piscando", "piscou", "vigilia_aparente", "olhos_fechados", "olhos_abertos"];
-const EXPRESSION_ORDER = ["desconforto_aparente", "surpresa_aparente", "irritacao_aparente", "tensao_aparente", "tristeza_aparente", "preocupacao_aparente", "sorrindo", "sorriso_leve", "sorriso_assimetrico", "neutra"];
+const EXPRESSION_ORDER = ["raiva_aparente", "tristeza_aparente", "desconforto_aparente", "surpresa_aparente", "irritacao_aparente", "tensao_aparente", "preocupacao_aparente", "sorrindo", "sorriso_leve", "sorriso_assimetrico", "neutra"];
 
 export class Presentation {
   constructor() {
     this.nodes = Object.fromEntries(["shapeName", "eyeState", "expressionName", "handCount", "faceMetrics", "signalsList", "handsDetails", "shapesList", "performance"].map(id => [id, document.getElementById(id)]));
+    this.lastDetailsAt=0;
   }
 
   set(id, text) {
-    this.nodes[id].textContent = text;
-    this.nodes[id].title = text;
+    if (this.nodes[id].textContent!==text) {
+      this.nodes[id].textContent = text;
+      this.nodes[id].title = text;
+    }
   }
 
   list(id, items) {
@@ -34,20 +37,25 @@ export class Presentation {
     this.set("performance", "Aguardando quadros.");
     this.list("signalsList", []);
     this.list("shapesList", []);
+    document.querySelectorAll("[data-hand-shape].active").forEach(chip=>chip.classList.remove("active"));
   }
 
-  update(result, latency, mirror) {
+  update(result, latency, mirror, force=false) {
     const face = result.rosto;
     const choose = order => order.map(code => face.sinais.find(s => s.codigo === code)).find(Boolean)?.rotulo;
-    this.set("shapeName", result.formas.map(s => s.rotulo).join(" · ") || "NENHUMA");
+    this.set("shapeName", (result.formas_maos?.length?result.formas_maos:result.formas).map(s => s.rotulo).join(" · ") || "NENHUMA");
+    for (const chip of document.querySelectorAll("[data-hand-shape]")) chip.classList.toggle("active",result.formas_maos?.some(s=>s.rotulo===chip.dataset.handShape)||false);
     this.set("eyeState", face.presente ? choose(STATE_ORDER) || "INDETERMINADO" : "ROSTO AUSENTE");
     this.set("expressionName", face.presente ? choose(EXPRESSION_ORDER) || "INDETERMINADA" : "ROSTO AUSENTE");
     this.set("handCount", `${result.quantidade_maos} DETECTADAS`);
+    const now=performance.now();
+    if (!force && (document.getElementById("detailPanel").hidden || now-this.lastDetailsAt<250)) return;
+    this.lastDetailsAt=now;
     this.set("performance", `Análise: ${result.processamento_ms.toFixed(0)} ms · Ida e volta: ${latency.toFixed(0)} ms · Qualidade: ${result.qualidade.score.toFixed(2)}`);
     if (face.metricas) {
       const m = face.metricas, t = face.temporal;
       const closure = t.perclos_observado === null ? "coletando" : `${(t.perclos_observado * 100).toFixed(0)}%`;
-      this.set("faceMetrics", `${face.pontos.length} pontos · Abertura da boca: ${m.abertura_boca.toFixed(2)} · Olhos fechados: ${t.olhos_fechados_s.toFixed(1)} s · Piscadas observadas: ${t.piscadas_60s} · Fechamento ocular: ${closure} em ${t.cobertura_s.toFixed(0)} s observados.`);
+      this.set("faceMetrics", `${face.numero_pontos??face.pontos.length} pontos analisados · Abertura da boca: ${m.abertura_boca.toFixed(2)} · Olhos fechados: ${t.olhos_fechados_s.toFixed(1)} s · Piscadas observadas: ${t.piscadas_60s} · Fechamento ocular: ${closure} em ${t.cobertura_s.toFixed(0)} s observados.`);
     } else this.set("faceMetrics", "Rosto ausente; acompanhamento temporal reiniciado.");
     this.list("signalsList", face.sinais);
     this.list("shapesList", result.formas);
@@ -63,7 +71,7 @@ export class Presentation {
       p.textContent = `Mão ${hand.lado.toLowerCase()} · ${hand.dedos_estendidos} dedos estendidos · ${horizontal}, ${hand.posicao_imagem.vertical} na tela · ${gestures}${hand.parcial ? " · mão parcialmente fora do quadro" : ""}.`;
       hands.append(p);
     }
-    for (const gesture of result.gestos_duas_maos) {
+    for (const gesture of result.formas_maos||[]) {
       const p = document.createElement("p");
       p.textContent = gesture.rotulo;
       hands.append(p);
