@@ -46,7 +46,7 @@ test("ZIP estático: câmera, formas, mãos, dedos e encerramento sem backend", 
   });
   expect(colors.green).toBeGreaterThan(100);
   expect(colors.yellow).toBeGreaterThan(20);
-  await page.getByRole("button",{ name:"FECHAR",exact:true }).click();
+  await page.getByRole("button",{ name:"Fechar detalhes",exact:true }).click();
   await page.getByRole("button",{ name:"PARAR",exact:true }).click();
   await expect(page.locator("#backendStatus")).toHaveText("PARADO");
   await expect(page.getByRole("button",{ name:"INICIAR CÂMERA",exact:true })).toBeVisible();
