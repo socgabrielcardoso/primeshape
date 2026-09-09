@@ -1,4 +1,5 @@
 from .geometry import clamp, ramp, signal
+from .affect import RULES, apparent_affect
 
 CATALOG = {
     "olhos_abertos": "Olhos abertos",
@@ -47,6 +48,8 @@ CATALOG = {
     "neutra": "Expressão neutra",
     "relaxada_aparente": "Expressão facial relaxada",
 }
+
+CATALOG.update({code: rule["rotulo"] for code, rule in RULES.items()})
 
 
 def classify_expressions(metrics, blends, timeline):
@@ -119,7 +122,7 @@ def classify_expressions(metrics, blends, timeline):
     add("surpresa_aparente", wide > 0.4 and brow_up > 0.4 and mouth, min(wide, brow_up, b("jawOpen")), "estado_aparente", ["Olhos ampliados, sobrancelhas elevadas e boca aberta"])
     add("tensao_aparente", brow_down > 0.4 and press > 0.3 and squint > 0.3, min(brow_down, press, squint), "estado_aparente", ["Contração de sobrancelhas, olhos e lábios"])
     frown = pair("mouthFrown")
-    add("tristeza_aparente", frown > 0.4 and b("browInnerUp") > 0.35 and smile < 0.2, min(frown, b("browInnerUp")), "estado_aparente", ["Cantos da boca rebaixados e sobrancelhas internas elevadas"])
+    result.extend(apparent_affect(blends, quality))
     add("irritacao_aparente", brow_down > 0.5 and sneer > 0.35 and press > 0.3, min(brow_down, sneer, press), "estado_aparente", ["Sobrancelhas contraídas, nariz franzido e lábios pressionados"])
     add("preocupacao_aparente", b("browInnerUp") > 0.4 and brow_down > 0.3 and press > 0.3, min(b("browInnerUp"), brow_down, press), "estado_aparente", ["Elevação interna e contração das sobrancelhas com pressão labial"])
     add("desconforto_aparente", squint > 0.5 and brow_down > 0.45 and (sneer > 0.35 or press > 0.45), min(squint, brow_down, max(sneer, press)), "estado_aparente", ["Contrações combinadas; não identifica dor nem sua causa"])

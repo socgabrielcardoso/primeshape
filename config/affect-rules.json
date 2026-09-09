@@ -1,0 +1,24 @@
+{
+  "tristeza_aparente": {
+    "rotulo": "Possível expressão de tristeza",
+    "min_seconds": 0.45,
+    "max_smile": 0.25,
+    "max_brow_down": 0.65,
+    "groups": [
+      {"features": [["mouthFrownLeft", "mouthFrownRight"]], "threshold": 0.25},
+      {"features": [["browInnerUp"]], "threshold": 0.25}
+    ],
+    "evidencias": ["Cantos da boca rebaixados e sobrancelhas internas elevadas", "Sinais persistentes; não confirma tristeza"]
+  },
+  "raiva_aparente": {
+    "rotulo": "Possível expressão de raiva",
+    "min_seconds": 0.45,
+    "max_smile": 0.25,
+    "groups": [
+      {"features": [["browDownLeft", "browDownRight"]], "threshold": 0.35},
+      {"features": [["mouthPressLeft", "mouthPressRight"], ["mouthFrownLeft", "mouthFrownRight"], ["noseSneerLeft", "noseSneerRight"]], "threshold": 0.23},
+      {"features": [["eyeSquintLeft", "eyeSquintRight"], ["eyeWideLeft", "eyeWideRight"]], "threshold": 0.22}
+    ],
+    "evidencias": ["Contração combinada de sobrancelhas, olhos e boca ou nariz", "Sinais persistentes; não confirma raiva"]
+  }
+}

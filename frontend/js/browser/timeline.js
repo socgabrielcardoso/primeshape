@@ -1,3 +1,5 @@
+import { AffectTracker } from "./affect.js";
+
 export class Timeline {
   constructor() { this.reset(); }
   reset() {
@@ -12,6 +14,7 @@ export class Timeline {
     this.wasClosed = false;
     this.yawnRecorded = false;
     this.anchor = null;
+    this.affect=new AffectTracker();
   }
   update(metrics, now) {
     if (!metrics || metrics.qualidade < 0.4) { this.reset(); return this.result(now); }

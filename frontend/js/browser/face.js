@@ -1,5 +1,6 @@
 import { bounds, distance, point, ramp, signal } from "./geometry.js";
 import { LABELS } from "./face-labels.js";
+import { apparentAffect } from "./affect.js";
 
 function eyeRatio(points, indices) {
   const [a,b,c,d,e,f] = indices.map(i => points[i]);
@@ -80,7 +81,7 @@ export function analyzeFace(result, width, height, timeline, now) {
   add("surpresa_aparente", wide > 0.4 && browUp > 0.4 && mouth, Math.min(wide, browUp, b("jawOpen")), "estado_aparente");
   add("tensao_aparente", browDown > 0.4 && press > 0.3 && squint > 0.3, Math.min(browDown, press, squint), "estado_aparente");
   const frown = pair("mouthFrown");
-  add("tristeza_aparente", frown > 0.4 && b("browInnerUp") > 0.35 && smile < 0.2, Math.min(frown, b("browInnerUp")), "estado_aparente");
+  signals.push(...apparentAffect(blends,quality));
   add("irritacao_aparente", browDown > 0.5 && sneer > 0.35 && press > 0.3, Math.min(browDown, sneer, press), "estado_aparente");
   add("preocupacao_aparente", b("browInnerUp") > 0.4 && browDown > 0.3 && press > 0.3, Math.min(b("browInnerUp"), browDown, press), "estado_aparente");
   add("desconforto_aparente", squint > 0.5 && browDown > 0.45 && (sneer > 0.35 || press > 0.45), Math.min(squint, browDown, Math.max(sneer, press)), "estado_aparente");
@@ -88,5 +89,5 @@ export function analyzeFace(result, width, height, timeline, now) {
   const neutral = opened && !mouth && Math.max(smile, squint, browDown, browUp, press, sneer, frown, b("mouthPucker")) < 0.25;
   add("neutra", neutral, 1 - Math.max(smile, browDown, browUp, press));
   add("relaxada_aparente", neutral && Math.abs(yaw) < 15 && Math.abs(roll) < 12, 0.5, "estado_aparente");
-  return { presente: true, pontos: points, metricas: metrics, temporal: t, sinais: signals };
+  return { presente: true, pontos: points, metricas: metrics, temporal: t, sinais: timeline.affect.update(signals,now) };
 }

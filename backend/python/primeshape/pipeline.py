@@ -76,7 +76,7 @@ class VisionPipeline:
                     "pontos": serial_points(raw_face["points"]),
                     "metricas": metrics,
                     "temporal": timeline,
-                    "sinais": classify_expressions(metrics, raw_face["blendshapes"], timeline),
+                    "sinais": session.timeline.affect.update(classify_expressions(metrics, raw_face["blendshapes"], timeline), now),
                     "coeficientes": {key: round(value, 4) for key, value in raw_face["blendshapes"].items()},
                 }
                 exclusions.append(raw_face["points"])

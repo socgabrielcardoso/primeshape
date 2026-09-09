@@ -1,5 +1,6 @@
 from collections import deque
 from .config import SETTINGS
+from .affect import AffectTracker
 
 
 class FaceTimeline:
@@ -18,6 +19,7 @@ class FaceTimeline:
         self.was_closed = False
         self.yawn_recorded = False
         self.anchor = None
+        self.affect = AffectTracker()
 
     def update(self, metrics, now):
         if metrics is None or metrics["qualidade"] < 0.4:
