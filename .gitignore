@@ -10,3 +10,6 @@ models/*.task
 models/*.download
 tests/assets/*.jpg
 tests/assets/*.download
+node_modules/
+tests/browser/test-results/
+tests/browser/hands.jpg

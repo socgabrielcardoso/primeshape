@@ -1,39 +1,46 @@
-name: Validar PrimeShape
+name: Validar Live Server no Windows
 
 on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  validate:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 15
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-          cache: pip
-          cache-dependency-path: backend/python/requirements*.txt
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: python -m pip install -r backend/python/requirements-dev.txt
-      - run: python scripts/download_models.py
-      - run: python scripts/download_test_assets.py
-      - run: python -m pytest
       - name: Validar JavaScript
-        shell: bash
-        run: for file in frontend/js/*.js; do node --check "$file" || exit 1; done
+        shell: pwsh
+        run: |
+          Get-ChildItem frontend/js -Filter *.js -Recurse | ForEach-Object {
+            node --check $_.FullName
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
+      - name: Preparar verificação do navegador
+        working-directory: tests/browser
+        run: npm ci
+      - name: Instalar navegador de validação
+        working-directory: tests/browser
+        run: npx playwright install chromium
+      - name: Carregar fotografia de validação
+        shell: pwsh
+        run: |
+          Invoke-WebRequest 'https://raw.githubusercontent.com/tensorflow/tfjs-models/master/hand-pose-detection/test_data/hands.jpg' -OutFile tests/browser/hands.jpg
+          if ((Get-FileHash tests/browser/hands.jpg -Algorithm SHA256).Hash.ToLower() -ne '240c082e80128ff1ca8a83ce645e2ba4d8bc30f0967b7991cf5fa375bab489e1') { throw 'Fotografia de validação inválida' }
+      - name: Validar câmera, contornos e dedos pelo servidor estático
+        working-directory: tests/browser
+        run: npm test
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: falha-live-server-windows
+          path: tests/browser/test-results
