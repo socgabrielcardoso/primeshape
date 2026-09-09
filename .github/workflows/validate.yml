@@ -28,6 +28,8 @@ jobs:
       - name: Preparar verificação do navegador
         working-directory: tests/browser
         run: npm ci
+      - name: Validar geometria e expressões aparentes
+        run: node --test tests/browser/logic.test.mjs
       - name: Instalar navegador de validação
         working-directory: tests/browser
         run: npx playwright install chromium
@@ -36,7 +38,7 @@ jobs:
         run: |
           Invoke-WebRequest 'https://raw.githubusercontent.com/tensorflow/tfjs-models/master/hand-pose-detection/test_data/hands.jpg' -OutFile tests/browser/hands.jpg
           if ((Get-FileHash tests/browser/hands.jpg -Algorithm SHA256).Hash.ToLower() -ne '240c082e80128ff1ca8a83ce645e2ba4d8bc30f0967b7991cf5fa375bab489e1') { throw 'Fotografia de validação inválida' }
-      - name: Validar câmera, contornos e dedos pelo servidor estático
+      - name: Validar modo leve, dedos e câmera pelo servidor estático
         working-directory: tests/browser
         run: npm test
       - uses: actions/upload-artifact@v4
