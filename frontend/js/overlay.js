@@ -58,7 +58,7 @@ export class Overlay {
     ctx.restore();
     if (!result) return;
     ctx.lineWidth = Math.max(2, this.canvas.width * 0.0018);
-    ctx.strokeStyle = "rgba(255,255,255,.85)";
+    ctx.strokeStyle = "#5effa1";
     for (const shape of result.formas) {
       this.line(shape.contorno, true);
       this.label(shape.rotulo, [shape.caixa[0], shape.caixa[1]]);
@@ -70,12 +70,12 @@ export class Overlay {
       FACE_LINES.forEach(indices => this.line(indices.map(i => result.rosto.pontos[i])));
     }
     result.maos.forEach(hand => {
-      ctx.strokeStyle = "rgba(255,255,255,.95)";
+      ctx.strokeStyle = "#5effa1";
       HAND_LINES.forEach(indices => this.line(indices.map(i => hand.pontos[i])));
-      hand.pontos.forEach(point => {
+      hand.pontos.forEach((point, index) => {
         const [x, y] = this.point(point);
         ctx.beginPath(); ctx.arc(x, y, this.canvas.width * 0.0028, 0, Math.PI * 2);
-        ctx.fillStyle = "#fff"; ctx.fill();
+        ctx.fillStyle = [4,8,12,16,20].includes(index) ? "#ffdd57" : "#fff"; ctx.fill();
       });
       this.label(`Mão ${hand.lado.toLowerCase()} · ${hand.dedos_estendidos} dedos${hand.parcial ? " · parcial" : ""}`, hand.pontos[0]);
     });

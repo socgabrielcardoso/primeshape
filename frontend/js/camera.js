@@ -15,15 +15,20 @@ export class Camera {
     await this.video.play();
   }
 
-  capture() {
+  pixels() {
     const width = Math.min(640, this.video.videoWidth);
     const height = Math.round(this.video.videoHeight * width / this.video.videoWidth);
-    if (!width || !height || this.video.readyState < 2) return Promise.resolve(null);
+    if (!width || !height || this.video.readyState < 2) return null;
     if (this.captureCanvas.width !== width || this.captureCanvas.height !== height) {
       this.captureCanvas.width = width;
       this.captureCanvas.height = height;
     }
     this.captureContext.drawImage(this.video, 0, 0, width, height);
+    return this.captureContext.getImageData(0, 0, width, height);
+  }
+
+  capture() {
+    if (!this.pixels()) return Promise.resolve(null);
     return new Promise(resolve => this.captureCanvas.toBlob(resolve, "image/jpeg", 0.85));
   }
 

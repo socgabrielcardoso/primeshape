@@ -13,7 +13,7 @@
     <video id="camera" autoplay muted playsinline></video>
     <canvas id="visionCanvas" aria-label="Imagem da câmera com contornos, pontos faciais e estrutura das mãos"></canvas>
     <header class="toolbar">
-      <div class="runtime"><b>PRIMESHAPE</b><span id="backendStatus" role="status">INICIE OS SERVIÇOS LOCAIS</span></div>
+      <div class="runtime"><b>PRIMESHAPE</b><span id="backendStatus" role="status">PRONTO PARA INICIAR</span></div>
       <div class="actions">
         <button id="detailsButton" type="button" aria-expanded="false" aria-controls="detailPanel">DETALHES</button>
         <button id="stopButton" type="button" hidden>PARAR</button>
@@ -21,7 +21,7 @@
     </header>
     <div class="start-area" id="startArea">
       <button id="startButton" type="button">INICIAR CÂMERA</button>
-      <p id="startHint">Execute <code>iniciar.bat</code> e abra este arquivo pelo Live Server.</p>
+      <p id="startHint">Permita a câmera. Os detectores carregam automaticamente pela internet e processam a imagem neste navegador.</p>
     </div>
     <p class="notice" id="notice" role="status">Processamento local. A aplicação não grava imagens.</p>
     <section class="results" aria-label="Resultados da análise">
@@ -33,6 +33,8 @@
     <aside id="detailPanel" class="detail-panel" aria-label="Detalhes da detecção" hidden>
       <div class="panel-heading"><h1>Análise visual</h1><button type="button" id="closeDetails" aria-label="Fechar detalhes">FECHAR</button></div>
       <div class="controls">
+        <label for="engineSelect">Processamento</label>
+        <select id="engineSelect"><option value="browser" selected>Navegador — iniciar diretamente</option><option value="services">Serviços Python + Java</option></select>
         <label><input id="mirrorToggle" type="checkbox" checked> Espelhar câmera</label>
         <label><input id="pointsToggle" type="checkbox" checked> Exibir pontos</label>
         <label for="fpsSelect">Análises por segundo</label>
@@ -48,9 +50,9 @@
       <ul id="shapesList" class="signal-list"></ul>
       <details class="guide">
         <summary>Executar e interpretar</summary>
-        <p>No Windows, instale Python 3.12 e JDK 17 ou superior. Execute <code>iniciar.bat</code>. A primeira execução instala as dependências e baixa os modelos oficiais.</p>
-        <p>No VS Code, abra <code>index.html</code> com Live Server e permita a câmera. Em Linux/macOS: <code>python3 scripts/bootstrap.py</code>.</p>
-        <p>A câmera pode ser visualizada sem os serviços. As detecções exigem Python e Java em execução. Use o botão PARAR para encerrar a câmera; Ctrl+C no terminal encerra os serviços.</p>
+        <p>No Windows, extraia o ZIP, abra a pasta no VS Code e abra o <code>index.html</code> da raiz com Live Server. Use Chrome ou Edge, clique em INICIAR CÂMERA e permita o acesso.</p>
+        <p>O modo Navegador inicia as detecções automaticamente. Mantenha a internet disponível para carregar os modelos; as imagens são processadas no computador e não são enviadas a servidores.</p>
+        <p>Use PARAR para encerrar a câmera. O modo opcional Serviços Python + Java exige Python 3.12, JDK 17 e <code>iniciar.bat</code> em execução.</p>
         <p>Apresente formas planas com bom contraste e contorno completo. Mantenha rosto e mãos iluminados. Apenas um rosto e até duas mãos são analisados.</p>
         <p><b>Medição:</b> característica geométrica. <b>Inferência:</b> combinação de sinais. <b>Estado aparente:</b> interpretação limitada da expressão.</p>
         <p>Os scores indicam intensidade e aderência às regras; não são probabilidades calibradas. Sono, vigília, emoções e desconforto não podem ser confirmados somente pela câmera.</p>

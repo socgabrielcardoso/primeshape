@@ -1,10 +1,11 @@
 import { VisionAPI } from "./api.js";
+import { BrowserVision } from "./browser-api.js";
 import { Camera } from "./camera.js";
 import { Overlay } from "./overlay.js";
 import { Presentation } from "./presentation.js";
 
 const byId = id => document.getElementById(id);
-const api = new VisionAPI();
+let api = new BrowserVision(message => status("CARREGANDO DETECTORES", message));
 const camera = new Camera(byId("camera"));
 const overlay = new Overlay(byId("visionCanvas"), byId("camera"));
 const presentation = new Presentation();
@@ -25,19 +26,20 @@ function status(text, note) {
 
 async function step(current) {
   if (!active || current !== generation) return;
+  const engine = api;
   const started = performance.now();
   let delay = 1000 / Number(byId("fpsSelect").value);
   try {
-    const signal = AbortSignal.any([controller.signal, AbortSignal.timeout(10000)]);
-    if (!api.session) {
-      status("CONECTANDO", "Conectando Python e Java…");
-      await api.connect(signal);
-      if (!active || current !== generation) { await api.close(); return; }
+    const signal = controller.signal;
+    if (!engine.session) {
+      status("CARREGANDO DETECTORES", engine.local ? "Preparando a detecção no navegador…" : "Conectando Python e Java…");
+      await engine.connect(engine.local ? signal : AbortSignal.any([signal, AbortSignal.timeout(10000)]));
+      if (!active || current !== generation) { await engine.close(); return; }
     }
-    const blob = await camera.capture();
-    if (!blob) throw new Error("A câmera ainda não disponibilizou um quadro.");
+    const frame = engine.local ? camera.pixels() : await camera.capture();
+    if (!frame) throw new Error("A câmera ainda não disponibilizou um quadro.");
     const captureTime = performance.now();
-    const response = await api.analyze(blob, signal);
+    const response = await engine.analyze(frame, AbortSignal.any([signal, AbortSignal.timeout(15000)]));
     if (!active || current !== generation) return;
     result = response;
     capturedAt = captureTime;
@@ -45,16 +47,19 @@ async function step(current) {
     const latency = performance.now() - captureTime;
     lastLatency = latency;
     presentation.update(result, latency, overlay.mirror);
-    status("JAVA + PYTHON CONECTADOS", result.qualidade.avisos.join(" · ") || "Processamento local · Estados aparentes não são diagnósticos.");
+    status(engine.local ? "DETECÇÃO NO NAVEGADOR" : "JAVA + PYTHON CONECTADOS", result.qualidade.avisos.join(" · ") || "Processamento local · Estados aparentes não são diagnósticos.");
   } catch (error) {
     if (!active || current !== generation) return;
     result = null;
     presentation.clear("SEM ANÁLISE");
-    if (error.status === 429) {
+    if (engine.local) {
+      stop(error.message);
+      status("DETECÇÃO INTERROMPIDA", error.message);
+    } else if (error.status === 429) {
       status("PROCESSAMENTO OCUPADO", error.message);
       delay = 500;
     } else {
-      await api.close();
+      await engine.close();
       if (!active || current !== generation) return;
       status("BACKEND DESCONECTADO", error.status ? error.message : "Câmera disponível. Execute iniciar.bat; a conexão será tentada novamente.");
       delay = 2500;
@@ -130,6 +135,11 @@ byId("mirrorToggle").addEventListener("change", event => {
   if (result && performance.now() - capturedAt < 1000) presentation.update(result, lastLatency, overlay.mirror);
 });
 byId("pointsToggle").addEventListener("change", event => { overlay.showPoints = event.target.checked; });
+byId("engineSelect").addEventListener("change", event => {
+  stop();
+  api = event.target.value === "services" ? new VisionAPI() : new BrowserVision(message => status("CARREGANDO DETECTORES", message));
+  status("PRONTO PARA INICIAR", api.local ? "Clique em INICIAR CÂMERA. Os detectores carregam automaticamente." : "Execute iniciar.bat antes de iniciar a análise pelos serviços.");
+});
 document.addEventListener("keydown", event => { if (event.key === "Escape" && !byId("detailPanel").hidden) toggleDetails(false); });
 document.addEventListener("visibilitychange", () => { if (document.hidden && (active || starting)) stop("Câmera pausada ao sair da aba. Clique em iniciar para retomar."); });
 window.addEventListener("pagehide", () => stop());
