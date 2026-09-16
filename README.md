@@ -1,8 +1,8 @@
 # PrimeShape
 
-Sistema experimental de visão computacional para análise visual em tempo real pela webcam, com foco em formas, mãos, rosto e sinais aparentes de expressão.
+> Laboratório experimental de visão computacional em tempo real, executado principalmente no navegador e orientado à análise de formas, mãos, rosto e sinais visuais aparentes.
 
-O PrimeShape foi construído para executar a experiência diretamente no navegador, mantendo o processamento visual local e oferecendo uma interface simples para explorar reconhecimento geométrico e sinais faciais sem depender de upload contínuo de imagens para um servidor próprio.
+O PrimeShape foi criado para explorar visão computacional e interação humano-computador de forma prática, com feedback visual imediato pela webcam e processamento local no fluxo padrão.
 
 ## Principais recursos
 
