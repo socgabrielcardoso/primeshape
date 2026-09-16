@@ -1,14 +1,14 @@
 # PrimeShape
 
-> Laboratório experimental de visão computacional em tempo real, executado principalmente no navegador e orientado à análise de formas, mãos, rosto e sinais visuais aparentes.
+> **Experimental Computer Vision Lab** — laboratório pessoal para estudo de visão computacional em tempo real, interação humano-computador e processamento local no navegador.
 
-O **PrimeShape** foi criado para explorar visão computacional e interação humano-computador de forma prática, com feedback visual imediato pela webcam e processamento local no fluxo padrão. O objetivo é manter uma base simples de executar, fácil de validar e aberta à evolução incremental.
+O **PrimeShape** explora análise de formas, mãos, rosto e sinais visuais aparentes com feedback imediato pela webcam. O foco é aprendizado prático, experimentação técnica e evolução incremental de uma base executável e testável.
+
+Este projeto **não é uma ferramenta médica, psicológica, biométrica ou de vigilância** e não deve ser usado para tomada automatizada de decisão sobre pessoas.
 
 ## Visão geral
 
-A aplicação combina uma interface web com rotinas de análise visual para interpretar informações capturadas pela câmera. O projeto pode funcionar em um modo leve, diretamente pelo navegador, e também possui uma estrutura preparada para componentes auxiliares em Python e Java.
-
-O foco é experimentação técnica, aprendizado e demonstração de conceitos de visão computacional — não diagnóstico, identificação biométrica ou avaliação clínica.
+A aplicação combina uma interface web com rotinas de análise visual para interpretar informações capturadas pela câmera. O fluxo principal roda diretamente no navegador e a estrutura também suporta componentes auxiliares em Python e Java.
 
 ## Principais recursos
 
@@ -24,26 +24,22 @@ O foco é experimentação técnica, aprendizado e demonstração de conceitos d
 
 ## Como funciona
 
-No modo padrão, o navegador solicita acesso à webcam e executa a experiência visual localmente. A interface recebe os resultados da análise e atualiza as marcações em tempo real, permitindo acompanhar mãos, pontos de referência e outros sinais visuais suportados pelo projeto.
+No modo padrão, o navegador solicita acesso à webcam e executa a experiência visual localmente. A interface recebe os resultados da análise e atualiza as marcações em tempo real.
 
-O PrimeShape prioriza execução simples e feedback rápido, evitando depender de um backend para o uso básico.
+O PrimeShape prioriza execução simples e feedback rápido, evitando depender de backend para o uso básico.
 
 ## Modos de execução
 
-### Modo leve — recomendado para começar
-
-Use este modo para abrir o projeto rapidamente no Windows:
+### Modo leve — recomendado
 
 1. Abra a pasta do repositório no **Visual Studio Code**.
 2. Tenha a extensão **Live Server** instalada.
 3. Abra `index.html` com o Live Server.
 4. Acesse a página no **Chrome** ou **Edge**.
 5. Clique em **INICIAR CÂMERA**.
-6. Autorize o acesso à webcam quando o navegador solicitar.
+6. Autorize o acesso à webcam.
 
 ### Modo com serviços auxiliares
-
-Para utilizar a estrutura adicional do projeto, execute:
 
 ```bat
 iniciar.bat
@@ -53,21 +49,21 @@ O script tenta localizar Python 3.12, depois Python 3.11 e, como alternativa, o 
 
 ## Requisitos
 
-### Para o modo leve
+### Modo leve
 
-- Windows.
-- Visual Studio Code.
-- Extensão Live Server.
-- Google Chrome ou Microsoft Edge atualizado.
-- Webcam disponível e autorizada no navegador.
+- Windows
+- Visual Studio Code
+- Extensão Live Server
+- Google Chrome ou Microsoft Edge atualizado
+- Webcam disponível e autorizada
 
-### Para o modo com serviços
+### Serviços auxiliares
 
-- Python 3.11 ou 3.12 recomendado.
-- Dependências exigidas pelos componentes auxiliares do projeto.
-- JDK 17 quando os recursos Java forem utilizados.
+- Python 3.11 ou 3.12 recomendado
+- Dependências exigidas pelos componentes auxiliares
+- JDK 17 quando os recursos Java forem utilizados
 
-## Estrutura do repositório
+## Estrutura
 
 ```text
 primeshape/
@@ -85,7 +81,7 @@ primeshape/
 
 ## Validação automática
 
-O repositório possui um workflow do GitHub Actions executado em alterações no branch `main`. A validação inclui:
+O repositório possui workflow do GitHub Actions executado em alterações no branch `main`, incluindo:
 
 - verificação de sintaxe dos arquivos JavaScript;
 - testes de lógica relacionados à geometria e expressões aparentes;
@@ -93,19 +89,18 @@ O repositório possui um workflow do GitHub Actions executado em alterações no
 - execução de testes com Chromium via Playwright;
 - validação do modo leve por servidor estático.
 
-Em caso de falha nos testes de navegador, o workflow pode publicar artefatos de diagnóstico para facilitar a análise.
+Em caso de falha nos testes de navegador, o workflow pode publicar artefatos de diagnóstico.
 
 ## Privacidade
 
-No fluxo padrão, a imagem da webcam é processada localmente no navegador. O projeto não foi desenhado para gravar continuamente imagens da câmera em um servidor próprio.
+No fluxo padrão, a imagem da webcam é processada localmente no navegador. O projeto não foi desenhado para gravar continuamente imagens da câmera em servidor próprio.
 
-Mesmo assim, qualquer uso futuro que adicione APIs, armazenamento, telemetria ou serviços externos deve ser revisado separadamente para preservar esse comportamento.
+Qualquer evolução futura que adicione APIs, armazenamento, telemetria ou serviços externos deve ser revisada separadamente para preservar esse comportamento.
 
 ## Limitações
 
 - Resultados dependem de iluminação, enquadramento, qualidade da câmera e visibilidade das mãos ou do rosto.
-- Inferências de expressão ou estado aparente são experimentais e podem apresentar falsos positivos ou interpretações incorretas.
-- O projeto não deve ser utilizado como ferramenta médica, psicológica, biométrica, de vigilância ou de tomada automática de decisão sobre pessoas.
+- Inferências de expressão ou estado aparente são experimentais e podem apresentar falsos positivos.
 - O comportamento pode variar entre navegadores e dispositivos.
 
 ## Solução rápida de problemas
@@ -127,10 +122,8 @@ Mesmo assim, qualquer uso futuro que adicione APIs, armazenamento, telemetria ou
 - Execute `iniciar.bat` a partir da raiz do projeto.
 - Revise a saída do terminal para identificar dependências ausentes.
 
-## Propósito do projeto
-
-PrimeShape é um laboratório técnico para estudo, experimentação e evolução de soluções de visão computacional. A prioridade é manter o projeto executável, compreensível e testável enquanto novas capacidades são adicionadas de forma incremental.
-
 ---
 
-**Status:** projeto experimental em evolução. Recursos, classificações e comportamento podem mudar conforme novos testes e melhorias forem incorporados.
+**Categoria:** Computer Vision • Browser • Python • Java • Technical Lab
+
+**Status:** projeto experimental em evolução para estudo e prática técnica.
