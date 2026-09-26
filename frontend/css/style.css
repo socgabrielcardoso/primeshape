@@ -276,6 +276,7 @@ summary {
 }
 
 .result {
+  position: relative;
   min-width: 0;
   padding: 10px 12px;
   border: 1px solid var(--line);
