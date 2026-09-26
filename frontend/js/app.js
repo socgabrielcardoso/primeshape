@@ -171,7 +171,14 @@ byId("engineSelect").addEventListener("change", event => {
   api = event.target.value === "services" ? new VisionAPI() : new BrowserVision(message => status("CARREGANDO DETECTORES", message));
   status("PRONTO PARA INICIAR", api.local ? "Clique em INICIAR CÂMERA. Os detectores carregam automaticamente." : "Execute iniciar.bat antes de iniciar a análise pelos serviços.");
 });
-document.addEventListener("keydown", event => { if (event.key === "Escape" && !byId("detailPanel").hidden) toggleDetails(false); });
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape" && !byId("detailPanel").hidden) toggleDetails(false);
+  if (event.code !== "Space" || event.repeat) return;
+  if (event.target.closest("button, input, select, summary, a")) return;
+  event.preventDefault();
+  if (active || starting) stop();
+  else start();
+});
 document.addEventListener("visibilitychange", () => { if (document.hidden && (active || starting)) stop("Câmera pausada ao sair da aba. Clique em iniciar para retomar."); });
 window.addEventListener("pagehide", () => stop());
 requestAnimationFrame(render);
