@@ -580,6 +580,7 @@ summary:focus-visible {
 
   .result strong {
     font-size: 13px;
+    line-height: 1.25;
   }
 
   .notice,
