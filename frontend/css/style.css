@@ -363,6 +363,14 @@ body[data-runtime*="carregando"] .runtime > span::before {
   box-shadow: 0 0 10px rgba(255, 209, 102, 0.3);
 }
 
+body[data-runtime*="indispon"] .runtime > span::before,
+body[data-runtime*="interromp"] .runtime > span::before,
+body[data-runtime*="desconect"] .runtime > span::before,
+body[data-runtime*="sem-conexao"] .runtime > span::before {
+  background: var(--danger);
+  box-shadow: 0 0 10px rgba(255, 123, 123, 0.24);
+}
+
 .detail-panel {
   position: absolute;
   z-index: 6;
