@@ -46,6 +46,7 @@ function savePreferences() {
 
 const preferences = loadPreferences();
 if (typeof preferences.mirror === "boolean") byId("mirrorToggle").checked = preferences.mirror;
+if (typeof preferences.points === "boolean") byId("pointsToggle").checked = preferences.points;
 
 for (const name of HAND_SHAPES) {
   const chip=document.createElement("span");
