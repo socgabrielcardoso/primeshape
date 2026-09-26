@@ -10,6 +10,15 @@ Este projeto **não é uma ferramenta médica, psicológica, biométrica ou de v
 
 A aplicação combina uma interface web com rotinas de análise visual para interpretar informações capturadas pela câmera. O fluxo principal roda diretamente no navegador e a estrutura também suporta componentes auxiliares em Python e Java.
 
+## Princípios da interface
+
+- A câmera é o elemento principal; a interface não compete com a análise.
+- O painel padrão mostra apenas estado, resultados essenciais e ações imediatas.
+- Ajustes avançados ficam recolhidos no painel de detalhes.
+- O visual tecnológico existe para comunicar estado e hierarquia, não para decorar.
+- Preferências simples de visualização e taxa de análise ficam salvas localmente.
+- O fluxo básico continua utilizável sem backend.
+
 ## Principais recursos
 
 - Detecção de formas construídas com as mãos.
