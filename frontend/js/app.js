@@ -25,6 +25,7 @@ let staleCleared = false;
 let lastVideoTime = -1;
 const SETTINGS_KEY = "primeshape.ui.v1";
 document.body.dataset.running = "false";
+document.body.dataset.details = "false";
 
 function loadPreferences() {
   try {
