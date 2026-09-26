@@ -56,6 +56,7 @@ test("Windows: vídeo contínuo, formas entre os dedos, modo leve, objetos opcio
   await expect(page.locator("#handShapeCatalog span")).toHaveCount(9);
   await page.getByRole("button",{ name:"INICIAR CÂMERA", exact:true }).click();
   await expect(page.locator("#backendStatus")).toHaveText("DETECÇÃO NO NAVEGADOR",{ timeout:150000 });
+  await expect(page.locator("body")).toHaveAttribute("data-running","true");
   await expect(page.locator("#handCount")).toHaveText("2 DETECTADAS",{ timeout:20000 });
   await expect(page.locator("#handShapeCatalog .active")).toHaveCount(1);
   await expect.poll(()=>page.evaluate(()=>window.processing.frames),{timeout:20000}).toBeGreaterThanOrEqual(8);
