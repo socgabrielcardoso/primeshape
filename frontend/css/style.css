@@ -101,7 +101,7 @@ summary {
 .runtime {
   display: grid;
   gap: 7px;
-  min-width: 220px;
+  min-width: 210px;
   padding: 12px 14px;
   border: 1px solid var(--line);
   border-radius: 12px;
