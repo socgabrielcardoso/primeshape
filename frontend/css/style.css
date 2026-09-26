@@ -286,6 +286,17 @@ summary {
   backdrop-filter: blur(8px);
 }
 
+.result::before {
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 0;
+  width: 2px;
+  border-radius: 2px;
+  background: rgba(110, 231, 242, 0.42);
+  content: "";
+}
+
 .result span {
   display: block;
   margin-bottom: 4px;
