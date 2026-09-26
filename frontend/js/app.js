@@ -135,6 +135,7 @@ function stop(message = "Câmera encerrada. Nenhuma imagem foi gravada.") {
 }
 
 function toggleDetails(open) {
+  document.body.dataset.details = String(open);
   byId("detailPanel").hidden = !open;
   byId("detailsButton").setAttribute("aria-expanded", String(open));
   if (open) byId("closeDetails").focus();
