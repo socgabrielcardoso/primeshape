@@ -107,7 +107,7 @@ summary {
   border-radius: 12px;
   background: var(--panel);
   box-shadow: 0 14px 38px rgba(0, 0, 0, 0.24);
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(10px);
 }
 
 .brand-line {
