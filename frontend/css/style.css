@@ -122,6 +122,7 @@ summary {
 }
 
 .runtime > span {
+  position: relative;
   overflow: hidden;
   color: var(--muted);
   font-size: 12px;
