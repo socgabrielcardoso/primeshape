@@ -117,6 +117,7 @@ async function start() {
 
 function stop(message = "Câmera encerrada. Nenhuma imagem foi gravada.") {
   active = false;
+  document.body.dataset.running = "false";
   generation++;
   controller?.abort();
   clearTimeout(timer);
