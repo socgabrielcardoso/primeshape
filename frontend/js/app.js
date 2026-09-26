@@ -191,6 +191,7 @@ byId("detailsButton").addEventListener("click", () => toggleDetails(byId("detail
 byId("closeDetails").addEventListener("click", () => toggleDetails(false));
 byId("mirrorToggle").addEventListener("change", event => {
   overlay.mirror = event.target.checked;
+  savePreferences();
   if (isFresh(performance.now())) presentation.update(result, lastLatency, overlay.mirror);
 });
 byId("pointsToggle").addEventListener("change", event => { overlay.showPoints = event.target.checked; });
