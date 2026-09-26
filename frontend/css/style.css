@@ -353,6 +353,11 @@ body[data-running="true"] .runtime > span::before {
   box-shadow: 0 0 10px rgba(110, 231, 242, 0.45);
 }
 
+body[data-running="false"] .runtime > span::before {
+  background: #77838f;
+  box-shadow: none;
+}
+
 .detail-panel {
   position: absolute;
   z-index: 6;
