@@ -18,6 +18,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Validar estrutura essencial da interface
+        shell: pwsh
+        run: |
+          $html = Get-Content index.html -Raw
+          @('camera','visionCanvas','startButton','detailsButton','stopButton','backendStatus','handShapeCatalog','shapeName','eyeState','expressionName','handCount','detailPanel') | ForEach-Object {
+            if ($html -notmatch ('id="' + $_ + '"')) { throw "Elemento obrigatório ausente: $_" }
+          }
       - name: Validar JavaScript
         shell: pwsh
         run: |
