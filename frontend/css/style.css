@@ -598,6 +598,10 @@ summary:focus-visible {
     bottom: 128px;
   }
 
+  .start-shortcut {
+    display: none;
+  }
+
   .detail-panel {
     inset: 72px 10px 158px 10px;
     width: auto;
