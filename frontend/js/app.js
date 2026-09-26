@@ -21,6 +21,7 @@ let lastLatency = 0;
 let generation = 0;
 let staleCleared = false;
 let lastVideoTime = -1;
+document.body.dataset.running = "false";
 
 for (const name of HAND_SHAPES) {
   const chip=document.createElement("span");
