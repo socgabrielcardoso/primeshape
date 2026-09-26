@@ -28,6 +28,8 @@ A aplicação combina uma interface web com rotinas de análise visual para inte
 - Classificação experimental de estados e expressões aparentes a partir de sinais visuais.
 - Detecção opcional de formas presentes em objetos e contornos da imagem.
 - Controle da taxa de análise para equilibrar responsividade e consumo de recursos.
+- Atalhos de teclado para iniciar, parar e fechar detalhes.
+- Persistência local de preferências de espelhamento, pontos, FPS e objetos.
 - Processamento padrão no navegador.
 - Estrutura opcional com serviços auxiliares em Python e Java.
 
