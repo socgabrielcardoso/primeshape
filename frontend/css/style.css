@@ -129,6 +129,14 @@ summary {
   white-space: nowrap;
 }
 
+.brand-caption {
+  margin-left: auto;
+  color: #6f7d89;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
 .mode-badge,
 .panel-kicker {
   color: var(--accent-strong);
