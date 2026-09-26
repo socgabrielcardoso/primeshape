@@ -124,6 +124,7 @@ summary {
 .runtime > span {
   position: relative;
   overflow: hidden;
+  padding-left: 12px;
   color: var(--muted);
   font-size: 12px;
   text-overflow: ellipsis;
