@@ -453,6 +453,11 @@ select {
   color: var(--muted) !important;
 }
 
+::selection {
+  background: rgba(110, 231, 242, 0.28);
+  color: #ffffff;
+}
+
 button:focus-visible,
 input:focus-visible,
 select:focus-visible,
