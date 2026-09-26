@@ -131,6 +131,18 @@ summary {
   white-space: nowrap;
 }
 
+.runtime > span::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #77838f;
+  content: "";
+  transform: translateY(-50%);
+}
+
 .brand-caption {
   margin-left: auto;
   color: #6f7d89;
