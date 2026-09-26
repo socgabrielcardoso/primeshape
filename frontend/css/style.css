@@ -392,6 +392,10 @@ body[data-runtime*="sem-conexao"] .runtime > span::before {
   scrollbar-width: thin;
 }
 
+body[data-details="true"] .detail-panel {
+  border-color: rgba(110, 231, 242, 0.22);
+}
+
 .panel-heading {
   display: flex;
   align-items: flex-start;
