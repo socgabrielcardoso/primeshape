@@ -24,6 +24,28 @@ let lastVideoTime = -1;
 const SETTINGS_KEY = "primeshape.ui.v1";
 document.body.dataset.running = "false";
 
+function loadPreferences() {
+  try {
+    return JSON.parse(localStorage.getItem(SETTINGS_KEY) || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function savePreferences() {
+  const settings = {
+    mirror: byId("mirrorToggle").checked,
+    points: byId("pointsToggle").checked,
+    objects: byId("objectsToggle").checked,
+    fps: byId("fpsSelect").value
+  };
+  try {
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+  } catch {}
+}
+
+const preferences = loadPreferences();
+
 for (const name of HAND_SHAPES) {
   const chip=document.createElement("span");
   chip.dataset.handShape=name;
