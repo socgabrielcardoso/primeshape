@@ -50,6 +50,7 @@ test("Windows: vídeo contínuo, formas entre os dedos, modo leve, objetos opcio
     };
   },{ photo });
   await page.goto("/index.html");
+  await expect(page.locator("#startButton")).toHaveAttribute("aria-keyshortcuts","Space");
   await expect(page.locator("body")).toHaveAttribute("data-running","false");
   await expect(page.locator("#engineSelect")).toHaveValue("browser");
   await expect(page.locator("#objectsToggle")).not.toBeChecked();
