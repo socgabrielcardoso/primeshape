@@ -203,6 +203,14 @@ byId("fpsSelect").addEventListener("change", () => {
   status(active ? "DETECÇÃO NO NAVEGADOR" : "PRONTO PARA INICIAR", `Limite de análise ajustado para ${byId("fpsSelect").value} quadros por segundo.`);
 });
 
+byId("objectsToggle").addEventListener("change", event => {
+  savePreferences();
+  const note = event.target.checked
+    ? "Detecção de objetos ativada. O consumo de processamento pode aumentar."
+    : "Detecção de objetos desativada. O modo leve continua ativo.";
+  status(active ? "DETECÇÃO NO NAVEGADOR" : "PRONTO PARA INICIAR", note);
+});
+
 byId("engineSelect").addEventListener("change", event => {
   stop();
   api = event.target.value === "services" ? new VisionAPI() : new BrowserVision(message => status("CARREGANDO DETECTORES", message));
