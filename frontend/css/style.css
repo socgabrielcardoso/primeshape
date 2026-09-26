@@ -538,6 +538,10 @@ summary:focus-visible {
 }
 
 @media (max-width: 680px) {
+  .brand-caption {
+    display: none;
+  }
+
   .toolbar {
     top: 10px;
     right: 10px;
