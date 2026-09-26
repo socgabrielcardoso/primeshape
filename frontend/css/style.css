@@ -262,7 +262,7 @@ summary {
 
 .result {
   min-width: 0;
-  padding: 11px 13px;
+  padding: 10px 12px;
   border: 1px solid var(--line);
   border-radius: 10px;
   background: var(--surface);
