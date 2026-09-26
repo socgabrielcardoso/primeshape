@@ -194,7 +194,10 @@ byId("mirrorToggle").addEventListener("change", event => {
   savePreferences();
   if (isFresh(performance.now())) presentation.update(result, lastLatency, overlay.mirror);
 });
-byId("pointsToggle").addEventListener("change", event => { overlay.showPoints = event.target.checked; });
+byId("pointsToggle").addEventListener("change", event => {
+  overlay.showPoints = event.target.checked;
+  savePreferences();
+});
 byId("engineSelect").addEventListener("change", event => {
   stop();
   api = event.target.value === "services" ? new VisionAPI() : new BrowserVision(message => status("CARREGANDO DETECTORES", message));
