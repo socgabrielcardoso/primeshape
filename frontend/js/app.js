@@ -229,6 +229,9 @@ document.addEventListener("keydown", event => {
   else start();
 });
 document.addEventListener("visibilitychange", () => { if (document.hidden && (active || starting)) stop("Câmera pausada ao sair da aba. Clique em iniciar para retomar."); });
+window.addEventListener("offline", () => {
+  if (!active) status("SEM CONEXÃO", "A câmera continua local, mas o primeiro carregamento dos modelos pode exigir internet.");
+});
 window.addEventListener("online", () => {
   if (!active) status("PRONTO PARA INICIAR", "Conexão disponível. Os modelos podem ser carregados normalmente.");
 });
