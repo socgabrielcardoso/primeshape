@@ -88,6 +88,7 @@ test("Windows: vídeo contínuo, formas entre os dedos, modo leve, objetos opcio
   await expect(page.getByRole("button",{ name:"INICIAR CÂMERA",exact:true })).toBeVisible();
   await page.getByRole("button",{ name:"DETALHES",exact:true }).click();
   await page.locator("#objectsToggle").uncheck();
+  await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("primeshape.ui.v1") || "{}").objects)).toBe(false);
   await page.getByRole("button",{ name:"Fechar detalhes",exact:true }).click();
   await page.getByRole("button",{ name:"INICIAR CÂMERA",exact:true }).click();
   await expect(page.locator("#handCount")).toHaveText("2 DETECTADAS",{timeout:30000});
