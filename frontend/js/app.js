@@ -32,6 +32,7 @@ for (const name of HAND_SHAPES) {
 
 function status(text, note) {
   byId("backendStatus").textContent = text;
+  document.body.dataset.runtime = text.toLowerCase().replace(/[^a-z0-9]+/g, "-");
   if (note) byId("notice").textContent = note;
 }
 
