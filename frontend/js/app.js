@@ -198,6 +198,11 @@ byId("pointsToggle").addEventListener("change", event => {
   overlay.showPoints = event.target.checked;
   savePreferences();
 });
+byId("fpsSelect").addEventListener("change", () => {
+  savePreferences();
+  status(active ? "DETECÇÃO NO NAVEGADOR" : "PRONTO PARA INICIAR", `Limite de análise ajustado para ${byId("fpsSelect").value} quadros por segundo.`);
+});
+
 byId("engineSelect").addEventListener("change", event => {
   stop();
   api = event.target.value === "services" ? new VisionAPI() : new BrowserVision(message => status("CARREGANDO DETECTORES", message));
