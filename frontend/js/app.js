@@ -112,6 +112,7 @@ async function start() {
   } finally {
     starting = false;
     byId("startButton").disabled = false;
+    byId("startButton").setAttribute("aria-busy", "false");
     byId("startButton").textContent = "INICIAR CÂMERA";
   }
 }
