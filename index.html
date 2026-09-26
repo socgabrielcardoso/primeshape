@@ -3,68 +3,112 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#000000">
-  <meta name="description" content="PrimeShape: análise local de rosto, mãos e formas pela webcam.">
+  <meta name="theme-color" content="#06090d">
+  <meta name="description" content="PrimeShape: visão computacional local para analisar mãos, formas e sinais visuais pela webcam.">
   <title>PrimeShape</title>
   <link rel="stylesheet" href="./frontend/css/style.css">
 </head>
 <body>
-  <main class="viewer">
+  <main class="viewer" id="appShell">
     <video id="camera" autoplay muted playsinline></video>
-    <canvas id="visionCanvas" aria-label="Formas entre os dedos e marcações nas pontas dos dedos"></canvas>
+    <canvas id="visionCanvas" aria-label="Camada de visualização das detecções"></canvas>
+
     <header class="toolbar">
-      <div class="runtime"><b>PRIMESHAPE</b><span id="backendStatus" role="status">PRONTO PARA INICIAR</span></div>
+      <div class="runtime">
+        <div class="brand-line">
+          <b>PRIMESHAPE</b>
+          <span class="mode-badge">LOCAL</span>
+        </div>
+        <span id="backendStatus" role="status">PRONTO PARA INICIAR</span>
+      </div>
       <div class="actions">
         <button id="detailsButton" type="button" aria-expanded="false" aria-controls="detailPanel">DETALHES</button>
         <button id="stopButton" type="button" hidden>PARAR</button>
       </div>
     </header>
-    <div class="start-area" id="startArea">
+
+    <section class="start-area" id="startArea" aria-labelledby="startButton">
       <button id="startButton" type="button">INICIAR CÂMERA</button>
-      <p id="startHint">Permita a câmera. Os detectores carregam automaticamente pela internet e processam a imagem neste navegador.</p>
-    </div>
-    <p class="notice" id="notice" role="status">Processamento local. A aplicação não grava imagens.</p>
+      <p id="startHint">A câmera é processada neste navegador. Nada é gravado.</p>
+    </section>
+
+    <p class="notice" id="notice" role="status">Processamento local. Os modelos podem ser carregados pela internet, mas os quadros da câmera permanecem no dispositivo.</p>
+
     <section class="shape-guide" aria-label="Formas possíveis com as mãos">
-      <span>USE OS POLEGARES E INDICADORES</span>
+      <span>FORMAS COM POLEGARES E INDICADORES</span>
       <div id="handShapeCatalog"></div>
     </section>
+
     <section class="results" aria-label="Resultados da análise">
-      <article class="result"><span>FORMAS</span><strong id="shapeName">NENHUMA</strong></article>
-      <article class="result"><span>ESTADO APARENTE</span><strong id="eyeState">AGUARDANDO</strong></article>
-      <article class="result"><span>EXPRESSÃO</span><strong id="expressionName">AGUARDANDO</strong></article>
-      <article class="result"><span>MÃOS</span><strong id="handCount">SEM ANÁLISE</strong></article>
+      <article class="result">
+        <span>FORMAS</span>
+        <strong id="shapeName">NENHUMA</strong>
+      </article>
+      <article class="result">
+        <span>ESTADO APARENTE</span>
+        <strong id="eyeState">AGUARDANDO</strong>
+      </article>
+      <article class="result">
+        <span>EXPRESSÃO</span>
+        <strong id="expressionName">AGUARDANDO</strong>
+      </article>
+      <article class="result">
+        <span>MÃOS</span>
+        <strong id="handCount">SEM ANÁLISE</strong>
+      </article>
     </section>
+
     <aside id="detailPanel" class="detail-panel" aria-label="Detalhes da detecção" hidden>
-      <div class="panel-heading"><h1>Análise visual</h1><button type="button" id="closeDetails" aria-label="Fechar detalhes">FECHAR</button></div>
+      <div class="panel-heading">
+        <div>
+          <span class="panel-kicker">AJUSTES</span>
+          <h1>Análise visual</h1>
+        </div>
+        <button type="button" id="closeDetails" aria-label="Fechar detalhes">FECHAR</button>
+      </div>
+
       <div class="controls">
         <label for="engineSelect">Processamento</label>
-        <select id="engineSelect"><option value="browser" selected>Navegador — iniciar diretamente</option><option value="services">Serviços Python + Java</option></select>
+        <select id="engineSelect">
+          <option value="browser" selected>Navegador local</option>
+          <option value="services">Serviços Python + Java</option>
+        </select>
         <label><input id="mirrorToggle" type="checkbox" checked> Espelhar câmera</label>
-        <label><input id="pointsToggle" type="checkbox" checked> Pontas dos dedos</label>
-        <label><input id="objectsToggle" type="checkbox"> Detectar formas em objetos (mais processamento)</label>
+        <label><input id="pointsToggle" type="checkbox" checked> Mostrar pontas dos dedos</label>
+        <label><input id="objectsToggle" type="checkbox"> Detectar formas em objetos</label>
         <label for="fpsSelect">Análises por segundo</label>
-        <select id="fpsSelect"><option value="5">Até 5</option><option value="10">Até 10</option><option value="15" selected>Até 15, ajuste automático</option></select>
+        <select id="fpsSelect">
+          <option value="5">Até 5</option>
+          <option value="10">Até 10</option>
+          <option value="15" selected>Até 15, ajuste automático</option>
+        </select>
       </div>
+
       <p id="performance">Aguardando quadros.</p>
-      <h2>Rosto, olhos e boca</h2>
-      <p id="faceMetrics">Nenhuma análise disponível.</p>
-      <ul id="signalsList" class="signal-list"></ul>
-      <h2>Mãos e gestos</h2>
-      <p class="hand-help">Quatro pontas separadas formam um quadrilátero. Aproxime dois cantos para um triângulo; una os indicadores acima e os polegares abaixo para círculo ou oval. Uma pinça também forma um círculo pequeno.</p>
-      <div id="handsDetails">Nenhuma análise disponível.</div>
-      <h2>Formas na imagem</h2>
-      <p>Ative a detecção em objetos para analisar contornos de formas desenhadas ou recortadas. As formas com os dedos funcionam no modo leve padrão.</p>
-      <ul id="shapesList" class="signal-list"></ul>
+
+      <section class="detail-section">
+        <h2>Rosto, olhos e boca</h2>
+        <p id="faceMetrics">Nenhuma análise disponível.</p>
+        <ul id="signalsList" class="signal-list"></ul>
+      </section>
+
+      <section class="detail-section">
+        <h2>Mãos e gestos</h2>
+        <p class="hand-help">Use polegares e indicadores como cantos. A leitura melhora com boa luz, mãos inteiras no quadro e movimentos curtos.</p>
+        <div id="handsDetails">Nenhuma análise disponível.</div>
+      </section>
+
+      <section class="detail-section">
+        <h2>Formas na imagem</h2>
+        <p>Ative a detecção em objetos apenas quando precisar analisar contornos, pois esse modo exige mais processamento.</p>
+        <ul id="shapesList" class="signal-list"></ul>
+      </section>
+
       <details class="guide">
-        <summary>Executar e interpretar</summary>
-        <p>No Windows, extraia o ZIP, abra a pasta no VS Code e abra o <code>index.html</code> da raiz com Live Server. Use Chrome ou Edge, clique em INICIAR CÂMERA e permita o acesso.</p>
-        <p>O modo Navegador inicia as detecções automaticamente. Mantenha a internet disponível para carregar os modelos; as imagens são processadas no computador e não são enviadas a servidores.</p>
-        <p>Use PARAR para encerrar a câmera. O modo opcional Serviços Python + Java exige Python 3.12, JDK 17 e <code>iniciar.bat</code> em execução.</p>
-        <p>Apresente formas planas com bom contraste e contorno completo. Mantenha rosto e mãos iluminados. Apenas um rosto e até duas mãos são analisados.</p>
-        <p><b>Medição:</b> característica geométrica. <b>Inferência:</b> combinação de sinais. <b>Estado aparente:</b> interpretação limitada da expressão.</p>
-        <p>Os scores indicam intensidade e aderência às regras; não são probabilidades calibradas. Sono, vigília, emoções e desconforto não podem ser confirmados somente pela câmera.</p>
-        <p>Base experimental, sem validação clínica. Não identifica dor, lágrimas, consciência ou identidade e não substitui acompanhamento de pacientes.</p>
-        <p>Piscadas breves podem passar entre quadros. A fração de fechamento ocular aparece após 10 segundos observados e reinicia quando o acompanhamento é interrompido.</p>
+        <summary>Como executar</summary>
+        <p>Abra o index.html com Live Server no Chrome ou Edge e permita o acesso à câmera.</p>
+        <p>O modo Navegador funciona sozinho. O modo Serviços exige Python 3.12, JDK 17 e iniciar.bat em execução.</p>
+        <p>As inferências são experimentais e não substituem avaliação humana ou clínica.</p>
       </details>
     </aside>
   </main>
