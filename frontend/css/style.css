@@ -180,6 +180,7 @@ summary {
 .panel-heading button:hover {
   border-color: rgba(110, 231, 242, 0.34);
   background: var(--surface-hover);
+  transform: translateY(-1px);
 }
 
 #stopButton {
