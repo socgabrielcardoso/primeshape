@@ -229,5 +229,8 @@ document.addEventListener("keydown", event => {
   else start();
 });
 document.addEventListener("visibilitychange", () => { if (document.hidden && (active || starting)) stop("Câmera pausada ao sair da aba. Clique em iniciar para retomar."); });
+window.addEventListener("online", () => {
+  if (!active) status("PRONTO PARA INICIAR", "Conexão disponível. Os modelos podem ser carregados normalmente.");
+});
 window.addEventListener("pagehide", () => stop());
 requestAnimationFrame(render);
