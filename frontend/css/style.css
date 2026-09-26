@@ -463,6 +463,7 @@ input {
 }
 
 select {
+  min-height: 40px;
   width: 100%;
   padding: 9px 10px;
   border: 1px solid var(--line);
