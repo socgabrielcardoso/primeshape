@@ -350,7 +350,7 @@ summary {
   font-size: 13px;
   line-height: 1.55;
   box-shadow: 0 22px 70px rgba(0, 0, 0, 0.42);
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(12px);
   scrollbar-width: thin;
 }
 
