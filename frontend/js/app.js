@@ -93,6 +93,7 @@ async function start() {
   starting = true;
   const current = ++generation;
   byId("startButton").disabled = true;
+  byId("startButton").setAttribute("aria-busy", "true");
   byId("startButton").textContent = "ABRINDO CÂMERA";
   try {
     await camera.start();
