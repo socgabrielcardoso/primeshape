@@ -98,6 +98,7 @@ async function start() {
     await camera.start();
     if (current !== generation) { camera.stop(); return; }
     active = true;
+    document.body.dataset.running = "true";
     controller = new AbortController();
     byId("startArea").hidden = true;
     byId("stopButton").hidden = false;
