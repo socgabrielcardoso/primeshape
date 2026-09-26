@@ -225,9 +225,11 @@ summary {
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
 }
 
-#startButton:hover {
-  background: var(--accent-strong);
-  transform: translateY(-1px);
+@media (hover: hover) {
+  #startButton:hover {
+    background: var(--accent-strong);
+    transform: translateY(-1px);
+  }
 }
 
 #startButton:disabled {
