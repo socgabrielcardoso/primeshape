@@ -613,6 +613,12 @@ summary:focus-visible {
   }
 }
 
+@media (max-width: 420px) {
+  .result span {
+    font-size: 9px;
+  }
+}
+
 @media (max-height: 520px) {
   .shape-guide {
     top: 74px;
