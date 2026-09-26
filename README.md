@@ -1,8 +1,8 @@
 # PrimeShape
 
-> **Experimental Computer Vision Lab** — laboratório pessoal para estudo de visão computacional em tempo real, interação humano-computador e processamento local no navegador.
+> **Computer Vision Lab com foco em simplicidade, eficiência e processamento local.**
 
-O **PrimeShape** explora análise de formas, mãos, rosto e sinais visuais aparentes com feedback imediato pela webcam. O foco é aprendizado prático, experimentação técnica e evolução incremental de uma base executável e testável.
+O **PrimeShape** transforma a webcam em uma interface direta para estudar mãos, formas, rosto e sinais visuais aparentes. A prioridade é clara: câmera no centro, resultados objetivos, controles avançados só quando necessários e nenhuma camada visual sem função.
 
 Este projeto **não é uma ferramenta médica, psicológica, biométrica ou de vigilância** e não deve ser usado para tomada automatizada de decisão sobre pessoas.
 
