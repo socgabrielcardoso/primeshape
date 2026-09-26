@@ -267,7 +267,7 @@ summary {
   border-radius: 10px;
   background: var(--surface);
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(8px);
 }
 
 .result span {
