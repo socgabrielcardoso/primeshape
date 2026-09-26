@@ -1,6 +1,6 @@
 # Project Profile
 
-**PrimeShape** is a computer-vision study project that combines frontend interaction, backend processing and model-oriented components for visual experimentation.
+**PrimeShape** is a computer-vision study project built around a simple product rule: advanced vision logic should remain powerful while the user interface stays direct, efficient and understandable.
 
 ## What this project demonstrates
 - Multi-layer project organization
