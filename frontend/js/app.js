@@ -34,6 +34,7 @@ function loadPreferences() {
 }
 
 function savePreferences() {
+  if (!("localStorage" in window)) return;
   const settings = {
     mirror: byId("mirrorToggle").checked,
     points: byId("pointsToggle").checked,
