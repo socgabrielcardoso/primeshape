@@ -9,6 +9,8 @@ const byId = id => document.getElementById(id);
 let api = new BrowserVision(message => status("CARREGANDO DETECTORES", message));
 const camera = new Camera(byId("camera"));
 const overlay = new Overlay(byId("visionCanvas"), byId("camera"));
+overlay.mirror = byId("mirrorToggle").checked;
+overlay.showPoints = byId("pointsToggle").checked;
 const presentation = new Presentation();
 const handShapes = new HandShapeTracker();
 let active = false;
