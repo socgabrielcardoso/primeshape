@@ -51,6 +51,8 @@ if (typeof preferences.mirror === "boolean") byId("mirrorToggle").checked = pref
 if (typeof preferences.points === "boolean") byId("pointsToggle").checked = preferences.points;
 if (["5", "10", "15"].includes(String(preferences.fps))) byId("fpsSelect").value = String(preferences.fps);
 if (typeof preferences.objects === "boolean") byId("objectsToggle").checked = preferences.objects;
+overlay.mirror = byId("mirrorToggle").checked;
+overlay.showPoints = byId("pointsToggle").checked;
 
 for (const name of HAND_SHAPES) {
   const chip=document.createElement("span");
