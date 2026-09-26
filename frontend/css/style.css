@@ -348,6 +348,11 @@ summary {
   color: var(--accent-strong);
 }
 
+body[data-running="true"] .runtime > span::before {
+  background: var(--accent);
+  box-shadow: 0 0 10px rgba(110, 231, 242, 0.45);
+}
+
 .detail-panel {
   position: absolute;
   z-index: 6;
