@@ -63,6 +63,7 @@ test("Windows: vídeo contínuo, formas entre os dedos, modo leve, objetos opcio
   expect(objectRequests).toEqual([]);
   expect(await page.evaluate(()=>window.processing.peak)).toBe(1);
   await page.getByRole("button",{ name:"DETALHES",exact:true }).click();
+  await expect(page.locator("body")).toHaveAttribute("data-details","true");
   await expect(page.locator("#handsDetails")).toContainText("5 dedos estendidos");
   const colors = await page.locator("#visionCanvas").evaluate(canvas => {
     const data=canvas.getContext("2d").getImageData(0,0,canvas.width,canvas.height).data;
