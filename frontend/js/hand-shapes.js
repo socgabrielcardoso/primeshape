@@ -42,7 +42,7 @@ export function quadrilateral(points) {
 function polygon(points,width,height) {
   const ordered=clockwise(points);
   const box=bounds(ordered);
-  if (area(ordered)<Math.max(120,width*height*0.001) || Math.min(box[2],box[3])<10) return null;
+  if (area(ordered)<Math.max(90,width*height*0.00065) || Math.min(box[2],box[3])<8) return null;
   const label=ordered.length===3?"Triângulo":quadrilateral(ordered);
   if (!label) return null;
   return { ...signal("forma_maos",label,0.75,"inferencia",["Forma aproximada entre as pontas dos polegares e indicadores"]),kind:"polygon",pontos:ordered.map(p=>[p[0]/width,p[1]/height]) };
@@ -51,7 +51,7 @@ function polygon(points,width,height) {
 function ellipse(hands,width,height) {
   const arc=[8,7,6,5,2,3,4];
   const [x,y,w,h]=bounds(hands.flatMap(hand=>arc.map(i=>hand.pixels[i])));
-  if (Math.min(w,h)<12 || w*h<200) return null;
+  if (Math.min(w,h)<9 || w*h<120) return null;
   const ratio=w/h,label=ratio>=0.8 && ratio<=1.25?"Círculo":"Oval";
   return { ...signal("forma_maos",label,0.65,"inferencia",["Aproximação do arco entre indicador e polegar"]),kind:"ellipse",centro:[(x+w/2)/width,(y+h/2)/height],raios:[w/2/width,h/2/height] };
 }
@@ -60,7 +60,7 @@ export function classifyHandShapes(hands,width,height) {
   const descriptions=hands.map(h=>describe(h,width,height)).filter(Boolean).sort((a,b)=>a.center[0]-b.center[0]);
   if (descriptions.length===2) {
     const [a,b]=descriptions,bridge=distance(a.center,b.center);
-    if (bridge>Math.max(width*0.075,Math.max(a.palm,b.palm)*0.9) && a.span>a.palm*0.55 && b.span>b.palm*0.55) {
+    if (bridge>Math.max(width*0.055,Math.max(a.palm,b.palm)*0.8) && a.span>a.palm*0.50 && b.span>b.palm*0.50) {
       const top=distance(a.top,b.top)/bridge,bottom=distance(a.bottom,b.bottom)/bridge;
       let shape;
       if (top<0.48 && bottom<0.48) shape=ellipse(descriptions,width,height);
@@ -82,11 +82,12 @@ export class HandShapeTracker {
       const center=average([0,5,9,13,17].map(i=>hand.pontos[i]));
       let match=-1,best=Infinity;
       available.forEach((old,i)=>{
-        const d=distance(center,average([0,5,9,13,17].map(j=>old.pontos[j])))+(old.lado!==hand.lado?0.03:0);
+        const oldIdentity=old.lado_modelo||old.lado,identity=hand.lado_modelo||hand.lado;
+        const d=distance(center,average([0,5,9,13,17].map(j=>old.pontos[j])))+(oldIdentity!==identity?0.03:0);
         if (d<best) { best=d;match=i; }
       });
       const old=match>=0?available.splice(match,1)[0]:null;
-      if (!old || best>0.22 || now-this.lastAt>450) return hand;
+      if (!old || best>0.26 || now-this.lastAt>600) return hand;
       const weight=Math.min(0.9,0.55+best*4);
       return { ...hand,pontos:hand.pontos.map((p,i)=>p.map((v,j)=>old.pontos[i][j]+(v-old.pontos[i][j])*weight)) };
     });
