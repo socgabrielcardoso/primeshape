@@ -32,8 +32,12 @@ def analyze_hand(hand, width, height):
     clipped = bool(np.any(points[:, :2] < 0.015) or np.any(points[:, :2] > 0.985))
     finger_spread = distance(world[8], world[12]) / palm
     pinch = distance(world[4], world[8]) / palm
+    camera_side = "Esquerda" if center[0] <= 0.5 else "Direita"
+    model_side = "Esquerda" if hand["side"] == "Left" else "Direita" if hand["side"] == "Right" else "Indeterminada"
     return {
-        "lado": "Esquerda" if hand["side"] == "Left" else "Direita",
+        "lado": camera_side,
+        "lado_camera": camera_side,
+        "lado_modelo": model_side,
         "score_lateralidade": round(hand["side_score"], 3),
         "pontos": serial_points(points),
         "pontos_mundo": serial_points(world),
