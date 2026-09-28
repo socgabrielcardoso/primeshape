@@ -67,8 +67,9 @@ export class Presentation {
       const p = document.createElement("p");
       const raw = hand.posicao_imagem.horizontal;
       const horizontal = mirror ? ({ esquerda: "direita", direita: "esquerda", centro: "centro" })[raw] : raw;
+      const cameraSide = (hand.lado_camera || hand.lado).toLowerCase();
       const gestures = hand.gestos.map(g => g.rotulo).join(", ") || "Gesto indeterminado";
-      p.textContent = `Mão ${hand.lado.toLowerCase()} · ${hand.dedos_estendidos} dedos estendidos · ${horizontal}, ${hand.posicao_imagem.vertical} na tela · ${gestures}${hand.parcial ? " · mão parcialmente fora do quadro" : ""}.`;
+      p.textContent = `Lado ${cameraSide} na visão da câmera · ${hand.dedos_estendidos} dedos estendidos · ${horizontal}, ${hand.posicao_imagem.vertical} na tela · ${gestures}${hand.parcial ? " · mão parcialmente fora do quadro" : ""}.`;
       hands.append(p);
     }
     for (const gesture of result.formas_maos||[]) {
