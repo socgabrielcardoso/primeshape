@@ -82,7 +82,7 @@ async function step(current) {
     if (camera.video.currentTime===lastVideoTime) return;
     lastVideoTime=camera.video.currentTime;
     engine.objects=byId("objectsToggle").checked;
-    const frame = engine.local ? camera.pixels(engine.objects?640:480) : await camera.capture();
+    const frame = engine.local ? camera.pixels(engine.objects ? 720 : 640) : await camera.capture();
     if (!frame) throw new Error("A câmera ainda não disponibilizou um quadro.");
     const captureTime = performance.now();
     const response = await engine.analyze(frame, AbortSignal.any([signal, AbortSignal.timeout(15000)]));
@@ -158,6 +158,7 @@ function stop(message = "Câmera encerrada. Nenhuma imagem foi gravada.") {
   api.close();
   result = null;
   handShapes.reset();
+  overlay.resetEffects();
   lastVideoTime=-1;
   presentation.clear("PARADO");
   byId("startArea").hidden = false;
