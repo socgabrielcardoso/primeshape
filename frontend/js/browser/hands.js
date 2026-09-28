@@ -2,6 +2,10 @@ import { angle, bounds, clamp, distance, point, signal } from "./geometry.js";
 
 const FINGERS = [["polegar",1,2,3,4],["indicador",5,6,7,8],["médio",9,10,11,12],["anelar",13,14,15,16],["mínimo",17,18,19,20]];
 
+export function cameraSideFromCenter(centerX) {
+  return centerX <= 0.5 ? "Esquerda" : "Direita";
+}
+
 export function analyzeHands(result, width, height) {
   return result.landmarks.map((landmarks, i) => {
     const points = landmarks.map(point);
@@ -21,10 +25,15 @@ export function analyzeHands(result, width, height) {
       return { nome, estendido, angulo_graus: proximalAngle, extensao_3d: clamp((Math.min(proximalAngle, distalAngle) - 100) / 65) };
     });
     const center = [0,1].map(axis => [0,5,9,13,17].reduce((sum, index) => sum + points[index][axis], 0) / 5);
-    const side = (result.handedness || result.handednesses)[i][0];
+    const side = (result.handedness || result.handednesses || [])[i]?.[0] || { categoryName: "Unknown", score: 0 };
+    const cameraSide = cameraSideFromCenter(center[0]);
+    const modelSide = side.categoryName === "Left" ? "Esquerda" : side.categoryName === "Right" ? "Direita" : "Indeterminada";
     const hand = {
-      lado: side.categoryName === "Left" ? "Esquerda" : "Direita",
-      score_lateralidade: side.score, pontos: points, pontos_mundo: world, caixa: bounds(points), centro: center,
+      lado: cameraSide,
+      lado_camera: cameraSide,
+      lado_modelo: modelSide,
+      score_lateralidade: side.score || 0,
+      pontos: points, pontos_mundo: world, caixa: bounds(points), centro: center,
       posicao_imagem: { horizontal: center[0] < 0.33 ? "esquerda" : center[0] > 0.67 ? "direita" : "centro", vertical: center[1] < 0.33 ? "acima" : center[1] > 0.67 ? "abaixo" : "ao centro" },
       dedos: fingers, dedos_estendidos: fingers.filter(f => f.estendido).length,
       parcial: points.some(p => p[0] < 0.015 || p[1] < 0.015 || p[0] > 0.985 || p[1] > 0.985),
@@ -32,7 +41,8 @@ export function analyzeHands(result, width, height) {
     };
     const [thumb, index, middle, ring, little] = fingers.map(f => f.estendido);
     const pinch = distance(world[4], world[8]) / palm;
-    const add = (code, label, condition) => { if (condition && !hand.parcial) hand.gestos.push(signal(code, label, Math.min(0.85, side.score), "inferencia")); };
+    const gestureScore = Math.min(0.85, Math.max(0.55, side.score || 0.55));
+    const add = (code, label, condition) => { if (condition && !hand.parcial) hand.gestos.push(signal(code, label, gestureScore, "inferencia")); };
     add("mao_aberta", "Mão aberta", hand.dedos_estendidos === 5);
     add("punho_fechado", "Punho fechado", hand.dedos_estendidos === 0);
     add("apontando", "Indicador apontando", index && !middle && !ring && !little);
