@@ -21,7 +21,10 @@ A aplicação combina uma interface web com rotinas de análise visual para inte
 
 ## Principais recursos
 
-- Detecção de formas construídas com as mãos.
+- Detecção de formas construídas com as mãos, com tolerância ampliada para mãos menores e mais distantes.
+- Compensação adaptativa de baixa luz e sombras para detecção de mãos, baseada em luminância e contraste em vez de segmentação por tom de pele.
+- Identificação esquerda/direita pela posição observada na visão da câmera, preservando separadamente a lateralidade estimada pelo modelo.
+- Efeito visual de bolha flutuante em eventos alternados de nova forma, sem repetir a animação a cada frame.
 - Contagem e acompanhamento de até duas mãos.
 - Marcação visual concentrada nas pontas dos dedos.
 - Análise de rosto, olhos e boca.
@@ -110,6 +113,7 @@ Qualquer evolução futura que adicione APIs, armazenamento, telemetria ou servi
 
 ## Limitações
 
+- A compensação adaptativa melhora cenários escuros e com sombras, mas não elimina as limitações físicas de sensores ruins, oclusão ou ausência de detalhe suficiente.
 - Resultados dependem de iluminação, enquadramento, qualidade da câmera e visibilidade das mãos ou do rosto.
 - Inferências de expressão ou estado aparente são experimentais e podem apresentar falsos positivos.
 - O comportamento pode variar entre navegadores e dispositivos.
