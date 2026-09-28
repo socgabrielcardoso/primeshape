@@ -10,12 +10,20 @@ export class Camera {
     if (!navigator.mediaDevices?.getUserMedia || !window.isSecureContext) {
       throw new Error("Abra index.html pelo Live Server em localhost ou 127.0.0.1.");
     }
-    this.stream = await navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 1280 }, height: { ideal: 720 }, frameRate:{ ideal:30,max:30 }, facingMode: "user" }, audio: false });
+    this.stream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        width: { ideal: 1280 },
+        height: { ideal: 720 },
+        frameRate:{ ideal:30,max:30 },
+        facingMode: "user"
+      },
+      audio: false
+    });
     this.video.srcObject = this.stream;
     await this.video.play();
   }
 
-  pixels(limit=480) {
+  pixels(limit=640) {
     const width = Math.min(limit, this.video.videoWidth);
     const height = Math.round(this.video.videoHeight * width / this.video.videoWidth);
     if (!width || !height || this.video.readyState < 2) return null;
@@ -28,8 +36,8 @@ export class Camera {
   }
 
   capture() {
-    if (!this.pixels(640)) return Promise.resolve(null);
-    return new Promise(resolve => this.captureCanvas.toBlob(resolve, "image/jpeg", 0.85));
+    if (!this.pixels(720)) return Promise.resolve(null);
+    return new Promise(resolve => this.captureCanvas.toBlob(resolve, "image/jpeg", 0.88));
   }
 
   stop() {
