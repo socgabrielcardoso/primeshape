@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { classifyHandShapes, quadrilateral, HandShapeTracker } from "../../frontend/js/hand-shapes.js";
 import { apparentAffect, AffectTracker } from "../../frontend/js/browser/affect.js";
+import { cameraSideFromCenter } from "../../frontend/js/browser/hands.js";
 
 const hand=(index,thumb,center,width=640,height=480)=>{
   const points=Array.from({length:21},()=>[center[0]/width,center[1]/height,0]);
@@ -50,4 +51,16 @@ test("Tristeza e raiva exigem múltiplos sinais persistentes e rejeitam neutrali
   assert.deepEqual(tracker.update([],0.75),[]);
   assert.deepEqual(tracker.update(signals,1),[]);
   assert.deepEqual(tracker.update(signals,3),[]);
+});
+
+
+test("Lateralidade segue a visão da câmera e formas pequenas continuam classificáveis",()=>{
+  assert.equal(cameraSideFromCenter(0.20),"Esquerda");
+  assert.equal(cameraSideFromCenter(0.80),"Direita");
+  assert.equal(cameraSideFromCenter(0.50),"Esquerda");
+  const a=hand([310,250],[310,310],[280,280],1280,720);
+  const b=hand([430,250],[430,310],[460,280],1280,720);
+  const shapes=classifyHandShapes([a,b],1280,720);
+  assert.equal(shapes.length,1);
+  assert.ok(["Retângulo","Quadrado","Quadrilátero"].includes(shapes[0].rotulo));
 });
