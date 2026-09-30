@@ -112,8 +112,8 @@ async function detect(task,canvas,timestamp) {
 async function initialize() {
   const base="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.18";
   postMessage({ type:"progress",message:"Carregando mãos e expressões…" });
-  const [vision,handModule,faceModule,timelineModule]=await Promise.all([
-    import(base+"/vision_bundle.mjs"),import("./hands.js"),import("./face.js"),import("./timeline.js")
+  const [vision,handModule,faceModule,timelineModule,trackingModule]=await Promise.all([
+    import(base+"/vision_bundle.mjs"),import("./hands.js"),import("./face.js"),import("./timeline.js"),import("./hand-tracking.js")
   ]);
   engine={
     files:await vision.FilesetResolver.forVisionTasks(base+"/wasm"),
@@ -121,6 +121,7 @@ async function initialize() {
     handModule,
     faceModule,
     timeline:new timelineModule.Timeline(),
+    handTracker:new trackingModule.HandTracker(),
     canvas:new OffscreenCanvas(640,480),
     handCanvas:new OffscreenCanvas(640,480),
     lastTimestamp:-1,
@@ -161,7 +162,9 @@ self.onmessage=async ({data})=>{
     const timestamp=Math.max(data.timestamp,engine.lastTimestamp+1);
     engine.lastTimestamp=timestamp;
     const handInput=compensateForHands(image);
-    const hands=engine.handModule.analyzeHands(await detect(engine.hands,handInput,timestamp),image.width,image.height);
+    const rawHands=await detect(engine.hands,handInput,timestamp);
+    const stableHands=engine.handTracker.update(rawHands,timestamp);
+    const hands=engine.handModule.analyzeHands(stableHands,image.width,image.height);
     engine.handMs=0.8*engine.handMs+0.2*(performance.now()-started);
     if (engine.face && timestamp-engine.lastFaceAt>=Math.max(200,Math.min(450,engine.handMs*3))) {
       try {
@@ -200,7 +203,7 @@ self.onmessage=async ({data})=>{
     if (engine.handLight?.compensated && engine.handLight.p50<58) warnings.push("Baixa luz: compensação adaptativa ativa para as mãos.");
     else if (engine.handLight?.compensated && engine.handLight.p10<42 && engine.handLight.p90>170) warnings.push("Sombras fortes: contraste adaptativo ativo para as mãos.");
     postMessage({ id:data.id,data:{
-      rosto:{ ...face,numero_pontos:face.pontos.length,pontos:[] },maos:hands,quantidade_maos:hands.length,formas:shapes,gestos_duas_maos:[],
+      rosto:{ ...face,numero_pontos:face.pontos.length,pontos:[] },maos:hands,quantidade_maos:hands.length,quantidade_maos_detectadas:stableHands.detectedCount,formas:shapes,gestos_duas_maos:[],
       processamento_ms:performance.now()-started,intervalo_sugerido_ms:Math.max(65,Math.min(190,engine.handMs*1.25)),
       qualidade:{ score:face.presente?face.metricas.qualidade:1,avisos:warnings },
       iluminacao_maos:engine.handLight
