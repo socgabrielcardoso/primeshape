@@ -28,11 +28,19 @@ export function analyzeHands(result, width, height) {
     const side = (result.handedness || result.handednesses || [])[i]?.[0] || { categoryName: "Unknown", score: 0 };
     const cameraSide = cameraSideFromCenter(center[0]);
     const modelSide = side.categoryName === "Left" ? "Esquerda" : side.categoryName === "Right" ? "Direita" : "Indeterminada";
+    const tracking = result.trackingMetadata?.[i] || {};
     const hand = {
       lado: cameraSide,
       lado_camera: cameraSide,
       lado_modelo: modelSide,
       score_lateralidade: side.score || 0,
+      rastreio: {
+        id: tracking.id ?? null,
+        recuperado: Boolean(tracking.recuperado),
+        frames_ausentes: tracking.frames_ausentes || 0,
+        estabilidade: tracking.estabilidade ?? 1,
+        atraso_ms: tracking.atraso_ms || 0
+      },
       pontos: points, pontos_mundo: world, caixa: bounds(points), centro: center,
       posicao_imagem: { horizontal: center[0] < 0.33 ? "esquerda" : center[0] > 0.67 ? "direita" : "centro", vertical: center[1] < 0.33 ? "acima" : center[1] > 0.67 ? "abaixo" : "ao centro" },
       dedos: fingers, dedos_estendidos: fingers.filter(f => f.estendido).length,
@@ -42,7 +50,9 @@ export function analyzeHands(result, width, height) {
     const [thumb, index, middle, ring, little] = fingers.map(f => f.estendido);
     const pinch = distance(world[4], world[8]) / palm;
     const gestureScore = Math.min(0.85, Math.max(0.55, side.score || 0.55));
-    const add = (code, label, condition) => { if (condition && !hand.parcial) hand.gestos.push(signal(code, label, gestureScore, "inferencia")); };
+    const add = (code, label, condition) => {
+      if (condition && !hand.parcial && !hand.rastreio.recuperado) hand.gestos.push(signal(code, label, gestureScore, "inferencia"));
+    };
     add("mao_aberta", "Mão aberta", hand.dedos_estendidos === 5);
     add("punho_fechado", "Punho fechado", hand.dedos_estendidos === 0);
     add("apontando", "Indicador apontando", index && !middle && !ring && !little);
