@@ -34,11 +34,20 @@ def analyze_hand(hand, width, height):
     pinch = distance(world[4], world[8]) / palm
     camera_side = "Esquerda" if center[0] <= 0.5 else "Direita"
     model_side = "Esquerda" if hand["side"] == "Left" else "Direita" if hand["side"] == "Right" else "Indeterminada"
+    tracking = hand.get("tracking") or {}
+    rastreio = {
+        "id": tracking.get("id"),
+        "recuperado": bool(tracking.get("recuperado", False)),
+        "frames_ausentes": int(tracking.get("frames_ausentes", 0)),
+        "estabilidade": float(tracking.get("estabilidade", 1.0)),
+        "atraso_ms": float(tracking.get("atraso_ms", 0.0)),
+    }
     return {
         "lado": camera_side,
         "lado_camera": camera_side,
         "lado_modelo": model_side,
         "score_lateralidade": round(hand["side_score"], 3),
+        "rastreio": rastreio,
         "pontos": serial_points(points),
         "pontos_mundo": serial_points(world),
         "caixa": bounds(points),
@@ -54,7 +63,7 @@ def analyze_hand(hand, width, height):
 
 
 def classify_gestures(hand):
-    if hand["parcial"]:
+    if hand["parcial"] or hand.get("rastreio", {}).get("recuperado"):
         return []
     thumb, index, middle, ring, little = [f["estendido"] for f in hand["dedos"]]
     score = min(0.85, hand["score_lateralidade"])

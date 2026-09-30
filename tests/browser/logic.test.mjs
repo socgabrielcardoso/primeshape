@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { classifyHandShapes, quadrilateral, HandShapeTracker } from "../../frontend/js/hand-shapes.js";
 import { apparentAffect, AffectTracker } from "../../frontend/js/browser/affect.js";
 import { cameraSideFromCenter } from "../../frontend/js/browser/hands.js";
+import { HandTracker } from "../../frontend/js/browser/hand-tracking.js";
 
 const hand=(index,thumb,center,width=640,height=480)=>{
   const points=Array.from({length:21},()=>[center[0]/width,center[1]/height,0]);
@@ -63,4 +64,50 @@ test("Lateralidade segue a visão da câmera e formas pequenas continuam classif
   const shapes=classifyHandShapes([a,b],1280,720);
   assert.equal(shapes.length,1);
   assert.ok(["Retângulo","Quadrado","Quadrilátero"].includes(shapes[0].rotulo));
+});
+
+
+const rawHandResult=(centerX,side="Left",score=.95)=>{
+  const landmarks=Array.from({length:21},(_,index)=>({
+    x:centerX+((index%5)-2)*.01,
+    y:.5+((Math.floor(index/5))-2)*.01,
+    z:0
+  }));
+  for(const [index,dx,dy] of [[0,-.02,.03],[5,-.04,0],[9,0,-.01],[13,.03,0],[17,.05,.01]]) {
+    landmarks[index]={x:centerX+dx,y:.5+dy,z:0};
+  }
+  const worldLandmarks=landmarks.map(p=>({x:(p.x-centerX)*.5,y:(p.y-.5)*.5,z:0}));
+  return { landmarks:[landmarks],worldLandmarks:[worldLandmarks],handednesses:[[{categoryName:side,score}]] };
+};
+
+test("Rastreador de mãos segura dropout, mantém identidade e rejeita teleporte",()=>{
+  const tracker=new HandTracker();
+  const left=rawHandResult(.2,"Left"),right=rawHandResult(.8,"Right");
+  let result=tracker.update({
+    landmarks:[left.landmarks[0],right.landmarks[0]],
+    worldLandmarks:[left.worldLandmarks[0],right.worldLandmarks[0]],
+    handednesses:[left.handednesses[0],right.handednesses[0]]
+  },0);
+  assert.deepEqual(result.trackingMetadata.map(item=>item.id),[1,2]);
+
+  result=tracker.update({
+    landmarks:[right.landmarks[0],left.landmarks[0]],
+    worldLandmarks:[right.worldLandmarks[0],left.worldLandmarks[0]],
+    handednesses:[right.handednesses[0],left.handednesses[0]]
+  },100);
+  assert.deepEqual(result.trackingMetadata.map(item=>item.id),[1,2]);
+
+  result=tracker.update({landmarks:[],worldLandmarks:[],handednesses:[]},200);
+  assert.equal(result.landmarks.length,2);
+  assert.ok(result.trackingMetadata.every(item=>item.recuperado));
+
+  result=tracker.update({landmarks:[],worldLandmarks:[],handednesses:[]},500);
+  assert.equal(result.landmarks.length,0);
+
+  const single=new HandTracker();
+  single.update(rawHandResult(.2),0);
+  const before=single.update(rawHandResult(.21),100).landmarks[0][9].x;
+  const afterResult=single.update(rawHandResult(.9),200);
+  assert.equal(afterResult.landmarks.length,1);
+  assert.ok(afterResult.landmarks[0][9].x-before<.30);
 });
