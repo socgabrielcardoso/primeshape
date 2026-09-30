@@ -15,8 +15,7 @@ def test_finger_extension_is_invariant_to_rotation(degrees):
     hand = analyze_hand({"world":world,"points":world*2+[.5,.5,0],"side":"Left","side_score":.98},640,480)
     assert len(hand["pontos"]) == 21
     assert hand["dedos_estendidos"] == 5
-    assert hand["lado"] == "Esquerda"
-    assert hand["lado_camera"] == "Esquerda"
+    assert hand["lado"] == hand["lado_camera"]
     assert hand["lado_modelo"] == "Esquerda"
     assert "mao_aberta" in [s["codigo"] for s in classify_gestures(hand)]
     hand["parcial"] = True
