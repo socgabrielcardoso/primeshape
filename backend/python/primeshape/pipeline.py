@@ -7,6 +7,7 @@ from .face_metrics import measure_face
 from .frames import decode_frame, frame_quality
 from .geometry import serial_points
 from .hands import analyze_hand, bimanual_gestures, classify_gestures
+from .hand_tracking import HandTracker
 from .landmarks import LandmarkEngine
 from .shapes import ShapeDetector
 from .temporal import FaceTimeline
@@ -15,6 +16,7 @@ from .temporal import FaceTimeline
 @dataclass
 class Session:
     timeline: FaceTimeline = field(default_factory=FaceTimeline)
+    hand_tracker: HandTracker = field(default_factory=HandTracker)
     lock: threading.Lock = field(default_factory=threading.Lock)
     last_used: float = field(default_factory=time.monotonic)
     last_frame: int = -1
@@ -63,10 +65,11 @@ class VisionPipeline:
             height, width = frame.shape[:2]
             quality = frame_quality(frame)
             raw_face, raw_hands = self.landmarks.detect(frame)
-            hands = [analyze_hand(hand, width, height) for hand in raw_hands]
+            tracked_hands = session.hand_tracker.update(raw_hands, now)
+            hands = [analyze_hand(hand, width, height) for hand in tracked_hands]
             for hand in hands:
                 hand["gestos"] = classify_gestures(hand)
-            exclusions = [hand["points"] for hand in raw_hands]
+            exclusions = [hand["points"] for hand in tracked_hands]
             face = {"presente": False, "pontos": [], "sinais": [], "metricas": None, "temporal": session.timeline.update(None, now) if raw_face is None else None}
             if raw_face is not None:
                 metrics = measure_face(raw_face, width, height, quality)
@@ -93,6 +96,7 @@ class VisionPipeline:
                 "rosto": face,
                 "maos": hands,
                 "quantidade_maos": len(hands),
+                "quantidade_maos_detectadas": len(raw_hands),
                 "gestos_duas_maos": bimanual_gestures(hands, width, height),
                 "formas": shapes,
                 "processamento_ms": round((time.perf_counter() - started) * 1000, 1),
