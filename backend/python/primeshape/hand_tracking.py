@@ -23,7 +23,13 @@ def _valid_detection(detection):
         world = np.asarray(detection["world"], dtype=np.float64)
     except (KeyError, TypeError, ValueError):
         return False
-    return points.shape == (21, 3) and world.shape == (21, 3) and np.isfinite(points).all() and np.isfinite(world).all()
+    try:
+        score = float(detection.get("side_score", 0.0))
+    except (TypeError, ValueError, OverflowError, AttributeError):
+        return False
+    return (points.shape == (21, 3) and world.shape == (21, 3)
+            and np.isfinite(points).all() and np.isfinite(world).all()
+            and math.isfinite(score))
 
 
 @dataclass
