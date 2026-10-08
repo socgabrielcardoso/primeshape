@@ -1,6 +1,6 @@
 # PrimeShape
 
-> **Computer Vision Lab com foco em simplicidade, eficiência e processamento local.**
+> **Computer Vision Lab com foco em rastreamento estável, processamento local e validação reproduzível.**
 
 O **PrimeShape** transforma a webcam em uma interface direta para estudar mãos, formas, rosto e sinais visuais aparentes. A prioridade é clara: câmera no centro, resultados objetivos, controles avançados só quando necessários e nenhuma camada visual sem função.
 
@@ -25,7 +25,9 @@ A aplicação combina uma interface web com rotinas de análise visual para inte
 - Compensação adaptativa de baixa luz e sombras para detecção de mãos, baseada em luminância e contraste em vez de segmentação por tom de pele.
 - Identificação esquerda/direita pela posição observada na visão da câmera, preservando separadamente a lateralidade estimada pelo modelo.
 - Efeito visual de bolha flutuante em eventos alternados de nova forma, sem repetir a animação a cada frame.
-- Contagem e acompanhamento de até duas mãos.
+- Contagem e acompanhamento de até duas mãos, com IDs temporários por rastro, suavização de landmarks, limitação de saltos e expiração após ausência.
+- Exclusão de mãos apenas recuperadas da geração de novas formas, reduzindo geometrias fantasmas.
+- Corpus compartilhado de 100 cenários sintéticos exercitado nos rastreadores Python e JavaScript.
 - Marcação visual concentrada nas pontas dos dedos.
 - Análise de rosto, olhos e boca.
 - Classificação experimental de estados e expressões aparentes a partir de sinais visuais.
@@ -95,19 +97,28 @@ primeshape/
 
 ## Validação automática
 
-O repositório possui workflow do GitHub Actions executado em alterações no branch `main`, incluindo:
+O repositório possui workflow do GitHub Actions executado em push para `main` e em pull requests, incluindo:
 
 - verificação de sintaxe dos arquivos JavaScript;
-- testes de lógica relacionados à geometria e expressões aparentes;
+- testes de lógica relacionados à geometria, expressões aparentes e rastreamento de 100 cenários;
 - preparação do ambiente de testes de navegador;
 - execução de testes com Chromium via Playwright;
 - validação do modo leve por servidor estático.
 
 Em caso de falha nos testes de navegador, o workflow pode publicar artefatos de diagnóstico.
 
+## Documentação técnica
+
+| Guia | Conteúdo |
+| --- | --- |
+| [Arquitetura](docs/ARCHITECTURE.md) | Fluxos de execução, módulos e rastreamento temporal |
+| [Testes e CI](docs/TESTING.md) | Comandos reproduzíveis, regressões e validação de câmera |
+| [Desempenho](docs/PERFORMANCE.md) | FPS, limitações de hardware e diagnóstico |
+| [Privacidade e uso responsável](docs/PRIVACY.md) | Tratamento local de imagens e limites não clínicos |
+
 ## Privacidade
 
-No fluxo padrão, a imagem da webcam é processada localmente no navegador. O projeto não foi desenhado para gravar continuamente imagens da câmera em servidor próprio.
+No fluxo padrão, a imagem da webcam é processada localmente no navegador. O projeto não foi desenhado para gravar continuamente imagens da câmera em servidor próprio. Modelos e bibliotecas são baixados de fornecedores externos no primeiro carregamento; no modo com serviços, quadros JPEG trafegam por portas locais de loopback.
 
 Qualquer evolução futura que adicione APIs, armazenamento, telemetria ou serviços externos deve ser revisada separadamente para preservar esse comportamento.
 
