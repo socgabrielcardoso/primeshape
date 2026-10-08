@@ -62,7 +62,7 @@ class HandTracker:
         center_distance = float(np.linalg.norm(_center(points) - _center(track.points)))
         scale_ratio = _scale(points) / max(_scale(track.points), 1e-6)
         scale_penalty = abs(math.log(max(scale_ratio, 1e-6))) * 0.28
-        detection_score = float(detection.get("side_score", 0.0))
+        detection_score = float(np.clip(detection.get("side_score", 0.0), 0.0, 1.0))
         side_penalty = 0.0
         if (
             track.side in {"Left", "Right"}
@@ -99,7 +99,7 @@ class HandTracker:
             points=np.asarray(detection["points"], dtype=np.float64).copy(),
             world=np.asarray(detection["world"], dtype=np.float64).copy(),
             side=detection.get("side", "Unknown"),
-            side_score=float(detection.get("side_score", 0.0)),
+            side_score=float(np.clip(detection.get("side_score", 0.0), 0.0, 1.0)),
             last_seen=now,
         )
         self.next_id += 1
