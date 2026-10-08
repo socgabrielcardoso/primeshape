@@ -50,3 +50,11 @@ def test_recovered_hand_does_not_emit_stale_gesture():
     assert analyzed["rastreio"]["id"] == 7
     assert analyzed["rastreio"]["recuperado"] is True
     assert classify_gestures(analyzed) == []
+
+
+def test_recovered_hand_cannot_trigger_bimanual_shape():
+    from primeshape.hands import bimanual_gestures
+    # The early guard must prevent a held/stale hand from emitting phantom geometry.
+    stale = {"parcial": False, "rastreio": {"recuperado": True}}
+    fresh = {"parcial": False, "rastreio": {"recuperado": False}}
+    assert bimanual_gestures([stale, fresh], 640, 480) == []
