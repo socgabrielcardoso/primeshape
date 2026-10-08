@@ -121,6 +121,14 @@ class HandTracker:
             candidate[:, :2] += corrected_center - new_center
             jump = max_jump
 
+        # A single corrupted fingertip must not drag the displayed hand away.
+        # Scale the bound with palm size and elapsed time to keep normal gestures responsive.
+        max_landmark_step = max(0.05, _scale(track.points) * 1.8) + dt * 0.45
+        displacements = candidate[:, :2] - track.points[:, :2]
+        lengths = np.linalg.norm(displacements, axis=1)
+        ratios = np.minimum(1.0, max_landmark_step / np.maximum(lengths, 1e-9))
+        candidate[:, :2] = track.points[:, :2] + displacements * ratios[:, None]
+
         motion = float(np.clip(jump / 0.20, 0.0, 1.0))
         alpha = SETTINGS.hand_smoothing_min + (SETTINGS.hand_smoothing_max - SETTINGS.hand_smoothing_min) * motion
         if track.missed:
