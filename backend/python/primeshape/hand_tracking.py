@@ -148,6 +148,11 @@ class HandTracker:
         return track
 
     def update(self, detections, now):
+        if not math.isfinite(now):
+            raise ValueError("O instante do quadro deve ser finito.")
+        if any(now < track.last_seen for track in self.tracks):
+            self.reset()
+        self.tracks = [track for track in self.tracks if now - track.last_seen <= SETTINGS.hand_hold_s]
         detections = [d for d in detections if _valid_detection(d)]
         assigned_tracks = set()
         assigned_detections = set()
