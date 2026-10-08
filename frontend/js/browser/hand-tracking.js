@@ -107,6 +107,18 @@ export class HandTracker {
       jump = maxJump;
     }
 
+    // Protect shape geometry from isolated landmark spikes without freezing gestures.
+    const maxLandmarkStep = Math.max(0.05, scale(track.points) * 1.8) + dt * 0.45;
+    for (let index = 0; index < candidate.length; index++) {
+      const prior = track.points[index];
+      const distance = distance2(candidate[index], prior);
+      if (distance > maxLandmarkStep) {
+        const ratio = maxLandmarkStep / distance;
+        candidate[index][0] = prior[0] + (candidate[index][0] - prior[0]) * ratio;
+        candidate[index][1] = prior[1] + (candidate[index][1] - prior[1]) * ratio;
+      }
+    }
+
     const motion = clamp(jump / 0.20);
     let alpha = this.smoothingMin + (this.smoothingMax - this.smoothingMin) * motion;
     if (track.missed) alpha = Math.min(alpha, 0.58);
