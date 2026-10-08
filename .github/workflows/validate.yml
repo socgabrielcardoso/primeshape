@@ -36,7 +36,7 @@ jobs:
         working-directory: tests/browser
         run: npm ci
       - name: Validar geometria e expressões aparentes
-        run: node --test tests/browser/logic.test.mjs
+        run: node --test tests/browser/logic.test.mjs tests/browser/tracker-regression.test.mjs
       - name: Instalar navegador de validação
         working-directory: tests/browser
         run: npx playwright install chromium
@@ -67,4 +67,4 @@ jobs:
       - name: Validar estabilidade e gestos de mãos
         env:
           PYTHONPATH: backend/python
-        run: python -m pytest -q tests/test_hand_tracking.py tests/test_hands.py
+        run: python -m pytest -q tests/test_hand_tracking.py tests/test_hands.py tests/test_tracker_scenarios.py
