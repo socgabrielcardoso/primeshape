@@ -1,33 +1,43 @@
-# Contributing
+# Contributing to PrimeShape
 
-Thank you for improving **primeshape**, a computer-vision study project.
+PrimeShape is an educational computer-vision laboratory. Small, reviewable changes are preferred to large rewrites without a test plan.
 
-## Working principles
+## Development checklist
 
-- Keep changes small enough to review.
-- Preserve the project's existing architecture and naming conventions.
-- Prefer clear behavior over unnecessary abstraction.
-- Do not add real credentials, production data or private identifiers.
-- For security-related examples, use synthetic or explicitly authorized test data.
-- Update documentation when behavior or operating steps change.
+1. Reproduce the problem and record OS, browser, model mode, lighting, camera settings and expected behavior.
+2. Keep browser and Python tracking contracts coherent when touching shared features; add a case to `tests/tracking_scenarios.json` for behavioral changes.
+3. Avoid assumptions based on one webcam, one person, one skin tone or one lighting condition.
+4. Validate unit tests and, for UI/worker changes, Playwright browser tests. See [Testing](docs/TESTING.md).
+5. Describe the trade-offs: accuracy vs smoothing, latency vs resource usage, false positives vs missed detections.
+6. Update documentation and note known limitations rather than claiming production-grade detection.
 
-## Before opening a pull request
+## Local checks
 
-1. Run the existing tests or validation commands available in the repository.
-2. Check that no secrets, build artifacts or temporary files were added.
-3. Review the diff for unrelated formatting changes.
-4. Explain the problem, the change and how it was validated.
+```bash
+node --test tests/browser/logic.test.mjs tests/browser/tracker-regression.test.mjs
+```
 
-## Commit style
+```bash
+# Linux/macOS, after installing required packages
+PYTHONPATH=backend/python python -m pytest -q tests/test_hand_tracking.py tests/test_hands.py tests/test_tracker_scenarios.py
+```
 
-Use short, descriptive commit messages such as:
+Windows PowerShell equivalent: `$env:PYTHONPATH = "backend/python"` then run the pytest command.
 
-- `feat: add incident severity filter`
-- `fix: handle invalid authentication input`
-- `docs: clarify local execution`
-- `test: cover malformed event data`
-- `ci: harden validation workflow`
+## Pull requests
 
-## Security changes
+A useful PR includes the observed failure, behavioral fix, regression test, impact on the two runtimes (when applicable), and the outcome of CI/manual checks. Keep changes focused; do not generate empty or arbitrary commits merely to increase activity.
 
-Potential vulnerabilities should follow the process in `SECURITY.md` when that file is present. Avoid publishing sensitive exploit details in public issues.
+Use concise conventional messages: `fix(tracking): ...`, `test(browser): ...`, `docs: ...`, `ci: ...`.
+
+## Security, ethics and privacy
+
+- Do not commit credentials, private recordings, personal identifiers, or copied images without rights.
+- The default browser mode must not silently transmit camera frames to third-party services.
+- Do not weaken loopback binding, CORS, host checks or integrity validation to make setup faster.
+- This project is not suitable for medical, psychological or surveillance decisions.
+- Report security issues privately as described in [Security Policy](SECURITY.md).
+
+## Code review criteria
+
+Prefer implementations with explicit invalid-input handling, bounded memory/time complexity, recoverable failures, deterministic tests and honest documentation. An elegant animation is not evidence of more accurate computer vision.
