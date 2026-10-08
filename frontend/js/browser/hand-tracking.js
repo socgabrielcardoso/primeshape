@@ -1,7 +1,7 @@
 const PALM = [0, 5, 9, 13, 17];
 
 const clamp = (value, low = 0, high = 1) => Math.max(low, Math.min(high, value));
-const point = value => [Number(value?.x) || 0, Number(value?.y) || 0, Number(value?.z) || 0];
+const point = value => [Number(value?.x), Number(value?.y), Number(value?.z)];
 const toObject = value => ({ x: value[0], y: value[1], z: value[2] });
 const distance2 = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
 
