@@ -52,7 +52,7 @@ export class HandTracker {
         points,
         world: worldPoints,
         side: side.categoryName || "Unknown",
-        sideScore: Number(side.score) || 0
+        sideScore: clamp(Number(side.score) || 0)
       });
     }
     return detections;
