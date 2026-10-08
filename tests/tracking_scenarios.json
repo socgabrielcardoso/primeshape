@@ -1,0 +1,668 @@
+[
+  {
+    "name": "continuity 01: right drift",
+    "mode": "continuity",
+    "x": 0.18,
+    "dx": 0.005,
+    "dt_ms": 40
+  },
+  {
+    "name": "continuity 02: left drift",
+    "mode": "continuity",
+    "x": 0.202,
+    "dx": -0.006,
+    "dt_ms": 47
+  },
+  {
+    "name": "continuity 03: right drift",
+    "mode": "continuity",
+    "x": 0.224,
+    "dx": 0.007,
+    "dt_ms": 54
+  },
+  {
+    "name": "continuity 04: left drift",
+    "mode": "continuity",
+    "x": 0.246,
+    "dx": -0.008,
+    "dt_ms": 61
+  },
+  {
+    "name": "continuity 05: right drift",
+    "mode": "continuity",
+    "x": 0.268,
+    "dx": 0.009,
+    "dt_ms": 68
+  },
+  {
+    "name": "continuity 06: left drift",
+    "mode": "continuity",
+    "x": 0.29,
+    "dx": -0.005,
+    "dt_ms": 75
+  },
+  {
+    "name": "continuity 07: right drift",
+    "mode": "continuity",
+    "x": 0.312,
+    "dx": 0.006,
+    "dt_ms": 82
+  },
+  {
+    "name": "continuity 08: left drift",
+    "mode": "continuity",
+    "x": 0.334,
+    "dx": -0.007,
+    "dt_ms": 89
+  },
+  {
+    "name": "continuity 09: right drift",
+    "mode": "continuity",
+    "x": 0.356,
+    "dx": 0.008,
+    "dt_ms": 96
+  },
+  {
+    "name": "continuity 10: left drift",
+    "mode": "continuity",
+    "x": 0.378,
+    "dx": -0.009,
+    "dt_ms": 103
+  },
+  {
+    "name": "continuity 11: right drift",
+    "mode": "continuity",
+    "x": 0.4,
+    "dx": 0.005,
+    "dt_ms": 110
+  },
+  {
+    "name": "continuity 12: left drift",
+    "mode": "continuity",
+    "x": 0.422,
+    "dx": -0.006,
+    "dt_ms": 117
+  },
+  {
+    "name": "continuity 13: right drift",
+    "mode": "continuity",
+    "x": 0.444,
+    "dx": 0.007,
+    "dt_ms": 124
+  },
+  {
+    "name": "continuity 14: left drift",
+    "mode": "continuity",
+    "x": 0.466,
+    "dx": -0.008,
+    "dt_ms": 131
+  },
+  {
+    "name": "continuity 15: right drift",
+    "mode": "continuity",
+    "x": 0.488,
+    "dx": 0.009,
+    "dt_ms": 138
+  },
+  {
+    "name": "continuity 16: left drift",
+    "mode": "continuity",
+    "x": 0.51,
+    "dx": -0.005,
+    "dt_ms": 145
+  },
+  {
+    "name": "continuity 17: right drift",
+    "mode": "continuity",
+    "x": 0.532,
+    "dx": 0.006,
+    "dt_ms": 152
+  },
+  {
+    "name": "continuity 18: left drift",
+    "mode": "continuity",
+    "x": 0.554,
+    "dx": -0.007,
+    "dt_ms": 159
+  },
+  {
+    "name": "continuity 19: right drift",
+    "mode": "continuity",
+    "x": 0.576,
+    "dx": 0.008,
+    "dt_ms": 166
+  },
+  {
+    "name": "continuity 20: left drift",
+    "mode": "continuity",
+    "x": 0.598,
+    "dx": -0.009,
+    "dt_ms": 173
+  },
+  {
+    "name": "continuity 21: right drift",
+    "mode": "continuity",
+    "x": 0.62,
+    "dx": 0.005,
+    "dt_ms": 180
+  },
+  {
+    "name": "continuity 22: left drift",
+    "mode": "continuity",
+    "x": 0.642,
+    "dx": -0.006,
+    "dt_ms": 187
+  },
+  {
+    "name": "hold 01: short occlusion 20ms",
+    "mode": "hold",
+    "x": 0.2,
+    "dt_ms": 20
+  },
+  {
+    "name": "hold 02: short occlusion 33ms",
+    "mode": "hold",
+    "x": 0.228,
+    "dt_ms": 33
+  },
+  {
+    "name": "hold 03: short occlusion 46ms",
+    "mode": "hold",
+    "x": 0.256,
+    "dt_ms": 46
+  },
+  {
+    "name": "hold 04: short occlusion 59ms",
+    "mode": "hold",
+    "x": 0.284,
+    "dt_ms": 59
+  },
+  {
+    "name": "hold 05: short occlusion 72ms",
+    "mode": "hold",
+    "x": 0.312,
+    "dt_ms": 72
+  },
+  {
+    "name": "hold 06: short occlusion 85ms",
+    "mode": "hold",
+    "x": 0.34,
+    "dt_ms": 85
+  },
+  {
+    "name": "hold 07: short occlusion 98ms",
+    "mode": "hold",
+    "x": 0.368,
+    "dt_ms": 98
+  },
+  {
+    "name": "hold 08: short occlusion 111ms",
+    "mode": "hold",
+    "x": 0.396,
+    "dt_ms": 111
+  },
+  {
+    "name": "hold 09: short occlusion 124ms",
+    "mode": "hold",
+    "x": 0.424,
+    "dt_ms": 124
+  },
+  {
+    "name": "hold 10: short occlusion 137ms",
+    "mode": "hold",
+    "x": 0.452,
+    "dt_ms": 137
+  },
+  {
+    "name": "hold 11: short occlusion 150ms",
+    "mode": "hold",
+    "x": 0.48,
+    "dt_ms": 150
+  },
+  {
+    "name": "hold 12: short occlusion 163ms",
+    "mode": "hold",
+    "x": 0.508,
+    "dt_ms": 163
+  },
+  {
+    "name": "hold 13: short occlusion 176ms",
+    "mode": "hold",
+    "x": 0.536,
+    "dt_ms": 176
+  },
+  {
+    "name": "hold 14: short occlusion 189ms",
+    "mode": "hold",
+    "x": 0.564,
+    "dt_ms": 189
+  },
+  {
+    "name": "hold 15: short occlusion 202ms",
+    "mode": "hold",
+    "x": 0.592,
+    "dt_ms": 202
+  },
+  {
+    "name": "hold 16: short occlusion 215ms",
+    "mode": "hold",
+    "x": 0.62,
+    "dt_ms": 215
+  },
+  {
+    "name": "expiry 01: dropout 260ms",
+    "mode": "expiry",
+    "x": 0.22,
+    "dt_ms": 260
+  },
+  {
+    "name": "expiry 02: dropout 285ms",
+    "mode": "expiry",
+    "x": 0.246,
+    "dt_ms": 285
+  },
+  {
+    "name": "expiry 03: dropout 310ms",
+    "mode": "expiry",
+    "x": 0.272,
+    "dt_ms": 310
+  },
+  {
+    "name": "expiry 04: dropout 335ms",
+    "mode": "expiry",
+    "x": 0.298,
+    "dt_ms": 335
+  },
+  {
+    "name": "expiry 05: dropout 360ms",
+    "mode": "expiry",
+    "x": 0.324,
+    "dt_ms": 360
+  },
+  {
+    "name": "expiry 06: dropout 385ms",
+    "mode": "expiry",
+    "x": 0.35,
+    "dt_ms": 385
+  },
+  {
+    "name": "expiry 07: dropout 410ms",
+    "mode": "expiry",
+    "x": 0.376,
+    "dt_ms": 410
+  },
+  {
+    "name": "expiry 08: dropout 435ms",
+    "mode": "expiry",
+    "x": 0.402,
+    "dt_ms": 435
+  },
+  {
+    "name": "expiry 09: dropout 460ms",
+    "mode": "expiry",
+    "x": 0.428,
+    "dt_ms": 460
+  },
+  {
+    "name": "expiry 10: dropout 485ms",
+    "mode": "expiry",
+    "x": 0.454,
+    "dt_ms": 485
+  },
+  {
+    "name": "expiry 11: dropout 510ms",
+    "mode": "expiry",
+    "x": 0.48,
+    "dt_ms": 510
+  },
+  {
+    "name": "expiry 12: dropout 535ms",
+    "mode": "expiry",
+    "x": 0.506,
+    "dt_ms": 535
+  },
+  {
+    "name": "expiry 13: dropout 560ms",
+    "mode": "expiry",
+    "x": 0.532,
+    "dt_ms": 560
+  },
+  {
+    "name": "expiry 14: dropout 585ms",
+    "mode": "expiry",
+    "x": 0.558,
+    "dt_ms": 585
+  },
+  {
+    "name": "expiry 15: dropout 610ms",
+    "mode": "expiry",
+    "x": 0.584,
+    "dt_ms": 610
+  },
+  {
+    "name": "expiry 16: dropout 635ms",
+    "mode": "expiry",
+    "x": 0.61,
+    "dt_ms": 635
+  },
+  {
+    "name": "reacquire 01: new identity after timeout",
+    "mode": "reacquire",
+    "x": 0.18,
+    "dx": 0.005,
+    "dt_ms": 260
+  },
+  {
+    "name": "reacquire 02: new identity after timeout",
+    "mode": "reacquire",
+    "x": 0.211,
+    "dx": 0.005,
+    "dt_ms": 282
+  },
+  {
+    "name": "reacquire 03: new identity after timeout",
+    "mode": "reacquire",
+    "x": 0.242,
+    "dx": 0.005,
+    "dt_ms": 304
+  },
+  {
+    "name": "reacquire 04: new identity after timeout",
+    "mode": "reacquire",
+    "x": 0.273,
+    "dx": 0.005,
+    "dt_ms": 326
+  },
+  {
+    "name": "reacquire 05: new identity after timeout",
+    "mode": "reacquire",
+    "x": 0.304,
+    "dx": 0.005,
+    "dt_ms": 348
+  },
+  {
+    "name": "reacquire 06: new identity after timeout",
+    "mode": "reacquire",
+    "x": 0.335,
+    "dx": 0.005,
+    "dt_ms": 370
+  },
+  {
+    "name": "reacquire 07: new identity after timeout",
+    "mode": "reacquire",
+    "x": 0.366,
+    "dx": 0.005,
+    "dt_ms": 392
+  },
+  {
+    "name": "reacquire 08: new identity after timeout",
+    "mode": "reacquire",
+    "x": 0.397,
+    "dx": 0.005,
+    "dt_ms": 414
+  },
+  {
+    "name": "reacquire 09: new identity after timeout",
+    "mode": "reacquire",
+    "x": 0.428,
+    "dx": 0.005,
+    "dt_ms": 436
+  },
+  {
+    "name": "reacquire 10: new identity after timeout",
+    "mode": "reacquire",
+    "x": 0.459,
+    "dx": 0.005,
+    "dt_ms": 458
+  },
+  {
+    "name": "reacquire 11: new identity after timeout",
+    "mode": "reacquire",
+    "x": 0.49,
+    "dx": 0.005,
+    "dt_ms": 480
+  },
+  {
+    "name": "reacquire 12: new identity after timeout",
+    "mode": "reacquire",
+    "x": 0.521,
+    "dx": 0.005,
+    "dt_ms": 502
+  },
+  {
+    "name": "reacquire 13: new identity after timeout",
+    "mode": "reacquire",
+    "x": 0.552,
+    "dx": 0.005,
+    "dt_ms": 524
+  },
+  {
+    "name": "reacquire 14: new identity after timeout",
+    "mode": "reacquire",
+    "x": 0.583,
+    "dx": 0.005,
+    "dt_ms": 546
+  },
+  {
+    "name": "reacquire 15: new identity after timeout",
+    "mode": "reacquire",
+    "x": 0.614,
+    "dx": 0.005,
+    "dt_ms": 568
+  },
+  {
+    "name": "reacquire 16: new identity after timeout",
+    "mode": "reacquire",
+    "x": 0.645,
+    "dx": 0.005,
+    "dt_ms": 590
+  },
+  {
+    "name": "swap 01: detector order inversion",
+    "mode": "swap_order",
+    "left": 0.16,
+    "right": 0.84,
+    "dx": 0.003,
+    "dt_ms": 40
+  },
+  {
+    "name": "swap 02: detector order inversion",
+    "mode": "swap_order",
+    "left": 0.174,
+    "right": 0.828,
+    "dx": -0.003,
+    "dt_ms": 49
+  },
+  {
+    "name": "swap 03: detector order inversion",
+    "mode": "swap_order",
+    "left": 0.188,
+    "right": 0.816,
+    "dx": 0.003,
+    "dt_ms": 58
+  },
+  {
+    "name": "swap 04: detector order inversion",
+    "mode": "swap_order",
+    "left": 0.202,
+    "right": 0.804,
+    "dx": -0.003,
+    "dt_ms": 67
+  },
+  {
+    "name": "swap 05: detector order inversion",
+    "mode": "swap_order",
+    "left": 0.216,
+    "right": 0.792,
+    "dx": 0.003,
+    "dt_ms": 76
+  },
+  {
+    "name": "swap 06: detector order inversion",
+    "mode": "swap_order",
+    "left": 0.23,
+    "right": 0.78,
+    "dx": -0.003,
+    "dt_ms": 85
+  },
+  {
+    "name": "swap 07: detector order inversion",
+    "mode": "swap_order",
+    "left": 0.244,
+    "right": 0.768,
+    "dx": 0.003,
+    "dt_ms": 94
+  },
+  {
+    "name": "swap 08: detector order inversion",
+    "mode": "swap_order",
+    "left": 0.258,
+    "right": 0.756,
+    "dx": -0.003,
+    "dt_ms": 103
+  },
+  {
+    "name": "swap 09: detector order inversion",
+    "mode": "swap_order",
+    "left": 0.272,
+    "right": 0.744,
+    "dx": 0.003,
+    "dt_ms": 112
+  },
+  {
+    "name": "swap 10: detector order inversion",
+    "mode": "swap_order",
+    "left": 0.286,
+    "right": 0.732,
+    "dx": -0.003,
+    "dt_ms": 121
+  },
+  {
+    "name": "swap 11: detector order inversion",
+    "mode": "swap_order",
+    "left": 0.3,
+    "right": 0.72,
+    "dx": 0.003,
+    "dt_ms": 130
+  },
+  {
+    "name": "swap 12: detector order inversion",
+    "mode": "swap_order",
+    "left": 0.314,
+    "right": 0.708,
+    "dx": -0.003,
+    "dt_ms": 139
+  },
+  {
+    "name": "swap 13: detector order inversion",
+    "mode": "swap_order",
+    "left": 0.328,
+    "right": 0.696,
+    "dx": 0.003,
+    "dt_ms": 148
+  },
+  {
+    "name": "swap 14: detector order inversion",
+    "mode": "swap_order",
+    "left": 0.342,
+    "right": 0.684,
+    "dx": -0.003,
+    "dt_ms": 157
+  },
+  {
+    "name": "invalid nan at 0.24",
+    "mode": "invalid",
+    "x": 0.24,
+    "kind": "nan"
+  },
+  {
+    "name": "invalid nan at 0.56",
+    "mode": "invalid",
+    "x": 0.56,
+    "kind": "nan"
+  },
+  {
+    "name": "invalid infinity at 0.24",
+    "mode": "invalid",
+    "x": 0.24,
+    "kind": "infinity"
+  },
+  {
+    "name": "invalid infinity at 0.56",
+    "mode": "invalid",
+    "x": 0.56,
+    "kind": "infinity"
+  },
+  {
+    "name": "invalid world_nan at 0.24",
+    "mode": "invalid",
+    "x": 0.24,
+    "kind": "world_nan"
+  },
+  {
+    "name": "invalid world_nan at 0.56",
+    "mode": "invalid",
+    "x": 0.56,
+    "kind": "world_nan"
+  },
+  {
+    "name": "invalid short_points at 0.24",
+    "mode": "invalid",
+    "x": 0.24,
+    "kind": "short_points"
+  },
+  {
+    "name": "invalid short_points at 0.56",
+    "mode": "invalid",
+    "x": 0.56,
+    "kind": "short_points"
+  },
+  {
+    "name": "invalid short_world at 0.24",
+    "mode": "invalid",
+    "x": 0.24,
+    "kind": "short_world"
+  },
+  {
+    "name": "invalid short_world at 0.56",
+    "mode": "invalid",
+    "x": 0.56,
+    "kind": "short_world"
+  },
+  {
+    "name": "invalid missing_coordinate at 0.24",
+    "mode": "invalid",
+    "x": 0.24,
+    "kind": "missing_coordinate"
+  },
+  {
+    "name": "invalid missing_coordinate at 0.56",
+    "mode": "invalid",
+    "x": 0.56,
+    "kind": "missing_coordinate"
+  },
+  {
+    "name": "rollback 1: negative time delta",
+    "mode": "rollback",
+    "x": 0.28,
+    "dt_ms": 40
+  },
+  {
+    "name": "rollback 2: negative time delta",
+    "mode": "rollback",
+    "x": 0.4,
+    "dt_ms": 80
+  },
+  {
+    "name": "rollback 3: negative time delta",
+    "mode": "rollback",
+    "x": 0.52,
+    "dt_ms": 120
+  },
+  {
+    "name": "rollback 4: negative time delta",
+    "mode": "rollback",
+    "x": 0.64,
+    "dt_ms": 160
+  }
+]

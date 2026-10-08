@@ -57,7 +57,7 @@ function ellipse(hands,width,height) {
 }
 
 export function classifyHandShapes(hands,width,height) {
-  const descriptions=hands.map(h=>describe(h,width,height)).filter(Boolean).sort((a,b)=>a.center[0]-b.center[0]);
+  const descriptions=hands.filter(h=>!h.rastreio?.recuperado).map(h=>describe(h,width,height)).filter(Boolean).sort((a,b)=>a.center[0]-b.center[0]);
   if (descriptions.length===2) {
     const [a,b]=descriptions,bridge=distance(a.center,b.center);
     if (bridge>Math.max(width*0.055,Math.max(a.palm,b.palm)*0.8) && a.span>a.palm*0.50 && b.span>b.palm*0.50) {
@@ -83,6 +83,7 @@ export class HandShapeTracker {
       let match=-1,best=Infinity;
       available.forEach((old,i)=>{
         const oldIdentity=old.lado_modelo||old.lado,identity=hand.lado_modelo||hand.lado;
+        if (hand.rastreio?.id != null && old.rastreio?.id != null && hand.rastreio.id !== old.rastreio.id) return;
         const d=distance(center,average([0,5,9,13,17].map(j=>old.pontos[j])))+(oldIdentity!==identity?0.03:0);
         if (d<best) { best=d;match=i; }
       });

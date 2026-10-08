@@ -1,7 +1,7 @@
 const PALM = [0, 5, 9, 13, 17];
 
 const clamp = (value, low = 0, high = 1) => Math.max(low, Math.min(high, value));
-const point = value => [Number(value?.x) || 0, Number(value?.y) || 0, Number(value?.z) || 0];
+const point = value => [Number(value?.x), Number(value?.y), Number(value?.z)];
 const toObject = value => ({ x: value[0], y: value[1], z: value[2] });
 const distance2 = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
 
@@ -39,9 +39,9 @@ export class HandTracker {
   }
 
   detections(result) {
-    const landmarks = result?.landmarks || [];
-    const world = result?.worldLandmarks || [];
-    const handedness = result?.handedness || result?.handednesses || [];
+    const landmarks = Array.isArray(result?.landmarks) ? result.landmarks : [];
+    const world = Array.isArray(result?.worldLandmarks) ? result.worldLandmarks : [];
+    const handedness = Array.isArray(result?.handedness) ? result.handedness : Array.isArray(result?.handednesses) ? result.handednesses : [];
     const detections = [];
     for (let index = 0; index < landmarks.length; index++) {
       const points = landmarks[index]?.map(point) || [];
@@ -51,8 +51,8 @@ export class HandTracker {
       detections.push({
         points,
         world: worldPoints,
-        side: side.categoryName || "Unknown",
-        sideScore: Number(side.score) || 0
+        side: ["Left", "Right"].includes(side.categoryName) ? side.categoryName : "Unknown",
+        sideScore: clamp(Number(side.score) || 0)
       });
     }
     return detections;
@@ -107,6 +107,18 @@ export class HandTracker {
       jump = maxJump;
     }
 
+    // Protect shape geometry from isolated landmark spikes without freezing gestures.
+    const maxLandmarkStep = Math.max(0.05, scale(track.points) * 1.8) + dt * 0.45;
+    for (let index = 0; index < candidate.length; index++) {
+      const prior = track.points[index];
+      const distance = distance2(candidate[index], prior);
+      if (distance > maxLandmarkStep) {
+        const ratio = maxLandmarkStep / distance;
+        candidate[index][0] = prior[0] + (candidate[index][0] - prior[0]) * ratio;
+        candidate[index][1] = prior[1] + (candidate[index][1] - prior[1]) * ratio;
+      }
+    }
+
     const motion = clamp(jump / 0.20);
     let alpha = this.smoothingMin + (this.smoothingMax - this.smoothingMin) * motion;
     if (track.missed) alpha = Math.min(alpha, 0.58);
@@ -146,6 +158,9 @@ export class HandTracker {
   }
 
   update(result, timestamp) {
+    if (!Number.isFinite(timestamp)) throw new TypeError("Frame timestamp must be finite");
+    if (this.tracks.some(track => timestamp < track.lastSeen)) this.reset();
+    this.tracks = this.tracks.filter(track => timestamp - track.lastSeen <= this.holdMs);
     const detections = this.detections(result);
     const assignedTracks = new Set();
     const assignedDetections = new Set();

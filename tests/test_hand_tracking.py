@@ -72,3 +72,15 @@ def test_invalid_landmarks_are_ignored():
     invalid = raw_hand(.5)
     invalid["points"][0, 0] = np.nan
     assert tracker.update([invalid], 0.0) == []
+
+
+def test_single_corrupted_fingertip_is_clamped_without_moving_palm():
+    tracker = HandTracker()
+    tracker.update([raw_hand(.35)], 0.0)
+    baseline = tracker.update([raw_hand(.36)], .1)[0]
+    noisy = raw_hand(.37)
+    noisy["points"][8, 0] += .8
+    updated = tracker.update([noisy], .2)[0]
+    assert updated["tracking"]["id"] == 1
+    assert updated["points"][8, 0] - baseline["points"][8, 0] < .20
+    assert abs(center_x(updated) - center_x(baseline)) < .08

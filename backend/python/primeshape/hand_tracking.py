@@ -23,7 +23,13 @@ def _valid_detection(detection):
         world = np.asarray(detection["world"], dtype=np.float64)
     except (KeyError, TypeError, ValueError):
         return False
-    return points.shape == (21, 3) and world.shape == (21, 3) and np.isfinite(points).all() and np.isfinite(world).all()
+    try:
+        score = float(detection.get("side_score", 0.0))
+    except (TypeError, ValueError, OverflowError, AttributeError):
+        return False
+    return (points.shape == (21, 3) and world.shape == (21, 3)
+            and np.isfinite(points).all() and np.isfinite(world).all()
+            and math.isfinite(score))
 
 
 @dataclass
@@ -56,7 +62,7 @@ class HandTracker:
         center_distance = float(np.linalg.norm(_center(points) - _center(track.points)))
         scale_ratio = _scale(points) / max(_scale(track.points), 1e-6)
         scale_penalty = abs(math.log(max(scale_ratio, 1e-6))) * 0.28
-        detection_score = float(detection.get("side_score", 0.0))
+        detection_score = float(np.clip(detection.get("side_score", 0.0), 0.0, 1.0))
         side_penalty = 0.0
         if (
             track.side in {"Left", "Right"}
@@ -93,7 +99,7 @@ class HandTracker:
             points=np.asarray(detection["points"], dtype=np.float64).copy(),
             world=np.asarray(detection["world"], dtype=np.float64).copy(),
             side=detection.get("side", "Unknown"),
-            side_score=float(detection.get("side_score", 0.0)),
+            side_score=float(np.clip(detection.get("side_score", 0.0), 0.0, 1.0)),
             last_seen=now,
         )
         self.next_id += 1
@@ -114,6 +120,14 @@ class HandTracker:
             corrected_center = old_center + direction * max_jump
             candidate[:, :2] += corrected_center - new_center
             jump = max_jump
+
+        # A single corrupted fingertip must not drag the displayed hand away.
+        # Scale the bound with palm size and elapsed time to keep normal gestures responsive.
+        max_landmark_step = max(0.05, _scale(track.points) * 1.8) + dt * 0.45
+        displacements = candidate[:, :2] - track.points[:, :2]
+        lengths = np.linalg.norm(displacements, axis=1)
+        ratios = np.minimum(1.0, max_landmark_step / np.maximum(lengths, 1e-9))
+        candidate[:, :2] = track.points[:, :2] + displacements * ratios[:, None]
 
         motion = float(np.clip(jump / 0.20, 0.0, 1.0))
         alpha = SETTINGS.hand_smoothing_min + (SETTINGS.hand_smoothing_max - SETTINGS.hand_smoothing_min) * motion
@@ -142,6 +156,11 @@ class HandTracker:
         return track
 
     def update(self, detections, now):
+        if not math.isfinite(now):
+            raise ValueError("O instante do quadro deve ser finito.")
+        if any(now < track.last_seen for track in self.tracks):
+            self.reset()
+        self.tracks = [track for track in self.tracks if now - track.last_seen <= SETTINGS.hand_hold_s]
         detections = [d for d in detections if _valid_detection(d)]
         assigned_tracks = set()
         assigned_detections = set()

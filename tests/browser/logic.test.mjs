@@ -111,3 +111,28 @@ test("Rastreador de mãos segura dropout, mantém identidade e rejeita teleporte
   assert.equal(afterResult.landmarks.length,1);
   assert.ok(afterResult.landmarks[0][9].x-before<.30);
 });
+
+
+test("Recovered hand cannot render a ghost shape while partner remains visible",()=>{
+  const a=hand([180,100],[180,400],[130,280]);
+  const b=hand([480,100],[480,400],[530,280]);
+  assert.equal(classifyHandShapes([a,b],640,480)[0].rotulo,"Quadrado");
+  a.rastreio={id:1,recuperado:true};
+  b.rastreio={id:2,recuperado:false};
+  assert.deepEqual(classifyHandShapes([a,b],640,480),[]);
+  const tracker=new HandShapeTracker();
+  assert.deepEqual(tracker.update([a,b],640,480,100).shapes,[]);
+});
+
+
+test("An isolated fingertip spike is bounded without destabilizing the tracked palm",()=>{
+  const tracker=new HandTracker();
+  tracker.update(rawHandResult(.35),0);
+  const baseline=tracker.update(rawHandResult(.36),100);
+  const noisy=rawHandResult(.37);
+  noisy.landmarks[0][8].x+=.8;
+  const updated=tracker.update(noisy,200);
+  assert.equal(updated.trackingMetadata[0].id,1);
+  assert.ok(updated.landmarks[0][8].x-baseline.landmarks[0][8].x<.20);
+  assert.ok(Math.abs(updated.landmarks[0][9].x-baseline.landmarks[0][9].x)<.08);
+});
