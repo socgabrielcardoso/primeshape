@@ -67,7 +67,7 @@ test("Windows: vídeo contínuo, formas entre os dedos, modo leve, objetos opcio
   await expect(page.locator("body")).toHaveAttribute("data-details","true");
   await expect(page.locator("#handsDetails")).toContainText("5 dedos estendidos");
   await expect(page.locator("#handsDetails")).toContainText("visão da câmera");
-  const colors = await page.locator("#visionCanvas").evaluate(canvas => {
+  const getColors = () => page.locator("#visionCanvas").evaluate(canvas => {
     const data=canvas.getContext("2d").getImageData(0,0,canvas.width,canvas.height).data;
     let fill=0,tips=0,transparent=0;
     for(let i=0;i<data.length;i+=4) {
@@ -77,8 +77,11 @@ test("Windows: vídeo contínuo, formas entre os dedos, modo leve, objetos opcio
     }
     return { fill,tips,transparent,total:data.length/4 };
   });
-  expect(colors.fill).toBeGreaterThan(200);
-  expect(colors.tips).toBeGreaterThan(50);
+  // Camera inference is asynchronous; assert during a valid render window,
+  // not at one arbitrary instant where a short hand occlusion may be present.
+  await expect.poll(async () => (await getColors()).fill, { timeout: 20000 }).toBeGreaterThan(200);
+  await expect.poll(async () => (await getColors()).tips, { timeout: 20000 }).toBeGreaterThan(50);
+  const colors = await getColors();
   expect(colors.transparent).toBeGreaterThan(colors.total/2);
   await page.locator("#objectsToggle").check();
   await expect(page.locator("#shapesList")).toContainText("Quadrado",{timeout:60000});
