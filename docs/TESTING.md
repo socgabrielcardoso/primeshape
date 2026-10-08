@@ -73,3 +73,16 @@ Registre navegador, SO, taxa de quadros, resolução, velocidade aproximada, ilu
 ## 5. Pull requests e CI
 
 O workflow `.github/workflows/validate.yml` cobre sintaxe, lógica, regressões de mão e navegação. **Testes passando não constituem certificação clínica ou de segurança.** Para mudanças de detectores, anexar evidências de execução manual e informar limitações observadas.
+
+
+## 6. Compilação e testes do gateway Java
+
+O gateway usa JDK 17 sem dependências externas de compilação:
+
+```bash
+python scripts/build_java.py
+javac -encoding UTF-8 --release 17 -cp backend/java/build -d backend/java/build tests/java/br/com/primeshape/GatewayRegressionTest.java
+java -cp backend/java/build br.com.primeshape.GatewayRegressionTest
+```
+
+O teste verifica limites de sessão, expiração de sessões ociosas, proteção de sessões ocupadas e aceitação estrita de URLs locais. O CI executa o mesmo procedimento em um job independente; isso não substitui o teste integrado com Java + Python.
