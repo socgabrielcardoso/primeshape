@@ -103,6 +103,8 @@ O repositório possui workflow do GitHub Actions executado em push para `main` e
 - testes de lógica relacionados à geometria, expressões aparentes e rastreamento de 100 cenários;
 - preparação do ambiente de testes de navegador;
 - execução de testes com Chromium via Playwright;
+- suíte Python para rastreamento, gestos, processamento de quadros, formas e análise temporal;
+- compilação do gateway Java 17 com testes de limites de sessão e URLs locais;
 - validação do modo leve por servidor estático.
 
 Em caso de falha nos testes de navegador, o workflow pode publicar artefatos de diagnóstico.
