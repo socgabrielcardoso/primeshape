@@ -146,6 +146,9 @@ export class HandTracker {
   }
 
   update(result, timestamp) {
+    if (!Number.isFinite(timestamp)) throw new TypeError("Frame timestamp must be finite");
+    if (this.tracks.some(track => timestamp < track.lastSeen)) this.reset();
+    this.tracks = this.tracks.filter(track => timestamp - track.lastSeen <= this.holdMs);
     const detections = this.detections(result);
     const assignedTracks = new Set();
     const assignedDetections = new Set();
