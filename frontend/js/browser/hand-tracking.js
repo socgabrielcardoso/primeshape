@@ -51,7 +51,7 @@ export class HandTracker {
       detections.push({
         points,
         world: worldPoints,
-        side: side.categoryName || "Unknown",
+        side: ["Left", "Right"].includes(side.categoryName) ? side.categoryName : "Unknown",
         sideScore: clamp(Number(side.score) || 0)
       });
     }
