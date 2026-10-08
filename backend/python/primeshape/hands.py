@@ -91,7 +91,7 @@ def classify_gestures(hand):
 
 
 def bimanual_gestures(hands, width, height):
-    if len(hands) != 2 or any(h["parcial"] for h in hands):
+    if len(hands) != 2 or any(h["parcial"] or h.get("rastreio", {}).get("recuperado") for h in hands):
         return []
     a, b = [np.asarray(h["pontos"]) * np.array([width, height, width]) for h in hands]
     scale = max(distance(a[0, :2], a[9, :2]), distance(b[0, :2], b[9, :2]), 1)
