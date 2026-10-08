@@ -47,7 +47,7 @@ export class Presentation {
     for (const chip of document.querySelectorAll("[data-hand-shape]")) chip.classList.toggle("active",result.formas_maos?.some(s=>s.rotulo===chip.dataset.handShape)||false);
     this.set("eyeState", face.presente ? choose(STATE_ORDER) || "INDETERMINADO" : "ROSTO AUSENTE");
     this.set("expressionName", face.presente ? choose(EXPRESSION_ORDER) || "INDETERMINADA" : "ROSTO AUSENTE");
-    this.set("handCount", `${result.quantidade_maos} DETECTADAS`);
+    this.set("handCount", `${result.quantidade_maos_detectadas ?? result.quantidade_maos} DETECTADAS`);
     const now=performance.now();
     if (!force && (document.getElementById("detailPanel").hidden || now-this.lastDetailsAt<250)) return;
     this.lastDetailsAt=now;
@@ -61,7 +61,7 @@ export class Presentation {
     this.list("shapesList", result.formas);
     const hands = document.createDocumentFragment();
     const count = document.createElement("p");
-    count.textContent = `Mãos detectadas: ${result.quantidade_maos}`;
+    count.textContent = `Mãos detectadas neste quadro: ${result.quantidade_maos_detectadas ?? result.quantidade_maos} · rastros exibidos: ${result.quantidade_maos}`;
     hands.append(count);
     for (const hand of result.maos) {
       const p = document.createElement("p");
