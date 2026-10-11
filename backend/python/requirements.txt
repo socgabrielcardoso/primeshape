@@ -1,7 +1,7 @@
 mediapipe==0.10.21
 opencv-contrib-python==4.11.0.86
 numpy==1.26.4
-fastapi==0.115.12
+fastapi==0.143.0
 uvicorn==0.34.2
 Pillow==11.2.1
 jax==0.4.30
