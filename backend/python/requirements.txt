@@ -5,5 +5,5 @@ fastapi==0.115.12
 uvicorn==0.34.2
 Pillow==11.2.1
 jax==0.4.30
-jaxlib==0.4.30
+jaxlib==0.11.2
 scipy==1.14.1
