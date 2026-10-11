@@ -1,0 +1,45 @@
+/* Security portfolio design system: restrained, readable, keyboard-first.
+   Styling alone is not a security boundary. Keep app behavior intact. */
+:root {
+  --portfolio-bg: #0c1119;
+  --portfolio-panel: #151e29;
+  --portfolio-border: #344454;
+  --portfolio-ink: #e3edf3;
+  --portfolio-muted: #a8bac8;
+  --portfolio-action: #67d4b2;
+  color-scheme: dark;
+}
+html {scroll-behavior: auto !important}
+body {
+  background: var(--portfolio-bg) !important;
+  color: var(--portfolio-ink);
+  font-family: ui-monospace, "Cascadia Code", "Consolas", "Segoe UI", sans-serif !important;
+  line-height: 1.5;
+}
+:where(.noise, .grid-noise, .scanline, .boot-orbit, .world-grid) {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+:where(.panel, .card, .tile, .mini-card, .hero, .sidebar, .topbar, .button, button, input, select, textarea) {
+  border-radius: 4px !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+:where(button, input, select, textarea) {font: inherit}
+:where(button, a, [role="button"], input, select, textarea):focus-visible {
+  outline: 3px solid var(--portfolio-action) !important;
+  outline-offset: 3px;
+}
+:where(a) {text-underline-offset: .18em}
+:where(p, small, .muted, .subtitle, .hint) {overflow-wrap: anywhere}
+:where(.glass, .glassmorphism, .hologram) {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
