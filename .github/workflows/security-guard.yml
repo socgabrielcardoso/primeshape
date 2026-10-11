@@ -22,5 +22,7 @@ jobs:
           persist-credentials: false
       - name: Validate detector
         run: python3 scripts/security_guard.py --self-test
+      - name: Test credential detection logic
+        run: python3 -m unittest discover -s tests -p "test_security_guard.py"
       - name: Scan tracked text files without logging token values
         run: python3 scripts/security_guard.py
