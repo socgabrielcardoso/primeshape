@@ -1,0 +1,26 @@
+name: Security guard
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: credential-guard-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  credential-leak-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out tracked source
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Validate detector
+        run: python3 scripts/security_guard.py --self-test
+      - name: Scan tracked text files without logging token values
+        run: python3 scripts/security_guard.py
