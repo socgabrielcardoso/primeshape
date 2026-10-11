@@ -18,7 +18,7 @@ PATTERNS = {
     "aws-access-key": re.compile(rb"\b(?:AKIA|ASIA)[0-9A-Z]{16}\b"),
     "slack-bot-token": re.compile(rb"xoxb-[0-9]{10,}-[A-Za-z0-9-]{15,}"),
     "openai-secret": re.compile(rb"sk-(?:proj-|svcacct-)?[A-Za-z0-9_-]{40,}"),
-    "private-key-block": re.compile(rb"-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----"),
+    "private-key-block": re.compile(rb"(?m)^-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----\\r?$"),
 }
 
 def scan_bytes(content: bytes) -> list[str]:
