@@ -1,0 +1,4 @@
+# Ownership for security-sensitive changes. Approval enforcement requires branch rules.
+* @socgabrielcardoso
+/.github/ @socgabrielcardoso
+/scripts/security_guard.py @socgabrielcardoso
