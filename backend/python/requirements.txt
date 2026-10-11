@@ -6,4 +6,4 @@ uvicorn==0.34.2
 Pillow==11.2.1
 jax==0.4.30
 jaxlib==0.4.30
-scipy==1.14.1
+scipy==1.18.1
