@@ -20,12 +20,18 @@ export class Camera {
       audio: false
     });
     this.video.srcObject = this.stream;
-    await this.video.play();
+    try {
+      await this.video.play();
+    } catch (error) {
+      this.stop();
+      throw error;
+    }
   }
 
   pixels(limit=640) {
-    const width = Math.min(limit, this.video.videoWidth);
-    const height = Math.round(this.video.videoHeight * width / this.video.videoWidth);
+    if (!Number.isFinite(limit) || limit <= 0 || !this.video.videoWidth || !this.video.videoHeight) return null;
+    const width = Math.max(1, Math.floor(Math.min(limit, this.video.videoWidth)));
+    const height = Math.max(1, Math.round(this.video.videoHeight * width / this.video.videoWidth));
     if (!width || !height || this.video.readyState < 2) return null;
     if (this.captureCanvas.width !== width || this.captureCanvas.height !== height) {
       this.captureCanvas.width = width;
