@@ -46,3 +46,7 @@ test("Recognize squares at reduced scale", () => {
   assert.equal(quadrilateral(quad(8,8,45)),"Quadrado");
 });
 
+test("Recognize rectangular finger contours", () => {
+  assert.equal(quadrilateral(quad(115,50)),"Retângulo");
+});
+
