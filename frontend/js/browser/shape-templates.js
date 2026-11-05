@@ -53,6 +53,8 @@ export class TemplateMatcher {
   }
   classify(points) {
     if (!Array.isArray(points) || points.length < 3 || !points.every(p => Array.isArray(p) && p.length >= 2 && p.slice(0, 2).every(Number.isFinite))) return null;
+    const [, , width, height] = bounds(points);
+    if (width < 1e-6 || height < 1e-6) return null;
     const target = mask(points), scores = new Map();
     for (const [label, reference] of this.bank) {
       let intersection = 0, union = 0;
