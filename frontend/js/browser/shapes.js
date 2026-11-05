@@ -61,6 +61,7 @@ export class ShapeDetector {
   }
 
   detect(image, exclusions = []) {
+    if (!image || !Number.isInteger(image.width) || !Number.isInteger(image.height) || image.width <= 0 || image.height <= 0 || image.data?.length !== image.width * image.height * 4) return [];
     const cv = this.cv, width = image.width, height = image.height, mats = [], candidates = [];
     const make = () => { const mat = new cv.Mat(); mats.push(mat); return mat; };
     try {
