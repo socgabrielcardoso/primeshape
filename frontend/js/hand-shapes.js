@@ -21,6 +21,7 @@ export function quadrilateral(points) {
   if (!Array.isArray(points) || points.length !== 4 || !points.every(p => Array.isArray(p) && p.length >= 2 && p.slice(0,2).every(Number.isFinite))) return null;
   const p=clockwise(points);
   const sides=p.map((v,i)=>distance(v,p[(i+1)%4]));
+  if (Math.min(...sides) < 2 || area(p) < 8) return null;
   const angles=p.map((v,i)=>angle(p[(i+3)%4],v,p[(i+1)%4]));
   if (Math.min(...angles)<12 || Math.max(...angles)>170) return null;
   const rightError=angles.reduce((sum,a)=>sum+Math.abs(a-90),0)/4;
