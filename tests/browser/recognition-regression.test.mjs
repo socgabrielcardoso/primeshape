@@ -150,3 +150,7 @@ test("Recognize geometric shapes with two simultaneous hands", () => {
   assert.equal(classifyHandShapes(twoHands(),640,480)[0]?.rotulo,"Quadrado");
 });
 
+test("Keep bimanual recognition independent of detector order", () => {
+  assert.equal(classifyHandShapes([...twoHands()].reverse(),640,480)[0]?.rotulo,"Quadrado");
+});
+
