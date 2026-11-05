@@ -24,7 +24,7 @@ function validPoints(points) {
 
 export class HandTracker {
   constructor(options = {}) {
-    this.holdMs = options.holdMs ?? 240;
+    this.holdMs = Math.max(0, Number.isFinite(options.holdMs) ? options.holdMs : 240);
     this.matchGate = options.matchGate ?? 3.0;
     this.jumpBase = options.jumpBase ?? 0.16;
     this.jumpPerSecond = options.jumpPerSecond ?? 0.95;
