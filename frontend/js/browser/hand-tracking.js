@@ -147,6 +147,10 @@ export class HandTracker {
   }
 
   update(result, timestamp) {
+    if (!Number.isFinite(timestamp)) {
+      this.reset();
+      return { landmarks: [], worldLandmarks: [], handedness: [], handednesses: [], trackingMetadata: [], detectedCount: 0 };
+    }
     const detections = this.detections(result);
     const assignedTracks = new Set();
     const assignedDetections = new Set();
