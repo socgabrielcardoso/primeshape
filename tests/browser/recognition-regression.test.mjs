@@ -142,3 +142,7 @@ test("Ignore malformed landmark arrays", () => {
   assert.deepEqual(classifyHandShapes([{pontos:[[.5,.5,0]]}],640,480),[]);
 });
 
+test("Do not hallucinate shapes from recovered hands", () => {
+  const [a,b]=twoHands(); a.rastreio={recuperado:true}; assert.deepEqual(classifyHandShapes([a,b],640,480),[]);
+});
+
