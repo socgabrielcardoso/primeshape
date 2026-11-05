@@ -82,3 +82,7 @@ test("Reject empty contour arrays", () => {
   assert.equal(quadrilateral([]),null);
 });
 
+test("Reject underspecified triangles from quad classification", () => {
+  assert.equal(quadrilateral([[0,0],[100,0],[50,80]]),null);
+});
+
