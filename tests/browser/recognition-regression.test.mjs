@@ -50,3 +50,7 @@ test("Recognize rectangular finger contours", () => {
   assert.equal(quadrilateral(quad(115,50)),"Retângulo");
 });
 
+test("Recognize rectangles after 33-degree rotation", () => {
+  assert.equal(quadrilateral(quad(115,50,33)),"Retângulo");
+});
+
