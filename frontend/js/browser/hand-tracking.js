@@ -39,7 +39,7 @@ export class HandTracker {
   }
 
   detections(result) {
-    const landmarks = result?.landmarks || [];
+    const landmarks = Array.isArray(result?.landmarks) ? result.landmarks : [];
     const world = result?.worldLandmarks || [];
     const handedness = result?.handedness || result?.handednesses || [];
     const detections = [];
