@@ -9,6 +9,7 @@ export function cameraSideFromCenter(centerX) {
 export function analyzeHands(result, width, height) {
   if (![width, height].every(value => Number.isFinite(value) && value > 0)) return [];
   return (Array.isArray(result?.landmarks) ? result.landmarks : []).flatMap((landmarks, i) => {
+    if (!Array.isArray(landmarks) || landmarks.length !== 21 || !Array.isArray(result?.worldLandmarks?.[i]) || result.worldLandmarks[i].length !== 21) return [];
     const points = landmarks.map(point);
     const world = result.worldLandmarks[i].map(point);
     const projected = points.map(p => [p[0] * width, p[1] * height]);
