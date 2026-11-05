@@ -19,7 +19,7 @@ function mixPoints(previous, next, alpha) {
 }
 
 function validPoints(points) {
-  return Array.isArray(points) && points.length === 21 && points.every(p => p.length >= 3 && p.every(Number.isFinite));
+  return Array.isArray(points) && points.length === 21 && points.every(p => Array.isArray(p) && p.length >= 3 && p.every(Number.isFinite));
 }
 
 export class HandTracker {
