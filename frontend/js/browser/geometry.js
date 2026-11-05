@@ -1,4 +1,4 @@
-export const clamp = value => Math.max(0, Math.min(1, value));
+export const clamp = value => Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 0;
 export const distance = (a, b) => Math.hypot(...a.map((value, i) => value - b[i]));
 export const ramp = (value, low, high) => clamp((value - low) / (high - low));
 export const point = p => [p.x, p.y, p.z || 0];
