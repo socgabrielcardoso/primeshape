@@ -11,7 +11,7 @@ const clockwise = points => {
 
 function describe(hand, width, height) {
   if (hand?.rastreio?.recuperado) return null;
-  if (!hand?.pontos || hand.pontos.length < 21 || ![0,4,5,8,9,13,17].every(i => visible(hand.pontos[i]))) return null;
+  if (!hand?.pontos || hand.pontos.length < 21 || ![0,2,3,4,5,6,7,8,9,13,17].every(i => visible(hand.pontos[i]))) return null;
   const pixels=hand.pontos.map(p => [p[0]*width,p[1]*height]);
   const index=pixels[8],thumb=pixels[4];
   return { pixels,index,thumb,center:average([0,5,9,13,17].map(i=>pixels[i])),palm:Math.max(distance(pixels[5],pixels[17]),12),span:distance(index,thumb),top:index[1]<=thumb[1]?index:thumb,bottom:index[1]<=thumb[1]?thumb:index };
