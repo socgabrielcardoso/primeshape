@@ -89,7 +89,8 @@ export class HandShapeTracker {
       let match=-1,best=Infinity;
       available.forEach((old,i)=>{
         const oldIdentity=old.lado_modelo||old.lado,identity=hand.lado_modelo||hand.lado;
-        const d=distance(center,average([0,5,9,13,17].map(j=>old.pontos[j])))+(oldIdentity!==identity?0.03:0);
+        const idMismatch = hand.rastreio?.id != null && old.rastreio?.id != null && hand.rastreio.id !== old.rastreio.id;
+        const d=distance(center,average([0,5,9,13,17].map(j=>old.pontos[j])))+(oldIdentity!==identity?0.03:0)+(idMismatch?1:0);
         if (d<best) { best=d;match=i; }
       });
       const old=match>=0?available.splice(match,1)[0]:null;
