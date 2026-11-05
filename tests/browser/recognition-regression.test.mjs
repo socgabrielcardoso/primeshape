@@ -66,3 +66,7 @@ test("Recognize trapezoids formed by asymmetric fingers", () => {
   assert.equal(quadrilateral([[200,100],[400,100],[500,350],[100,350]]),"Trapézio");
 });
 
+test("Recognize slanted parallelograms", () => {
+  assert.equal(quadrilateral([[250,100],[550,100],[400,300],[100,300]]),"Paralelogramo");
+});
+
