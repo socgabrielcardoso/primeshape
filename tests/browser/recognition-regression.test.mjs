@@ -102,3 +102,7 @@ test("Reject completely collapsed polygons", () => {
   assert.equal(quadrilateral([[20,20],[20,20],[20,20],[20,20]]),null);
 });
 
+test("Reject collinear hand contour proposals", () => {
+  assert.equal(quadrilateral([[0,0],[50,0],[100,0],[150,0]]),null);
+});
+
