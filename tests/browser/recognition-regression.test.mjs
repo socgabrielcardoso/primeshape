@@ -54,3 +54,7 @@ test("Recognize rectangles after 33-degree rotation", () => {
   assert.equal(quadrilateral(quad(115,50,33)),"Retângulo");
 });
 
+test("Recognize translated rectangles without shifting class", () => {
+  assert.equal(quadrilateral(quad(115,50,0,375,-241)),"Retângulo");
+});
+
