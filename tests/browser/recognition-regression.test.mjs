@@ -130,3 +130,7 @@ test("Ignore null hand collections without throwing", () => {
   assert.deepEqual(classifyHandShapes(null,640,480),[]); assert.deepEqual(analyzeHands(null,640,480),[]);
 });
 
+test("Reject zero-width input frames", () => {
+  assert.deepEqual(classifyHandShapes(twoHands(),0,480),[]); assert.deepEqual(analyzeHands(null,0,480),[]);
+});
+
