@@ -94,3 +94,7 @@ test("Reject vertices containing NaN", () => {
   assert.equal(quadrilateral([[0,0],[100,0],[100,NaN],[0,100]]),null);
 });
 
+test("Reject vertices containing infinity", () => {
+  assert.equal(quadrilateral([[0,0],[100,0],[Infinity,100],[0,100]]),null);
+});
+
