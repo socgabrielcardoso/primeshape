@@ -90,3 +90,7 @@ test("Reject five-sided candidates from quad classification", () => {
   assert.equal(quadrilateral([[0,0],[100,0],[120,70],[50,130],[-20,70]]),null);
 });
 
+test("Reject vertices containing NaN", () => {
+  assert.equal(quadrilateral([[0,0],[100,0],[100,NaN],[0,100]]),null);
+});
+
