@@ -110,3 +110,7 @@ test("Reject subpixel quad edges as unreliable", () => {
   assert.equal(quadrilateral(quad(.25,.25)),null);
 });
 
+test("Avoid false straight-finger classification for zero-length vectors", () => {
+  assert.equal(angle([0,0],[0,0],[10,10]),0);
+});
+
