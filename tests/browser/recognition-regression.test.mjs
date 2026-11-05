@@ -154,3 +154,7 @@ test("Keep bimanual recognition independent of detector order", () => {
   assert.equal(classifyHandShapes([...twoHands()].reverse(),640,480)[0]?.rotulo,"Quadrado");
 });
 
+test("Keep stable shape labels when two hand detections swap order", () => {
+  const t=new HandShapeTracker(); const hands=twoHands(); assert.equal(t.update(hands,640,480,0).shapes[0]?.rotulo,"Quadrado"); assert.equal(t.update([...hands].reverse(),640,480,80).shapes[0]?.rotulo,"Quadrado");
+});
+
