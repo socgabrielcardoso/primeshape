@@ -43,6 +43,7 @@ export function quadrilateral(points) {
 }
 
 function polygon(points,width,height) {
+  if (!Array.isArray(points) || ![3,4].includes(points.length) || !points.every(p => Array.isArray(p) && p.slice(0,2).every(Number.isFinite))) return null;
   const ordered=clockwise(points);
   const box=bounds(ordered);
   if (area(ordered)<Math.max(90,width*height*0.00065) || Math.min(box[2],box[3])<8) return null;
