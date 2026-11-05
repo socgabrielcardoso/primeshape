@@ -42,3 +42,7 @@ test("Recognize squares despite 17-degree camera rotation", () => {
   assert.equal(quadrilateral(quad(75,75,17)),"Quadrado");
 });
 
+test("Recognize squares at reduced scale", () => {
+  assert.equal(quadrilateral(quad(8,8,45)),"Quadrado");
+});
+
