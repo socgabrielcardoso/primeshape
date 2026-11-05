@@ -62,3 +62,7 @@ test("Recognize rotated rhombi as distinct from rectangles", () => {
   assert.equal(quadrilateral([[300,50],[500,200],[300,350],[100,200]]),"Losango");
 });
 
+test("Recognize trapezoids formed by asymmetric fingers", () => {
+  assert.equal(quadrilateral([[200,100],[400,100],[500,350],[100,350]]),"Trapézio");
+});
+
