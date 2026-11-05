@@ -178,3 +178,7 @@ test("Reject NaN in the 3D joint graph", () => {
   const t=new HandTracker();const r=rawHand();r.worldLandmarks[0][8].z=NaN;assert.equal(t.update(r,0).landmarks.length,0);
 });
 
+test("Reject implausibly out-of-frame landmarks", () => {
+  const t=new HandTracker();const r=rawHand();r.landmarks[0][8].x=1.5;assert.equal(t.update(r,0).landmarks.length,0);
+});
+
