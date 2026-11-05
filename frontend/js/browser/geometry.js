@@ -5,7 +5,9 @@ export const point = p => [p?.x, p?.y, p?.z ?? 0];
 export function angle(a, b, c) {
   const u = a.map((value, i) => value - b[i]);
   const v = c.map((value, i) => value - b[i]);
-  return Math.acos(Math.max(-1, Math.min(1, u.reduce((sum, value, i) => sum + value * v[i], 0) / Math.max(Math.hypot(...u) * Math.hypot(...v), 1e-8)))) * 180 / Math.PI;
+  const magnitude = Math.hypot(...u) * Math.hypot(...v);
+  if (!Number.isFinite(magnitude) || magnitude < 1e-8) return 0;
+  return Math.acos(Math.max(-1, Math.min(1, u.reduce((sum, value, i) => sum + value * v[i], 0) / magnitude))) * 180 / Math.PI;
 }
 export function bounds(points) {
   const xs = points.map(p => p[0]), ys = points.map(p => p[1]);
