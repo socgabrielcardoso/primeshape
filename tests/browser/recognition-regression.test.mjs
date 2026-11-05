@@ -118,3 +118,7 @@ test("Avoid invalid detection scores from nonfinite estimates", () => {
   assert.equal(clamp(NaN),0); assert.equal(clamp(Infinity),0);
 });
 
+test("Keep empty contour boxes finite", () => {
+  assert.deepEqual(bounds([]),[0,0,0,0]); assert.equal(ramp(.5,.4,.4),1);
+});
+
