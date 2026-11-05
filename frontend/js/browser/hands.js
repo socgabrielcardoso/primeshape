@@ -3,7 +3,7 @@ import { angle, bounds, clamp, distance, point, signal } from "./geometry.js";
 const FINGERS = [["polegar",1,2,3,4],["indicador",5,6,7,8],["médio",9,10,11,12],["anelar",13,14,15,16],["mínimo",17,18,19,20]];
 
 export function cameraSideFromCenter(centerX) {
-  return centerX <= 0.5 ? "Esquerda" : "Direita";
+  return !Number.isFinite(centerX) ? "Indeterminada" : centerX <= 0.5 ? "Esquerda" : "Direita";
 }
 
 export function analyzeHands(result, width, height) {
