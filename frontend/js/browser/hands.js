@@ -54,7 +54,7 @@ export function analyzeHands(result, width, height) {
     const pinch = distance(world[4], world[8]) / palm;
     const gestureScore = Math.min(0.85, Math.max(0.55, side.score || 0.55));
     const add = (code, label, condition) => {
-      if (condition && !hand.parcial && !hand.rastreio.recuperado) hand.gestos.push(signal(code, label, gestureScore, "inferencia"));
+      if (condition && !hand.parcial && !hand.rastreio.recuperado && hand.rastreio.estabilidade >= 0.25) hand.gestos.push(signal(code, label, gestureScore, "inferencia"));
     };
     add("mao_aberta", "Mão aberta", hand.dedos_estendidos === 5);
     add("punho_fechado", "Punho fechado", hand.dedos_estendidos === 0);
