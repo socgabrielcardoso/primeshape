@@ -106,3 +106,7 @@ test("Reject collinear hand contour proposals", () => {
   assert.equal(quadrilateral([[0,0],[50,0],[100,0],[150,0]]),null);
 });
 
+test("Reject subpixel quad edges as unreliable", () => {
+  assert.equal(quadrilateral(quad(.25,.25)),null);
+});
+
