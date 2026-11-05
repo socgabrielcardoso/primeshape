@@ -114,3 +114,7 @@ test("Avoid false straight-finger classification for zero-length vectors", () =>
   assert.equal(angle([0,0],[0,0],[10,10]),0);
 });
 
+test("Avoid invalid detection scores from nonfinite estimates", () => {
+  assert.equal(clamp(NaN),0); assert.equal(clamp(Infinity),0);
+});
+
