@@ -1,7 +1,7 @@
 export const clamp = value => Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 0;
 export const distance = (a, b) => Math.hypot(...a.map((value, i) => value - b[i]));
 export const ramp = (value, low, high) => high > low ? clamp((value - low) / (high - low)) : (value >= high ? 1 : 0);
-export const point = p => [p.x, p.y, p.z || 0];
+export const point = p => [p?.x, p?.y, p?.z ?? 0];
 export function angle(a, b, c) {
   const u = a.map((value, i) => value - b[i]);
   const v = c.map((value, i) => value - b[i]);
