@@ -134,3 +134,7 @@ test("Reject zero-width input frames", () => {
   assert.deepEqual(classifyHandShapes(twoHands(),0,480),[]); assert.deepEqual(analyzeHands(null,0,480),[]);
 });
 
+test("Reject invalid frame heights", () => {
+  assert.deepEqual(classifyHandShapes(twoHands(),640,-1),[]); assert.deepEqual(analyzeHands(null,640,-1),[]);
+});
+
