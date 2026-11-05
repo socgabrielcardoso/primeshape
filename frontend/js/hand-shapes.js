@@ -3,7 +3,7 @@ import { angle, bounds, distance, signal } from "./browser/geometry.js";
 export const HAND_SHAPES = ["Triângulo", "Quadrado", "Retângulo", "Losango", "Trapézio", "Paralelogramo", "Quadrilátero", "Círculo", "Oval"];
 const average = points => [0,1].map(axis => points.reduce((sum,p) => sum+p[axis],0)/points.length);
 const area = points => Math.abs(points.reduce((sum,p,i) => { const q=points[(i+1)%points.length]; return sum+p[0]*q[1]-q[0]*p[1]; },0))/2;
-const visible = p => p && p.slice(0,2).every(value => Number.isFinite(value) && value>=0 && value<=1);
+const visible = p => Array.isArray(p) && p.length >= 2 && p.slice(0,2).every(value => Number.isFinite(value) && value>=0 && value<=1);
 const clockwise = points => {
   const center=average(points);
   return [...points].sort((a,b) => Math.atan2(a[1]-center[1],a[0]-center[0])-Math.atan2(b[1]-center[1],b[0]-center[0]));
