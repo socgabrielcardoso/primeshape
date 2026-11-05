@@ -152,6 +152,7 @@ export class HandTracker {
       return { landmarks: [], worldLandmarks: [], handedness: [], handednesses: [], trackingMetadata: [], detectedCount: 0 };
     }
     const detections = this.detections(result);
+    this.tracks = this.tracks.filter(track => timestamp >= track.lastSeen && timestamp - track.lastSeen <= this.holdMs);
     const assignedTracks = new Set();
     const assignedDetections = new Set();
     const pairs = [];
