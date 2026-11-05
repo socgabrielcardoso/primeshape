@@ -86,3 +86,7 @@ test("Reject underspecified triangles from quad classification", () => {
   assert.equal(quadrilateral([[0,0],[100,0],[50,80]]),null);
 });
 
+test("Reject five-sided candidates from quad classification", () => {
+  assert.equal(quadrilateral([[0,0],[100,0],[120,70],[50,130],[-20,70]]),null);
+});
+
