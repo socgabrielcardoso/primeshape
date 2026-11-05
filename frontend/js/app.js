@@ -223,12 +223,13 @@ byId("engineSelect").addEventListener("change", event => {
 document.addEventListener("keydown", event => {
   if (event.key === "Escape" && !byId("detailPanel").hidden) toggleDetails(false);
   if (event.code !== "Space" || event.repeat) return;
-  if (event.target.closest("button, input, select, summary, a")) return;
+  if (event.target.closest("button, input, select, textarea, summary, a, [contenteditable]")) return;
   event.preventDefault();
   if (active || starting) stop();
   else start();
 });
 document.addEventListener("visibilitychange", () => { if (document.hidden && (active || starting)) stop("Câmera pausada ao sair da aba. Clique em iniciar para retomar."); });
+window.addEventListener("pagehide", () => { if (active || starting) stop("Câmera encerrada ao sair da página."); });
 window.addEventListener("offline", () => {
   if (!active) status("SEM CONEXÃO", "A câmera continua local, mas o primeiro carregamento dos modelos pode exigir internet.");
 });
