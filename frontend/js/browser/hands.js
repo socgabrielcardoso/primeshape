@@ -12,6 +12,7 @@ export function analyzeHands(result, width, height) {
     if (!Array.isArray(landmarks) || landmarks.length !== 21 || !Array.isArray(result?.worldLandmarks?.[i]) || result.worldLandmarks[i].length !== 21) return [];
     const points = landmarks.map(point);
     const world = result.worldLandmarks[i].map(point);
+    if (![...points, ...world].every(p => p.every(Number.isFinite))) return [];
     const projected = points.map(p => [p[0] * width, p[1] * height]);
     const palm = Math.max(distance(world[0], world[9]), 1e-6);
     const fingers = FINGERS.map(([nome, base, joint, distal, tip]) => {
