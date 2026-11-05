@@ -10,6 +10,7 @@ const clockwise = points => {
 };
 
 function describe(hand, width, height) {
+  if (hand?.rastreio?.recuperado) return null;
   if (!hand?.pontos || hand.pontos.length < 21 || ![0,4,5,8,9,13,17].every(i => visible(hand.pontos[i]))) return null;
   const pixels=hand.pontos.map(p => [p[0]*width,p[1]*height]);
   const index=pixels[8],thumb=pixels[4];
