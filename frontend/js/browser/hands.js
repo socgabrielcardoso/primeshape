@@ -36,7 +36,7 @@ export function analyzeHands(result, width, height) {
       lado: cameraSide,
       lado_camera: cameraSide,
       lado_modelo: modelSide,
-      score_lateralidade: side.score || 0,
+      score_lateralidade: clamp(Number(side.score) || 0),
       rastreio: {
         id: tracking.id ?? null,
         recuperado: Boolean(tracking.recuperado),
