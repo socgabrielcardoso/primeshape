@@ -138,3 +138,7 @@ test("Reject invalid frame heights", () => {
   assert.deepEqual(classifyHandShapes(twoHands(),640,-1),[]); assert.deepEqual(analyzeHands(null,640,-1),[]);
 });
 
+test("Ignore malformed landmark arrays", () => {
+  assert.deepEqual(classifyHandShapes([{pontos:[[.5,.5,0]]}],640,480),[]);
+});
+
