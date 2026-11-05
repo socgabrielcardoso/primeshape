@@ -84,7 +84,7 @@ export class HandShapeTracker {
   reset() { this.previous=[];this.lastAt=0;this.labels=[]; }
   update(hands,width,height,now) {
     if (!Number.isFinite(now) || now < this.lastAt) this.reset();
-    const available=[...this.previous];
+    const available=now-this.lastAt>600 ? [] : [...this.previous];
     const smoothed=(Array.isArray(hands) ? hands : []).filter(hand => hand?.pontos?.length >= 21 && hand.pontos.every(visible)).map(hand=>{
       const center=average([0,5,9,13,17].map(i=>hand.pontos[i]));
       let match=-1,best=Infinity;
