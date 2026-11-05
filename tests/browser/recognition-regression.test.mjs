@@ -186,3 +186,7 @@ test("Remove expired ghost hands to admit fresh detections", () => {
   const t=new HandTracker({holdMs:100});assert.equal(t.update(rawHand(.2),0).trackingMetadata[0].id,1);assert.equal(t.update(rawHand(.8),150).trackingMetadata[0].id,2);
 });
 
+test("Discard nonfinite timestamps without retaining stale tracks", () => {
+  const t=new HandTracker();t.update(rawHand(.4),0);assert.equal(t.update(rawHand(.4),NaN).landmarks.length,0);assert.equal(t.tracks.length,0);
+});
+
