@@ -78,3 +78,7 @@ test("Reject missing quadrilateral proposals", () => {
   assert.equal(quadrilateral(null),null);
 });
 
+test("Reject empty contour arrays", () => {
+  assert.equal(quadrilateral([]),null);
+});
+
