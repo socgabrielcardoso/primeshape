@@ -3,13 +3,16 @@ import { angle, bounds, clamp, distance, point, signal } from "./geometry.js";
 const FINGERS = [["polegar",1,2,3,4],["indicador",5,6,7,8],["médio",9,10,11,12],["anelar",13,14,15,16],["mínimo",17,18,19,20]];
 
 export function cameraSideFromCenter(centerX) {
-  return centerX <= 0.5 ? "Esquerda" : "Direita";
+  return !Number.isFinite(centerX) ? "Indeterminada" : centerX <= 0.5 ? "Esquerda" : "Direita";
 }
 
 export function analyzeHands(result, width, height) {
-  return result.landmarks.map((landmarks, i) => {
+  if (![width, height].every(value => Number.isFinite(value) && value > 0)) return [];
+  return (Array.isArray(result?.landmarks) ? result.landmarks : []).flatMap((landmarks, i) => {
+    if (!Array.isArray(landmarks) || landmarks.length !== 21 || !Array.isArray(result?.worldLandmarks?.[i]) || result.worldLandmarks[i].length !== 21) return [];
     const points = landmarks.map(point);
     const world = result.worldLandmarks[i].map(point);
+    if (![...points, ...world].every(p => p.every(Number.isFinite))) return [];
     const projected = points.map(p => [p[0] * width, p[1] * height]);
     const palm = Math.max(distance(world[0], world[9]), 1e-6);
     const fingers = FINGERS.map(([nome, base, joint, distal, tip]) => {
@@ -33,7 +36,7 @@ export function analyzeHands(result, width, height) {
       lado: cameraSide,
       lado_camera: cameraSide,
       lado_modelo: modelSide,
-      score_lateralidade: side.score || 0,
+      score_lateralidade: clamp(Number(side.score) || 0),
       rastreio: {
         id: tracking.id ?? null,
         recuperado: Boolean(tracking.recuperado),
@@ -51,7 +54,7 @@ export function analyzeHands(result, width, height) {
     const pinch = distance(world[4], world[8]) / palm;
     const gestureScore = Math.min(0.85, Math.max(0.55, side.score || 0.55));
     const add = (code, label, condition) => {
-      if (condition && !hand.parcial && !hand.rastreio.recuperado) hand.gestos.push(signal(code, label, gestureScore, "inferencia"));
+      if (condition && !hand.parcial && !hand.rastreio.recuperado && hand.rastreio.estabilidade >= 0.25) hand.gestos.push(signal(code, label, gestureScore, "inferencia"));
     };
     add("mao_aberta", "Mão aberta", hand.dedos_estendidos === 5);
     add("punho_fechado", "Punho fechado", hand.dedos_estendidos === 0);

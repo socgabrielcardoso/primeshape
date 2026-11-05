@@ -3,22 +3,25 @@ import { angle, bounds, distance, signal } from "./browser/geometry.js";
 export const HAND_SHAPES = ["Triângulo", "Quadrado", "Retângulo", "Losango", "Trapézio", "Paralelogramo", "Quadrilátero", "Círculo", "Oval"];
 const average = points => [0,1].map(axis => points.reduce((sum,p) => sum+p[axis],0)/points.length);
 const area = points => Math.abs(points.reduce((sum,p,i) => { const q=points[(i+1)%points.length]; return sum+p[0]*q[1]-q[0]*p[1]; },0))/2;
-const visible = p => p && p.slice(0,2).every(value => Number.isFinite(value) && value>=0 && value<=1);
+const visible = p => Array.isArray(p) && p.length >= 2 && p.slice(0,2).every(value => Number.isFinite(value) && value>=0 && value<=1);
 const clockwise = points => {
   const center=average(points);
   return [...points].sort((a,b) => Math.atan2(a[1]-center[1],a[0]-center[0])-Math.atan2(b[1]-center[1],b[0]-center[0]));
 };
 
 function describe(hand, width, height) {
-  if (!hand?.pontos || hand.pontos.length < 21 || ![0,4,5,8,9,13,17].every(i => visible(hand.pontos[i]))) return null;
+  if (hand?.rastreio?.recuperado) return null;
+  if (!hand?.pontos || hand.pontos.length < 21 || ![0,2,3,4,5,6,7,8,9,13,17].every(i => visible(hand.pontos[i]))) return null;
   const pixels=hand.pontos.map(p => [p[0]*width,p[1]*height]);
   const index=pixels[8],thumb=pixels[4];
   return { pixels,index,thumb,center:average([0,5,9,13,17].map(i=>pixels[i])),palm:Math.max(distance(pixels[5],pixels[17]),12),span:distance(index,thumb),top:index[1]<=thumb[1]?index:thumb,bottom:index[1]<=thumb[1]?thumb:index };
 }
 
 export function quadrilateral(points) {
+  if (!Array.isArray(points) || points.length !== 4 || !points.every(p => Array.isArray(p) && p.length >= 2 && p.slice(0,2).every(Number.isFinite))) return null;
   const p=clockwise(points);
   const sides=p.map((v,i)=>distance(v,p[(i+1)%4]));
+  if (Math.min(...sides) < 2 || area(p) < 8) return null;
   const angles=p.map((v,i)=>angle(p[(i+3)%4],v,p[(i+1)%4]));
   if (Math.min(...angles)<12 || Math.max(...angles)>170) return null;
   const rightError=angles.reduce((sum,a)=>sum+Math.abs(a-90),0)/4;
@@ -40,6 +43,7 @@ export function quadrilateral(points) {
 }
 
 function polygon(points,width,height) {
+  if (!Array.isArray(points) || ![3,4].includes(points.length) || !points.every(p => Array.isArray(p) && p.slice(0,2).every(Number.isFinite))) return null;
   const ordered=clockwise(points);
   const box=bounds(ordered);
   if (area(ordered)<Math.max(90,width*height*0.00065) || Math.min(box[2],box[3])<8) return null;
@@ -57,6 +61,7 @@ function ellipse(hands,width,height) {
 }
 
 export function classifyHandShapes(hands,width,height) {
+  if (!Array.isArray(hands)) return [];
   if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) return [];
   const descriptions=hands.map(h=>describe(h,width,height)).filter(Boolean).sort((a,b)=>a.center[0]-b.center[0]);
   if (descriptions.length===2) {
@@ -78,13 +83,15 @@ export class HandShapeTracker {
   constructor() { this.reset(); }
   reset() { this.previous=[];this.lastAt=0;this.labels=[]; }
   update(hands,width,height,now) {
-    const available=[...this.previous];
-    const smoothed=hands.filter(hand => hand?.pontos?.length >= 21 && hand.pontos.every(visible)).map(hand=>{
+    if (!Number.isFinite(now) || now < this.lastAt) this.reset();
+    const available=now-this.lastAt>600 ? [] : [...this.previous];
+    const smoothed=(Array.isArray(hands) ? hands : []).filter(hand => hand?.pontos?.length >= 21 && hand.pontos.every(visible)).map(hand=>{
       const center=average([0,5,9,13,17].map(i=>hand.pontos[i]));
       let match=-1,best=Infinity;
       available.forEach((old,i)=>{
         const oldIdentity=old.lado_modelo||old.lado,identity=hand.lado_modelo||hand.lado;
-        const d=distance(center,average([0,5,9,13,17].map(j=>old.pontos[j])))+(oldIdentity!==identity?0.03:0);
+        const idMismatch = hand.rastreio?.id != null && old.rastreio?.id != null && hand.rastreio.id !== old.rastreio.id;
+        const d=distance(center,average([0,5,9,13,17].map(j=>old.pontos[j])))+(oldIdentity!==identity?0.03:0)+(idMismatch?1:0);
         if (d<best) { best=d;match=i; }
       });
       const old=match>=0?available.splice(match,1)[0]:null;

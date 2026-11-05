@@ -36,7 +36,7 @@ jobs:
         working-directory: tests/browser
         run: npm ci
       - name: Validar geometria e expressões aparentes
-        run: node --test tests/browser/logic.test.mjs
+        run: node --test tests/browser/logic.test.mjs tests/browser/recognition-regression.test.mjs
       - name: Instalar navegador de validação
         working-directory: tests/browser
         run: npx playwright install chromium

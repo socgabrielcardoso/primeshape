@@ -1,0 +1,192 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { quadrilateral, classifyHandShapes, HandShapeTracker } from "../../frontend/js/hand-shapes.js";
+import { HandTracker } from "../../frontend/js/browser/hand-tracking.js";
+import { cameraSideFromCenter, analyzeHands } from "../../frontend/js/browser/hands.js";
+import { angle, bounds, clamp, ramp } from "../../frontend/js/browser/geometry.js";
+
+const quad = (sx, sy, degrees = 0, dx = 0, dy = 0) => {
+  const t = degrees * Math.PI / 180;
+  return [[-sx,-sy],[sx,-sy],[sx,sy],[-sx,sy]].map(([x,y]) => [
+    x*Math.cos(t)-y*Math.sin(t)+dx, x*Math.sin(t)+y*Math.cos(t)+dy
+  ]);
+};
+
+const shapeHand = (index, thumb, center, width=640, height=480) => {
+  const points=Array.from({length:21},()=>[center[0]/width,center[1]/height,0]);
+  points[5]=[(center[0]-30)/width,center[1]/height,0];
+  points[17]=[(center[0]+30)/width,center[1]/height,0];
+  points[8]=[index[0]/width,index[1]/height,0];
+  points[4]=[thumb[0]/width,thumb[1]/height,0];
+  return { pontos:points, lado:center[0]<width/2?"Esquerda":"Direita" };
+};
+
+const twoHands=()=>[
+  shapeHand([179,96],[179,384],[141,240]),
+  shapeHand([461,96],[461,384],[499,240])
+];
+
+const rawHand=(centerX=.45,side="Left",score=.95)=>{
+  const landmarks=Array.from({length:21},(_,i)=>({
+    x:centerX + ((i%5)-2)*0.01, y:0.5+(Math.floor(i/5)-2)*0.01, z:0
+  }));
+  const worldLandmarks=landmarks.map(p=>({x:(p.x-centerX)*.5,y:(p.y-.5)*.5,z:0}));
+  return {landmarks:[landmarks],worldLandmarks:[worldLandmarks],handednesses:[[{categoryName:side,score}]]};
+};
+
+test("Recognize axis-aligned squares", () => {
+  assert.equal(quadrilateral(quad(75,75)),"Quadrado");
+});
+
+test("Recognize squares despite 17-degree camera rotation", () => {
+  assert.equal(quadrilateral(quad(75,75,17)),"Quadrado");
+});
+
+test("Recognize squares at reduced scale", () => {
+  assert.equal(quadrilateral(quad(8,8,45)),"Quadrado");
+});
+
+test("Recognize rectangular finger contours", () => {
+  assert.equal(quadrilateral(quad(115,50)),"Retângulo");
+});
+
+test("Recognize rectangles after 33-degree rotation", () => {
+  assert.equal(quadrilateral(quad(115,50,33)),"Retângulo");
+});
+
+test("Recognize translated rectangles without shifting class", () => {
+  assert.equal(quadrilateral(quad(115,50,0,375,-241)),"Retângulo");
+});
+
+test("Recognize rotated rhombi as distinct from rectangles", () => {
+  assert.equal(quadrilateral([[300,50],[500,200],[300,350],[100,200]]),"Losango");
+});
+
+test("Recognize trapezoids formed by asymmetric fingers", () => {
+  assert.equal(quadrilateral([[200,100],[400,100],[500,350],[100,350]]),"Trapézio");
+});
+
+test("Recognize slanted parallelograms", () => {
+  assert.equal(quadrilateral([[250,100],[550,100],[400,300],[100,300]]),"Paralelogramo");
+});
+
+test("Keep irregular four-sided shapes as quadrilaterals", () => {
+  assert.equal(quadrilateral([[100,100],[500,50],[520,400],[300,300]]),"Quadrilátero");
+});
+
+test("Reject missing quadrilateral proposals", () => {
+  assert.equal(quadrilateral(null),null);
+});
+
+test("Reject empty contour arrays", () => {
+  assert.equal(quadrilateral([]),null);
+});
+
+test("Reject underspecified triangles from quad classification", () => {
+  assert.equal(quadrilateral([[0,0],[100,0],[50,80]]),null);
+});
+
+test("Reject five-sided candidates from quad classification", () => {
+  assert.equal(quadrilateral([[0,0],[100,0],[120,70],[50,130],[-20,70]]),null);
+});
+
+test("Reject vertices containing NaN", () => {
+  assert.equal(quadrilateral([[0,0],[100,0],[100,NaN],[0,100]]),null);
+});
+
+test("Reject vertices containing infinity", () => {
+  assert.equal(quadrilateral([[0,0],[100,0],[Infinity,100],[0,100]]),null);
+});
+
+test("Reject completely collapsed polygons", () => {
+  assert.equal(quadrilateral([[20,20],[20,20],[20,20],[20,20]]),null);
+});
+
+test("Reject collinear hand contour proposals", () => {
+  assert.equal(quadrilateral([[0,0],[50,0],[100,0],[150,0]]),null);
+});
+
+test("Reject subpixel quad edges as unreliable", () => {
+  assert.equal(quadrilateral(quad(.25,.25)),null);
+});
+
+test("Avoid false straight-finger classification for zero-length vectors", () => {
+  assert.equal(angle([0,0],[0,0],[10,10]),0);
+});
+
+test("Avoid invalid detection scores from nonfinite estimates", () => {
+  assert.equal(clamp(NaN),0); assert.equal(clamp(Infinity),0);
+});
+
+test("Keep empty contour boxes finite", () => {
+  assert.deepEqual(bounds([]),[0,0,0,0]); assert.equal(ramp(.5,.4,.4),1);
+});
+
+test("Mark missing camera coordinates as indeterminate", () => {
+  assert.equal(cameraSideFromCenter(NaN),"Indeterminada");
+});
+
+test("Ignore null hand collections without throwing", () => {
+  assert.deepEqual(classifyHandShapes(null,640,480),[]); assert.deepEqual(analyzeHands(null,640,480),[]);
+});
+
+test("Reject zero-width input frames", () => {
+  assert.deepEqual(classifyHandShapes(twoHands(),0,480),[]); assert.deepEqual(analyzeHands(null,0,480),[]);
+});
+
+test("Reject invalid frame heights", () => {
+  assert.deepEqual(classifyHandShapes(twoHands(),640,-1),[]); assert.deepEqual(analyzeHands(null,640,-1),[]);
+});
+
+test("Ignore malformed landmark arrays", () => {
+  assert.deepEqual(classifyHandShapes([{pontos:[[.5,.5,0]]}],640,480),[]);
+});
+
+test("Do not hallucinate shapes from recovered hands", () => {
+  const [a,b]=twoHands(); a.rastreio={recuperado:true}; assert.deepEqual(classifyHandShapes([a,b],640,480),[]);
+});
+
+test("Recognize geometric shapes with two simultaneous hands", () => {
+  assert.equal(classifyHandShapes(twoHands(),640,480)[0]?.rotulo,"Quadrado");
+});
+
+test("Keep bimanual recognition independent of detector order", () => {
+  assert.equal(classifyHandShapes([...twoHands()].reverse(),640,480)[0]?.rotulo,"Quadrado");
+});
+
+test("Keep stable shape labels when two hand detections swap order", () => {
+  const t=new HandShapeTracker(); const hands=twoHands(); assert.equal(t.update(hands,640,480,0).shapes[0]?.rotulo,"Quadrado"); assert.equal(t.update([...hands].reverse(),640,480,80).shapes[0]?.rotulo,"Quadrado");
+});
+
+test("Immediately clear shape labels after both hands disappear", () => {
+  const t=new HandShapeTracker(); t.update(twoHands(),640,480,0); assert.deepEqual(t.update([],640,480,100).shapes,[]);
+});
+
+test("Reject incomplete 2D MediaPipe landmark sets", () => {
+  const t=new HandTracker();const r=rawHand();r.landmarks[0].pop();assert.equal(t.update(r,0).landmarks.length,0);
+});
+
+test("Reject incomplete 3D MediaPipe landmark sets", () => {
+  const t=new HandTracker();const r=rawHand();r.worldLandmarks[0].pop();assert.equal(t.update(r,0).landmarks.length,0);
+});
+
+test("Reject NaN in the 2D joint graph", () => {
+  const t=new HandTracker();const r=rawHand();r.landmarks[0][8].x=NaN;assert.equal(t.update(r,0).landmarks.length,0);
+});
+
+test("Reject NaN in the 3D joint graph", () => {
+  const t=new HandTracker();const r=rawHand();r.worldLandmarks[0][8].z=NaN;assert.equal(t.update(r,0).landmarks.length,0);
+});
+
+test("Reject implausibly out-of-frame landmarks", () => {
+  const t=new HandTracker();const r=rawHand();r.landmarks[0][8].x=1.5;assert.equal(t.update(r,0).landmarks.length,0);
+});
+
+test("Remove expired ghost hands to admit fresh detections", () => {
+  const t=new HandTracker({holdMs:100});assert.equal(t.update(rawHand(.2),0).trackingMetadata[0].id,1);assert.equal(t.update(rawHand(.8),150).trackingMetadata[0].id,2);
+});
+
+test("Discard nonfinite timestamps without retaining stale tracks", () => {
+  const t=new HandTracker();t.update(rawHand(.4),0);assert.equal(t.update(rawHand(.4),NaN).landmarks.length,0);assert.equal(t.tracks.length,0);
+});
+

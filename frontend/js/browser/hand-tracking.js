@@ -1,7 +1,7 @@
 const PALM = [0, 5, 9, 13, 17];
 
 const clamp = (value, low = 0, high = 1) => Math.max(low, Math.min(high, value));
-const point = value => [Number(value?.x) || 0, Number(value?.y) || 0, Number(value?.z) || 0];
+const point = value => [Number(value?.x), Number(value?.y), value?.z == null ? 0 : Number(value.z)];
 const toObject = value => ({ x: value[0], y: value[1], z: value[2] });
 const distance2 = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
 
@@ -19,12 +19,12 @@ function mixPoints(previous, next, alpha) {
 }
 
 function validPoints(points) {
-  return Array.isArray(points) && points.length === 21 && points.every(p => p.length >= 3 && p.every(Number.isFinite));
+  return Array.isArray(points) && points.length === 21 && points.every(p => Array.isArray(p) && p.length >= 3 && p.every(Number.isFinite));
 }
 
 export class HandTracker {
   constructor(options = {}) {
-    this.holdMs = options.holdMs ?? 240;
+    this.holdMs = Math.max(0, Number.isFinite(options.holdMs) ? options.holdMs : 240);
     this.matchGate = options.matchGate ?? 3.0;
     this.jumpBase = options.jumpBase ?? 0.16;
     this.jumpPerSecond = options.jumpPerSecond ?? 0.95;
@@ -39,20 +39,21 @@ export class HandTracker {
   }
 
   detections(result) {
-    const landmarks = result?.landmarks || [];
-    const world = result?.worldLandmarks || [];
-    const handedness = result?.handedness || result?.handednesses || [];
+    const landmarks = Array.isArray(result?.landmarks) ? result.landmarks : [];
+    const world = Array.isArray(result?.worldLandmarks) ? result.worldLandmarks : [];
+    const handedness = Array.isArray(result?.handedness) ? result.handedness : Array.isArray(result?.handednesses) ? result.handednesses : [];
     const detections = [];
     for (let index = 0; index < landmarks.length; index++) {
-      const points = landmarks[index]?.map(point) || [];
-      const worldPoints = world[index]?.map(point) || [];
+      const points = Array.isArray(landmarks[index]) ? landmarks[index].map(point) : [];
+      const worldPoints = Array.isArray(world[index]) ? world[index].map(point) : [];
       if (!validPoints(points) || !validPoints(worldPoints)) continue;
-      const side = handedness[index]?.[0] || { categoryName: "Unknown", score: 0 };
+      if (points.some(p => p[0] < -0.25 || p[0] > 1.25 || p[1] < -0.25 || p[1] > 1.25)) continue;
+      const side = (Array.isArray(handedness[index]) ? handedness[index][0] : null) || { categoryName: "Unknown", score: 0 };
       detections.push({
         points,
         world: worldPoints,
         side: side.categoryName || "Unknown",
-        sideScore: Number(side.score) || 0
+        sideScore: clamp(Number(side.score) || 0)
       });
     }
     return detections;
@@ -146,7 +147,12 @@ export class HandTracker {
   }
 
   update(result, timestamp) {
+    if (!Number.isFinite(timestamp)) {
+      this.reset();
+      return { landmarks: [], worldLandmarks: [], handedness: [], handednesses: [], trackingMetadata: [], detectedCount: 0 };
+    }
     const detections = this.detections(result);
+    this.tracks = this.tracks.filter(track => timestamp >= track.lastSeen && timestamp - track.lastSeen <= this.holdMs);
     const assignedTracks = new Set();
     const assignedDetections = new Set();
     const pairs = [];

@@ -154,12 +154,13 @@ self.onmessage=async ({data})=>{
     if (data.type==="init") { await initialize();postMessage({ id:data.id,data:{ pronto:true } });return; }
     if (!engine) throw new Error("Os detectores ainda estão carregando.");
     const started=performance.now(),image=data.image;
+    if (!image || !Number.isInteger(image.width) || !Number.isInteger(image.height) || image.width <= 0 || image.height <= 0 || image.data?.length !== image.width * image.height * 4) throw new Error("Quadro de câmera inválido.");
     if (engine.canvas.width!==image.width || engine.canvas.height!==image.height) {
       engine.canvas.width=image.width;
       engine.canvas.height=image.height;
     }
     engine.context.putImageData(image,0,0);
-    const timestamp=Math.max(data.timestamp,engine.lastTimestamp+1);
+    const timestamp=Math.max(Number.isFinite(data.timestamp) ? data.timestamp : performance.now(),engine.lastTimestamp+1);
     engine.lastTimestamp=timestamp;
     const handInput=compensateForHands(image);
     const rawHands=await detect(engine.hands,handInput,timestamp);
