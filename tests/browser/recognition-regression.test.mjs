@@ -58,3 +58,7 @@ test("Recognize translated rectangles without shifting class", () => {
   assert.equal(quadrilateral(quad(115,50,0,375,-241)),"Retângulo");
 });
 
+test("Recognize rotated rhombi as distinct from rectangles", () => {
+  assert.equal(quadrilateral([[300,50],[500,200],[300,350],[100,200]]),"Losango");
+});
+
