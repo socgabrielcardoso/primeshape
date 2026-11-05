@@ -61,6 +61,7 @@ function ellipse(hands,width,height) {
 }
 
 export function classifyHandShapes(hands,width,height) {
+  if (!Array.isArray(hands)) return [];
   if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) return [];
   const descriptions=hands.map(h=>describe(h,width,height)).filter(Boolean).sort((a,b)=>a.center[0]-b.center[0]);
   if (descriptions.length===2) {
