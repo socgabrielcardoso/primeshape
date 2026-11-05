@@ -41,7 +41,7 @@ export class HandTracker {
   detections(result) {
     const landmarks = Array.isArray(result?.landmarks) ? result.landmarks : [];
     const world = Array.isArray(result?.worldLandmarks) ? result.worldLandmarks : [];
-    const handedness = result?.handedness || result?.handednesses || [];
+    const handedness = Array.isArray(result?.handedness) ? result.handedness : Array.isArray(result?.handednesses) ? result.handednesses : [];
     const detections = [];
     for (let index = 0; index < landmarks.length; index++) {
       const points = landmarks[index]?.map(point) || [];
