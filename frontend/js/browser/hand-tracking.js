@@ -44,7 +44,7 @@ export class HandTracker {
     const handedness = Array.isArray(result?.handedness) ? result.handedness : Array.isArray(result?.handednesses) ? result.handednesses : [];
     const detections = [];
     for (let index = 0; index < landmarks.length; index++) {
-      const points = landmarks[index]?.map(point) || [];
+      const points = Array.isArray(landmarks[index]) ? landmarks[index].map(point) : [];
       const worldPoints = world[index]?.map(point) || [];
       if (!validPoints(points) || !validPoints(worldPoints)) continue;
       const side = handedness[index]?.[0] || { categoryName: "Unknown", score: 0 };
