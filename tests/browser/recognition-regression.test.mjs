@@ -162,3 +162,7 @@ test("Immediately clear shape labels after both hands disappear", () => {
   const t=new HandShapeTracker(); t.update(twoHands(),640,480,0); assert.deepEqual(t.update([],640,480,100).shapes,[]);
 });
 
+test("Reject incomplete 2D MediaPipe landmark sets", () => {
+  const t=new HandTracker();const r=rawHand();r.landmarks[0].pop();assert.equal(t.update(r,0).landmarks.length,0);
+});
+
