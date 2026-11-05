@@ -74,3 +74,7 @@ test("Keep irregular four-sided shapes as quadrilaterals", () => {
   assert.equal(quadrilateral([[100,100],[500,50],[520,400],[300,300]]),"Quadrilátero");
 });
 
+test("Reject missing quadrilateral proposals", () => {
+  assert.equal(quadrilateral(null),null);
+});
+
