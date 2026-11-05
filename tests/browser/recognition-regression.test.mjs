@@ -70,3 +70,7 @@ test("Recognize slanted parallelograms", () => {
   assert.equal(quadrilateral([[250,100],[550,100],[400,300],[100,300]]),"Paralelogramo");
 });
 
+test("Keep irregular four-sided shapes as quadrilaterals", () => {
+  assert.equal(quadrilateral([[100,100],[500,50],[520,400],[300,300]]),"Quadrilátero");
+});
+
