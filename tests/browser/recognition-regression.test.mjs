@@ -146,3 +146,7 @@ test("Do not hallucinate shapes from recovered hands", () => {
   const [a,b]=twoHands(); a.rastreio={recuperado:true}; assert.deepEqual(classifyHandShapes([a,b],640,480),[]);
 });
 
+test("Recognize geometric shapes with two simultaneous hands", () => {
+  assert.equal(classifyHandShapes(twoHands(),640,480)[0]?.rotulo,"Quadrado");
+});
+
