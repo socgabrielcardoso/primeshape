@@ -158,3 +158,7 @@ test("Keep stable shape labels when two hand detections swap order", () => {
   const t=new HandShapeTracker(); const hands=twoHands(); assert.equal(t.update(hands,640,480,0).shapes[0]?.rotulo,"Quadrado"); assert.equal(t.update([...hands].reverse(),640,480,80).shapes[0]?.rotulo,"Quadrado");
 });
 
+test("Immediately clear shape labels after both hands disappear", () => {
+  const t=new HandShapeTracker(); t.update(twoHands(),640,480,0); assert.deepEqual(t.update([],640,480,100).shapes,[]);
+});
+
