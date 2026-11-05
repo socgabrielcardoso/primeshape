@@ -98,3 +98,7 @@ test("Reject vertices containing infinity", () => {
   assert.equal(quadrilateral([[0,0],[100,0],[Infinity,100],[0,100]]),null);
 });
 
+test("Reject completely collapsed polygons", () => {
+  assert.equal(quadrilateral([[20,20],[20,20],[20,20],[20,20]]),null);
+});
+
