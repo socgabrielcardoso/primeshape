@@ -85,7 +85,7 @@ export class ShapeDetector {
       const detected=[],visited=[];
       for (const contour of candidates.slice(0,70)) {
         const area=cv.contourArea(contour),rect=cv.boundingRect(contour),box=[rect.x,rect.y,rect.width,rect.height];
-        if (area < 450 || area > width*height*0.85 || Math.min(rect.width,rect.height)<20) continue;
+        if (area < Math.max(100, width*height*0.001) || area > width*height*0.85 || Math.min(rect.width,rect.height)<20) continue;
         if (rect.x<=1 || rect.y<=1 || rect.x+rect.width>=width-1 || rect.y+rect.height>=height-1) continue;
         if (visited.some(b => overlap(box,b)>0.85) || blocked.some(b => overlap(box,b)>0.3)) continue;
         const answer=this.classify(contour); if (!answer) continue;
