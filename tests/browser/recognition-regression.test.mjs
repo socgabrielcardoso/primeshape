@@ -126,3 +126,7 @@ test("Mark missing camera coordinates as indeterminate", () => {
   assert.equal(cameraSideFromCenter(NaN),"Indeterminada");
 });
 
+test("Ignore null hand collections without throwing", () => {
+  assert.deepEqual(classifyHandShapes(null,640,480),[]); assert.deepEqual(analyzeHands(null,640,480),[]);
+});
+
