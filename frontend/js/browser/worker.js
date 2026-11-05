@@ -160,7 +160,7 @@ self.onmessage=async ({data})=>{
       engine.canvas.height=image.height;
     }
     engine.context.putImageData(image,0,0);
-    const timestamp=Math.max(data.timestamp,engine.lastTimestamp+1);
+    const timestamp=Math.max(Number.isFinite(data.timestamp) ? data.timestamp : performance.now(),engine.lastTimestamp+1);
     engine.lastTimestamp=timestamp;
     const handInput=compensateForHands(image);
     const rawHands=await detect(engine.hands,handInput,timestamp);
