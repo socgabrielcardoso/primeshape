@@ -72,3 +72,4 @@ test("bounds spans two positive points", () => { assert.deepEqual(bounds([[0,0],
 test("bounds spans negative and positive coordinates", () => { assert.deepEqual(bounds([[-5,-3],[1,2]]),[-5,-3,6,5]); });
 test("bounds does not depend on point order", () => { assert.deepEqual(bounds([[4,6],[0,0]]),[0,0,4,6]); });
 test("bounds encloses nonmonotonic point sets", () => { assert.deepEqual(bounds([[2,2],[-2,3],[4,-1]]),[-2,-1,6,4]); });
+test("bounds handles fractional dimensions", () => { {const [x,y,w,h]=bounds([[0.1,0.2],[0.4,0.8]]);near(x,0.1);near(y,0.2);near(w,0.3);near(h,0.6);} });
