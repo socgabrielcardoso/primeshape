@@ -15,8 +15,10 @@ export function angle(a, b, c) {
   return Math.acos(Math.max(-1, Math.min(1, u.reduce((sum, value, i) => sum + value * v[i], 0) / magnitude))) * 180 / Math.PI;
 }
 export function bounds(points) {
-  if (!points?.length) return [0, 0, 0, 0];
-  const xs = points.map(p => p[0]), ys = points.map(p => p[1]);
+  if (!Array.isArray(points) || !points.length) return [0, 0, 0, 0];
+  const valid = points.filter(p => Array.isArray(p) && Number.isFinite(p[0]) && Number.isFinite(p[1]));
+  if (!valid.length) return [0, 0, 0, 0];
+  const xs = valid.map(p => p[0]), ys = valid.map(p => p[1]);
   const x = Math.min(...xs), y = Math.min(...ys);
   return [x, y, Math.max(...xs) - x, Math.max(...ys) - y];
 }
