@@ -75,3 +75,4 @@ test("bounds encloses nonmonotonic point sets", () => { assert.deepEqual(bounds(
 test("bounds handles fractional dimensions", () => { {const [x,y,w,h]=bounds([[0.1,0.2],[0.4,0.8]]);near(x,0.1);near(y,0.2);near(w,0.3);near(h,0.6);} });
 test("bounds filters malformed points without losing valid ones", () => { assert.deepEqual(bounds([[NaN,2],[1,1],[3,4]]),[1,1,2,3]); });
 test("bounds returns zero area if all points are invalid", () => { assert.deepEqual(bounds([[NaN,0],[Infinity,0],[undefined,2]]),[0,0,0,0]); });
+test("bounds ignores a third coordinate", () => { assert.deepEqual(bounds([[0,0,100],[2,3,200]]),[0,0,2,3]); });
