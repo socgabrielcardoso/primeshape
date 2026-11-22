@@ -85,3 +85,4 @@ test("signal retains an intermediate confidence score", () => { assert.equal(sig
 test("signal sanitizes NaN confidence score", () => { assert.equal(signal('shape','Triangle',NaN).score,0); });
 test("signal accepts a custom classification type", () => { assert.equal(signal('shape','Triangle',0.8,'estado_aparente').tipo,'estado_aparente'); });
 test("signal includes supplied evidence entries", () => { assert.deepEqual(signal('shape','Triangle',0.8,'medicao',['camera','contour']).evidencias,['camera','contour']); });
+test("signal preserves code and human readable label", () => { {const s=signal('olhos_abertos','Olhos abertos');assert.equal(s.codigo,'olhos_abertos');assert.equal(s.rotulo,'Olhos abertos');} });
