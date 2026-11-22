@@ -35,3 +35,4 @@ test("ramp interpolates across negative thresholds", () => { assert.equal(ramp(-
 test("ramp handles fractional thresholds", () => { near(ramp(0.2, 0.1, 0.3), 0.5); });
 test("ramp accepts an equal threshold at the boundary", () => { assert.equal(ramp(5, 5, 5), 1); });
 test("ramp rejects values below an equal threshold", () => { assert.equal(ramp(4, 5, 5), 0); });
+test("ramp returns one for inverted thresholds above the high threshold", () => { assert.equal(ramp(10, 10, 0), 1); });
