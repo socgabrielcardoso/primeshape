@@ -24,3 +24,4 @@ test("distance supports three dimensional vectors", () => { assert.equal(distanc
 test("distance supports four dimensional vectors", () => { assert.equal(distance([0, 0, 0, 0], [1, 2, 2, 4]), 5); });
 test("distance is zero for identical finite vectors", () => { assert.equal(distance([1.5, -2, 7], [1.5, -2, 7]), 0); });
 test("distance is symmetric", () => { near(distance([2, -3], [-8, 5]), distance([-8, 5], [2, -3])); });
+test("distance is translation invariant", () => { near(distance([2, 1], [5, 9]), distance([102, -199], [105, -191])); });
