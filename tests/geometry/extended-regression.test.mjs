@@ -52,3 +52,4 @@ test("point preserves a missing y coordinate", () => { assert.deepEqual(point({x
 test("point preserves fractional coordinates", () => { assert.deepEqual(point({x:0.125,y:-0.5,z:0.25}), [0.125,-0.5,0.25]); });
 test("point ignores unrelated landmark metadata", () => { assert.deepEqual(point({x:1,y:2,z:3,visibility:0.9}), [1,2,3]); });
 test("angle detects orthogonal axes", () => { near(angle([1,0],[0,0],[0,1]),90); });
+test("angle reports a straight line", () => { near(angle([1,0],[0,0],[-1,0]),180); });
