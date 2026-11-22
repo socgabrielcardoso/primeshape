@@ -83,3 +83,4 @@ test("signal floors a negative confidence score", () => { assert.equal(signal('s
 test("signal caps an excessive confidence score", () => { assert.equal(signal('shape','Triangle',1.75).score,1); });
 test("signal retains an intermediate confidence score", () => { assert.equal(signal('shape','Triangle',0.42).score,0.42); });
 test("signal sanitizes NaN confidence score", () => { assert.equal(signal('shape','Triangle',NaN).score,0); });
+test("signal accepts a custom classification type", () => { assert.equal(signal('shape','Triangle',0.8,'estado_aparente').tipo,'estado_aparente'); });
