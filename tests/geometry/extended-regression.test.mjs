@@ -42,3 +42,4 @@ test("distance rejects empty vector pairs", () => { assert.equal(distance([], []
 test("distance rejects an infinite coordinate", () => { assert.equal(distance([Infinity, 0], [0, 0]), Infinity); });
 test("distance obeys triangle inequality", () => { assert.ok(distance([0, 0], [3, 4]) <= distance([0, 0], [3, 0]) + distance([3, 0], [3, 4])); });
 test("point converts a complete 3d landmark", () => { assert.deepEqual(point({x:1,y:2,z:3}), [1,2,3]); });
+test("point defaults missing depth to zero", () => { assert.deepEqual(point({x:1,y:2}), [1,2,0]); });
