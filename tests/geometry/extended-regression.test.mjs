@@ -8,3 +8,4 @@ const near = (a, b, epsilon = 1e-10) => assert.ok(Math.abs(a - b) <= epsilon, `E
 test("clamp bounds slight negative inputs", () => { assert.equal(clamp(-0.0001), 0); });
 test("clamp bounds large negative inputs", () => { assert.equal(clamp(-1000000), 0); });
 test("clamp preserves zero", () => { assert.equal(clamp(0), 0); });
+test("clamp preserves a small fraction", () => { assert.equal(clamp(0.125), 0.125); });
