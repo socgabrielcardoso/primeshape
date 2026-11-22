@@ -26,3 +26,4 @@ test("distance is zero for identical finite vectors", () => { assert.equal(dista
 test("distance is symmetric", () => { near(distance([2, -3], [-8, 5]), distance([-8, 5], [2, -3])); });
 test("distance is translation invariant", () => { near(distance([2, 1], [5, 9]), distance([102, -199], [105, -191])); });
 test("distance rejects dimension mismatch", () => { assert.equal(distance([1, 2], [1, 2, 3]), Infinity); });
+test("ramp starts at zero at its lower bound", () => { assert.equal(ramp(10, 10, 20), 0); });
