@@ -67,3 +67,4 @@ test("angle handles a zero length first ray", () => { assert.equal(angle([0,0],[
 test("angle rejects a nonfinite coordinate", () => { assert.equal(angle([Infinity,0],[0,0],[1,0]),0); });
 test("bounds handles an empty point collection", () => { assert.deepEqual(bounds([]),[0,0,0,0]); });
 test("bounds handles a null collection", () => { assert.deepEqual(bounds(null),[0,0,0,0]); });
+test("bounds handles a singleton point", () => { assert.deepEqual(bounds([[2,3]]),[2,3,0,0]); });
