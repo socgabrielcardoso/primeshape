@@ -55,3 +55,4 @@ test("angle detects orthogonal axes", () => { near(angle([1,0],[0,0],[0,1]),90);
 test("angle reports a straight line", () => { near(angle([1,0],[0,0],[-1,0]),180); });
 test("angle reports aligned rays as zero degrees", () => { near(angle([2,0],[0,0],[1,0]),0); });
 test("angle reports an acute forty five degree corner", () => { near(angle([1,0],[0,0],[1,1]),45); });
+test("angle reports an obtuse corner", () => { near(angle([1,0],[0,0],[-1,1]),135); });
