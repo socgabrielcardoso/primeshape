@@ -79,3 +79,4 @@ test("bounds ignores a third coordinate", () => { assert.deepEqual(bounds([[0,0,
 test("bounds accepts a vertical line with zero width", () => { assert.deepEqual(bounds([[2,-1],[2,5]]),[2,-1,0,6]); });
 test("bounds accepts a horizontal line with zero height", () => { assert.deepEqual(bounds([[-2,5],[4,5]]),[-2,5,6,0]); });
 test("signal assigns documented default properties", () => { assert.deepEqual(signal('shape','Triangle'),{codigo:'shape',rotulo:'Triangle',score:1,tipo:'medicao',evidencias:[]}); });
+test("signal floors a negative confidence score", () => { assert.equal(signal('shape','Triangle',-2).score,0); });
