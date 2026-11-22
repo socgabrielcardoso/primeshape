@@ -11,3 +11,4 @@ test("clamp preserves zero", () => { assert.equal(clamp(0), 0); });
 test("clamp preserves a small fraction", () => { assert.equal(clamp(0.125), 0.125); });
 test("clamp preserves the midpoint", () => { assert.equal(clamp(0.5), 0.5); });
 test("clamp preserves an upper interior fraction", () => { assert.equal(clamp(0.999999), 0.999999); });
+test("clamp preserves exactly one", () => { assert.equal(clamp(1), 1); });
