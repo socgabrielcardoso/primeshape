@@ -32,3 +32,4 @@ test("ramp interpolates linearly at the midpoint", () => { assert.equal(ramp(15,
 test("ramp clamps below its lower bound", () => { assert.equal(ramp(5, 10, 20), 0); });
 test("ramp clamps above its upper bound", () => { assert.equal(ramp(25, 10, 20), 1); });
 test("ramp interpolates across negative thresholds", () => { assert.equal(ramp(-5, -10, 0), 0.5); });
+test("ramp handles fractional thresholds", () => { near(ramp(0.2, 0.1, 0.3), 0.5); });
