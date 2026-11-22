@@ -6,3 +6,4 @@ const { clamp, distance, ramp, point, angle, bounds, signal } = await import("da
 const near = (a, b, epsilon = 1e-10) => assert.ok(Math.abs(a - b) <= epsilon, `Expected ${a} to be near ${b}`);
 
 test("clamp bounds slight negative inputs", () => { assert.equal(clamp(-0.0001), 0); });
+test("clamp bounds large negative inputs", () => { assert.equal(clamp(-1000000), 0); });
