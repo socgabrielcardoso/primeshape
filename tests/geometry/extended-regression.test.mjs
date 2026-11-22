@@ -81,3 +81,4 @@ test("bounds accepts a horizontal line with zero height", () => { assert.deepEqu
 test("signal assigns documented default properties", () => { assert.deepEqual(signal('shape','Triangle'),{codigo:'shape',rotulo:'Triangle',score:1,tipo:'medicao',evidencias:[]}); });
 test("signal floors a negative confidence score", () => { assert.equal(signal('shape','Triangle',-2).score,0); });
 test("signal caps an excessive confidence score", () => { assert.equal(signal('shape','Triangle',1.75).score,1); });
+test("signal retains an intermediate confidence score", () => { assert.equal(signal('shape','Triangle',0.42).score,0.42); });
