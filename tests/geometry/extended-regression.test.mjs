@@ -28,3 +28,4 @@ test("distance is translation invariant", () => { near(distance([2, 1], [5, 9]),
 test("distance rejects dimension mismatch", () => { assert.equal(distance([1, 2], [1, 2, 3]), Infinity); });
 test("ramp starts at zero at its lower bound", () => { assert.equal(ramp(10, 10, 20), 0); });
 test("ramp ends at one at its upper bound", () => { assert.equal(ramp(20, 10, 20), 1); });
+test("ramp interpolates linearly at the midpoint", () => { assert.equal(ramp(15, 10, 20), 0.5); });
