@@ -68,3 +68,4 @@ test("angle rejects a nonfinite coordinate", () => { assert.equal(angle([Infinit
 test("bounds handles an empty point collection", () => { assert.deepEqual(bounds([]),[0,0,0,0]); });
 test("bounds handles a null collection", () => { assert.deepEqual(bounds(null),[0,0,0,0]); });
 test("bounds handles a singleton point", () => { assert.deepEqual(bounds([[2,3]]),[2,3,0,0]); });
+test("bounds spans two positive points", () => { assert.deepEqual(bounds([[0,0],[4,6]]),[0,0,4,6]); });
