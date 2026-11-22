@@ -61,3 +61,4 @@ test("angle accepts a displaced vertex", () => { near(angle([2,1],[1,1],[1,2]),9
 test("angle supports orthogonal three dimensional rays", () => { near(angle([1,0,0],[0,0,0],[0,0,1]),90); });
 test("angle supports opposite three dimensional rays", () => { near(angle([0,0,1],[0,0,0],[0,0,-2]),180); });
 test("angle is invariant when outer points are exchanged", () => { near(angle([3,0],[0,0],[1,2]),angle([1,2],[0,0],[3,0])); });
+test("angle ignores a null outer point", () => { assert.equal(angle(null,[0,0],[1,1]),0); });
