@@ -64,3 +64,4 @@ test("angle is invariant when outer points are exchanged", () => { near(angle([3
 test("angle ignores a null outer point", () => { assert.equal(angle(null,[0,0],[1,1]),0); });
 test("angle ignores vectors of inconsistent dimensions", () => { assert.equal(angle([1,0],[0,0,0],[0,1]),0); });
 test("angle handles a zero length first ray", () => { assert.equal(angle([0,0],[0,0],[1,0]),0); });
+test("angle rejects a nonfinite coordinate", () => { assert.equal(angle([Infinity,0],[0,0],[1,0]),0); });
