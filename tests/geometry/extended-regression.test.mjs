@@ -59,3 +59,4 @@ test("angle reports an obtuse corner", () => { near(angle([1,0],[0,0],[-1,1]),13
 test("angle recognizes equilateral triangle corners", () => { near(angle([1,0],[0,0],[0.5,Math.sqrt(3)/2]),60); });
 test("angle accepts a displaced vertex", () => { near(angle([2,1],[1,1],[1,2]),90); });
 test("angle supports orthogonal three dimensional rays", () => { near(angle([1,0,0],[0,0,0],[0,0,1]),90); });
+test("angle supports opposite three dimensional rays", () => { near(angle([0,0,1],[0,0,0],[0,0,-2]),180); });
