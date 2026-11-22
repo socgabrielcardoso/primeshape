@@ -49,3 +49,4 @@ test("point handles a null landmark safely", () => { assert.deepEqual(point(null
 test("point handles an undefined landmark safely", () => { assert.deepEqual(point(undefined), [undefined,undefined,0]); });
 test("point preserves a missing x coordinate", () => { assert.deepEqual(point({y:2}), [undefined,2,0]); });
 test("point preserves a missing y coordinate", () => { assert.deepEqual(point({x:2}), [2,undefined,0]); });
+test("point preserves fractional coordinates", () => { assert.deepEqual(point({x:0.125,y:-0.5,z:0.25}), [0.125,-0.5,0.25]); });
