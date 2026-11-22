@@ -30,3 +30,4 @@ test("ramp starts at zero at its lower bound", () => { assert.equal(ramp(10, 10,
 test("ramp ends at one at its upper bound", () => { assert.equal(ramp(20, 10, 20), 1); });
 test("ramp interpolates linearly at the midpoint", () => { assert.equal(ramp(15, 10, 20), 0.5); });
 test("ramp clamps below its lower bound", () => { assert.equal(ramp(5, 10, 20), 0); });
+test("ramp clamps above its upper bound", () => { assert.equal(ramp(25, 10, 20), 1); });
