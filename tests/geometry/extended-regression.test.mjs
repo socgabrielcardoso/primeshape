@@ -46,3 +46,4 @@ test("point defaults missing depth to zero", () => { assert.deepEqual(point({x:1
 test("point preserves explicit zero depth", () => { assert.deepEqual(point({x:1,y:2,z:0}), [1,2,0]); });
 test("point preserves negative depth", () => { assert.deepEqual(point({x:1,y:2,z:-0.75}), [1,2,-0.75]); });
 test("point handles a null landmark safely", () => { assert.deepEqual(point(null), [undefined,undefined,0]); });
+test("point handles an undefined landmark safely", () => { assert.deepEqual(point(undefined), [undefined,undefined,0]); });
