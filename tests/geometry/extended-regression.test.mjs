@@ -44,3 +44,4 @@ test("distance obeys triangle inequality", () => { assert.ok(distance([0, 0], [3
 test("point converts a complete 3d landmark", () => { assert.deepEqual(point({x:1,y:2,z:3}), [1,2,3]); });
 test("point defaults missing depth to zero", () => { assert.deepEqual(point({x:1,y:2}), [1,2,0]); });
 test("point preserves explicit zero depth", () => { assert.deepEqual(point({x:1,y:2,z:0}), [1,2,0]); });
+test("point preserves negative depth", () => { assert.deepEqual(point({x:1,y:2,z:-0.75}), [1,2,-0.75]); });
