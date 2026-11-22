@@ -17,3 +17,4 @@ test("clamp caps huge finite values", () => { assert.equal(clamp(1e300), 1); });
 test("clamp rejects NaN", () => { assert.equal(clamp(Number.NaN), 0); });
 test("clamp rejects positive infinity", () => { assert.equal(clamp(Infinity), 0); });
 test("clamp rejects negative infinity", () => { assert.equal(clamp(-Infinity), 0); });
+test("distance computes a right triangle hypotenuse", () => { assert.equal(distance([0, 0], [3, 4]), 5); });
