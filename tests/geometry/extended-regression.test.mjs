@@ -22,3 +22,4 @@ test("distance supports negative coordinates", () => { near(distance([-5, -5], [
 test("distance supports one dimensional vectors", () => { assert.equal(distance([-3], [7]), 10); });
 test("distance supports three dimensional vectors", () => { assert.equal(distance([0, 0, 0], [3, 4, 12]), 13); });
 test("distance supports four dimensional vectors", () => { assert.equal(distance([0, 0, 0, 0], [1, 2, 2, 4]), 5); });
+test("distance is zero for identical finite vectors", () => { assert.equal(distance([1.5, -2, 7], [1.5, -2, 7]), 0); });
