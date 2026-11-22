@@ -73,3 +73,4 @@ test("bounds spans negative and positive coordinates", () => { assert.deepEqual(
 test("bounds does not depend on point order", () => { assert.deepEqual(bounds([[4,6],[0,0]]),[0,0,4,6]); });
 test("bounds encloses nonmonotonic point sets", () => { assert.deepEqual(bounds([[2,2],[-2,3],[4,-1]]),[-2,-1,6,4]); });
 test("bounds handles fractional dimensions", () => { {const [x,y,w,h]=bounds([[0.1,0.2],[0.4,0.8]]);near(x,0.1);near(y,0.2);near(w,0.3);near(h,0.6);} });
+test("bounds filters malformed points without losing valid ones", () => { assert.deepEqual(bounds([[NaN,2],[1,1],[3,4]]),[1,1,2,3]); });
