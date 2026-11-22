@@ -38,3 +38,4 @@ test("ramp rejects values below an equal threshold", () => { assert.equal(ramp(4
 test("ramp returns one for inverted thresholds above the high threshold", () => { assert.equal(ramp(10, 10, 0), 1); });
 test("ramp returns zero for inverted thresholds below both bounds", () => { assert.equal(ramp(-1, 10, 0), 0); });
 test("ramp treats NaN input as zero activation", () => { assert.equal(ramp(NaN, 0, 1), 0); });
+test("distance rejects empty vector pairs", () => { assert.equal(distance([], []), Infinity); });
