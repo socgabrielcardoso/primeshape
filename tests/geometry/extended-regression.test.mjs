@@ -9,3 +9,4 @@ test("clamp bounds slight negative inputs", () => { assert.equal(clamp(-0.0001),
 test("clamp bounds large negative inputs", () => { assert.equal(clamp(-1000000), 0); });
 test("clamp preserves zero", () => { assert.equal(clamp(0), 0); });
 test("clamp preserves a small fraction", () => { assert.equal(clamp(0.125), 0.125); });
+test("clamp preserves the midpoint", () => { assert.equal(clamp(0.5), 0.5); });
