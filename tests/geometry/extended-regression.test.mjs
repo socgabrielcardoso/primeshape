@@ -71,3 +71,4 @@ test("bounds handles a singleton point", () => { assert.deepEqual(bounds([[2,3]]
 test("bounds spans two positive points", () => { assert.deepEqual(bounds([[0,0],[4,6]]),[0,0,4,6]); });
 test("bounds spans negative and positive coordinates", () => { assert.deepEqual(bounds([[-5,-3],[1,2]]),[-5,-3,6,5]); });
 test("bounds does not depend on point order", () => { assert.deepEqual(bounds([[4,6],[0,0]]),[0,0,4,6]); });
+test("bounds encloses nonmonotonic point sets", () => { assert.deepEqual(bounds([[2,2],[-2,3],[4,-1]]),[-2,-1,6,4]); });
