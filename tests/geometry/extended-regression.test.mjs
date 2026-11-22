@@ -69,3 +69,4 @@ test("bounds handles an empty point collection", () => { assert.deepEqual(bounds
 test("bounds handles a null collection", () => { assert.deepEqual(bounds(null),[0,0,0,0]); });
 test("bounds handles a singleton point", () => { assert.deepEqual(bounds([[2,3]]),[2,3,0,0]); });
 test("bounds spans two positive points", () => { assert.deepEqual(bounds([[0,0],[4,6]]),[0,0,4,6]); });
+test("bounds spans negative and positive coordinates", () => { assert.deepEqual(bounds([[-5,-3],[1,2]]),[-5,-3,6,5]); });
