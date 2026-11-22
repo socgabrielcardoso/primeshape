@@ -14,3 +14,4 @@ test("clamp preserves an upper interior fraction", () => { assert.equal(clamp(0.
 test("clamp preserves exactly one", () => { assert.equal(clamp(1), 1); });
 test("clamp caps a small overflow", () => { assert.equal(clamp(1.001), 1); });
 test("clamp caps huge finite values", () => { assert.equal(clamp(1e300), 1); });
+test("clamp rejects NaN", () => { assert.equal(clamp(Number.NaN), 0); });
