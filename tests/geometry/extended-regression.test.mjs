@@ -40,3 +40,4 @@ test("ramp returns zero for inverted thresholds below both bounds", () => { asse
 test("ramp treats NaN input as zero activation", () => { assert.equal(ramp(NaN, 0, 1), 0); });
 test("distance rejects empty vector pairs", () => { assert.equal(distance([], []), Infinity); });
 test("distance rejects an infinite coordinate", () => { assert.equal(distance([Infinity, 0], [0, 0]), Infinity); });
+test("distance obeys triangle inequality", () => { assert.ok(distance([0, 0], [3, 4]) <= distance([0, 0], [3, 0]) + distance([3, 0], [3, 4])); });
