@@ -38,3 +38,4 @@ test("distance computes signed one dimensional separation 10", () => { assert.eq
 test("bounds excludes malformed and interior points at scale 1", () => { assert.deepEqual(bounds([[-1,-2],[2,3],[0,0],[NaN,1]]),[-1,-2,3,5]); });
 test("bounds excludes malformed and interior points at scale 2", () => { assert.deepEqual(bounds([[-2,-4],[4,6],[0,0],[NaN,2]]),[-2,-4,6,10]); });
 test("bounds excludes malformed and interior points at scale 3", () => { assert.deepEqual(bounds([[-3,-6],[6,9],[0,0],[NaN,3]]),[-3,-6,9,15]); });
+test("bounds excludes malformed and interior points at scale 4", () => { assert.deepEqual(bounds([[-4,-8],[8,12],[0,0],[NaN,4]]),[-4,-8,12,20]); });
