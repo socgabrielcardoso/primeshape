@@ -6,3 +6,4 @@ const { clamp, distance, ramp, point, angle, bounds, signal } = await import("da
 const near = (actual, expected, epsilon = 1e-10) => assert.ok(Number.isFinite(actual) && Math.abs(actual - expected) <= epsilon, `Expected ${actual} to be close to ${expected}`);
 
 test("distance preserves 2D Pythagorean norm at scale 1", () => { assert.equal(distance([-2,1],[1,5]),5); });
+test("distance preserves 2D Pythagorean norm at scale 2", () => { assert.equal(distance([-4,2],[2,10]),10); });
