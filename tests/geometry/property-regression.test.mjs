@@ -120,3 +120,4 @@ test("signal floors negative confidence case 2", () => { assert.equal(signal("ca
 test("signal floors negative confidence case 3", () => { assert.equal(signal("case-3","negative",-3/10).score,0); });
 test("signal floors negative confidence case 4", () => { assert.equal(signal("case-4","negative",-4/10).score,0); });
 test("signal floors negative confidence case 5", () => { assert.equal(signal("case-5","negative",-5/10).score,0); });
+test("signal floors negative confidence case 6", () => { assert.equal(signal("case-6","negative",-6/10).score,0); });
