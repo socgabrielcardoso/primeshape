@@ -104,3 +104,4 @@ test("point maps signed three dimensional coordinates for case 8", () => { asser
 test("point maps signed three dimensional coordinates for case 9", () => { assert.deepEqual(point({x:-9/2,y:9,z:9/4}),[-9/2,9,9/4]); });
 test("point maps signed three dimensional coordinates for case 10", () => { assert.deepEqual(point({x:-10/2,y:10,z:10/4}),[-10/2,10,10/4]); });
 test("point maps signed three dimensional coordinates for case 11", () => { assert.deepEqual(point({x:-11/2,y:11,z:11/4}),[-11/2,11,11/4]); });
+test("point maps signed three dimensional coordinates for case 12", () => { assert.deepEqual(point({x:-12/2,y:12,z:12/4}),[-12/2,12,12/4]); });
