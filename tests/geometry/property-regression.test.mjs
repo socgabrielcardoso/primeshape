@@ -97,3 +97,4 @@ test("point maps signed three dimensional coordinates for case 1", () => { asser
 test("point maps signed three dimensional coordinates for case 2", () => { assert.deepEqual(point({x:-2/2,y:2,z:2/4}),[-2/2,2,2/4]); });
 test("point maps signed three dimensional coordinates for case 3", () => { assert.deepEqual(point({x:-3/2,y:3,z:3/4}),[-3/2,3,3/4]); });
 test("point maps signed three dimensional coordinates for case 4", () => { assert.deepEqual(point({x:-4/2,y:4,z:4/4}),[-4/2,4,4/4]); });
+test("point maps signed three dimensional coordinates for case 5", () => { assert.deepEqual(point({x:-5/2,y:5,z:5/4}),[-5/2,5,5/4]); });
