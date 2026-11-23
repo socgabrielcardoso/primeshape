@@ -82,3 +82,4 @@ test("angle stays orthogonal under translations scale 14", () => { near(angle([4
 test("angle stays orthogonal under translations scale 15", () => { near(angle([45,30],[30,30],[30,75]),90); });
 test("clamp retains fractional intensity 1 of 16", () => { assert.equal(clamp(1/16),1/16); });
 test("clamp retains fractional intensity 2 of 16", () => { assert.equal(clamp(2/16),2/16); });
+test("clamp retains fractional intensity 3 of 16", () => { assert.equal(clamp(3/16),3/16); });
