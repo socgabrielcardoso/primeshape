@@ -51,3 +51,4 @@ test("bounds excludes malformed and interior points at scale 13", () => { assert
 test("bounds excludes malformed and interior points at scale 14", () => { assert.deepEqual(bounds([[-14,-28],[28,42],[0,0],[NaN,14]]),[-14,-28,42,70]); });
 test("bounds excludes malformed and interior points at scale 15", () => { assert.deepEqual(bounds([[-15,-30],[30,45],[0,0],[NaN,15]]),[-15,-30,45,75]); });
 test("ramp interpolates quarter activation at scale 1", () => { assert.equal(ramp(-3,-5,3),0.25); });
+test("ramp interpolates quarter activation at scale 2", () => { assert.equal(ramp(-6,-10,6),0.25); });
