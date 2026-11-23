@@ -48,7 +48,7 @@ jobs:
       - name: Validar modo leve, dedos e câmera pelo servidor estático
         working-directory: tests/browser
         run: npm test
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: falha-live-server-windows
