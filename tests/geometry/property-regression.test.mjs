@@ -107,3 +107,4 @@ test("point maps signed three dimensional coordinates for case 11", () => { asse
 test("point maps signed three dimensional coordinates for case 12", () => { assert.deepEqual(point({x:-12/2,y:12,z:12/4}),[-12/2,12,12/4]); });
 test("signal caps overflow and retains metadata case 1", () => { assert.deepEqual(signal("case-1","label-1",1.1,"regression",[1]),{codigo:"case-1",rotulo:"label-1",score:1,tipo:"regression",evidencias:[1]}); });
 test("signal caps overflow and retains metadata case 2", () => { assert.deepEqual(signal("case-2","label-2",1.2,"regression",[2]),{codigo:"case-2",rotulo:"label-2",score:1,tipo:"regression",evidencias:[2]}); });
+test("signal caps overflow and retains metadata case 3", () => { assert.deepEqual(signal("case-3","label-3",1.3,"regression",[3]),{codigo:"case-3",rotulo:"label-3",score:1,tipo:"regression",evidencias:[3]}); });
