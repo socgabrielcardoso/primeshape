@@ -105,3 +105,4 @@ test("point maps signed three dimensional coordinates for case 9", () => { asser
 test("point maps signed three dimensional coordinates for case 10", () => { assert.deepEqual(point({x:-10/2,y:10,z:10/4}),[-10/2,10,10/4]); });
 test("point maps signed three dimensional coordinates for case 11", () => { assert.deepEqual(point({x:-11/2,y:11,z:11/4}),[-11/2,11,11/4]); });
 test("point maps signed three dimensional coordinates for case 12", () => { assert.deepEqual(point({x:-12/2,y:12,z:12/4}),[-12/2,12,12/4]); });
+test("signal caps overflow and retains metadata case 1", () => { assert.deepEqual(signal("case-1","label-1",1.1,"regression",[1]),{codigo:"case-1",rotulo:"label-1",score:1,tipo:"regression",evidencias:[1]}); });
