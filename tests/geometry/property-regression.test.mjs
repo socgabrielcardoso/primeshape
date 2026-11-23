@@ -118,3 +118,4 @@ test("signal caps overflow and retains metadata case 10", () => { assert.deepEqu
 test("signal floors negative confidence case 1", () => { assert.equal(signal("case-1","negative",-1/10).score,0); });
 test("signal floors negative confidence case 2", () => { assert.equal(signal("case-2","negative",-2/10).score,0); });
 test("signal floors negative confidence case 3", () => { assert.equal(signal("case-3","negative",-3/10).score,0); });
+test("signal floors negative confidence case 4", () => { assert.equal(signal("case-4","negative",-4/10).score,0); });
