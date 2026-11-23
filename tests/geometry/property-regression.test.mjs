@@ -54,3 +54,4 @@ test("ramp interpolates quarter activation at scale 1", () => { assert.equal(ram
 test("ramp interpolates quarter activation at scale 2", () => { assert.equal(ramp(-6,-10,6),0.25); });
 test("ramp interpolates quarter activation at scale 3", () => { assert.equal(ramp(-9,-15,9),0.25); });
 test("ramp interpolates quarter activation at scale 4", () => { assert.equal(ramp(-12,-20,12),0.25); });
+test("ramp interpolates quarter activation at scale 5", () => { assert.equal(ramp(-15,-25,15),0.25); });
