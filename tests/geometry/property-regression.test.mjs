@@ -47,3 +47,4 @@ test("bounds excludes malformed and interior points at scale 9", () => { assert.
 test("bounds excludes malformed and interior points at scale 10", () => { assert.deepEqual(bounds([[-10,-20],[20,30],[0,0],[NaN,10]]),[-10,-20,30,50]); });
 test("bounds excludes malformed and interior points at scale 11", () => { assert.deepEqual(bounds([[-11,-22],[22,33],[0,0],[NaN,11]]),[-11,-22,33,55]); });
 test("bounds excludes malformed and interior points at scale 12", () => { assert.deepEqual(bounds([[-12,-24],[24,36],[0,0],[NaN,12]]),[-12,-24,36,60]); });
+test("bounds excludes malformed and interior points at scale 13", () => { assert.deepEqual(bounds([[-13,-26],[26,39],[0,0],[NaN,13]]),[-13,-26,39,65]); });
