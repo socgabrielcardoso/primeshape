@@ -70,3 +70,4 @@ test("angle stays orthogonal under translations scale 2", () => { near(angle([6,
 test("angle stays orthogonal under translations scale 3", () => { near(angle([9,6],[6,6],[6,15]),90); });
 test("angle stays orthogonal under translations scale 4", () => { near(angle([12,8],[8,8],[8,20]),90); });
 test("angle stays orthogonal under translations scale 5", () => { near(angle([15,10],[10,10],[10,25]),90); });
+test("angle stays orthogonal under translations scale 6", () => { near(angle([18,12],[12,12],[12,30]),90); });
