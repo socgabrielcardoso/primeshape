@@ -8,3 +8,4 @@ const near = (actual, expected, epsilon = 1e-10) => assert.ok(Number.isFinite(ac
 test("distance preserves 2D Pythagorean norm at scale 1", () => { assert.equal(distance([-2,1],[1,5]),5); });
 test("distance preserves 2D Pythagorean norm at scale 2", () => { assert.equal(distance([-4,2],[2,10]),10); });
 test("distance preserves 2D Pythagorean norm at scale 3", () => { assert.equal(distance([-6,3],[3,15]),15); });
+test("distance preserves 2D Pythagorean norm at scale 4", () => { assert.equal(distance([-8,4],[4,20]),20); });
