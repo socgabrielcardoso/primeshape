@@ -18,3 +18,4 @@ test("distance preserves 2D Pythagorean norm at scale 10", () => { assert.equal(
 test("distance preserves three dimensional norm at scale 1", () => { assert.equal(distance([10,-4,7],[13,0,7]),5); });
 test("distance preserves three dimensional norm at scale 2", () => { assert.equal(distance([20,-8,14],[26,0,14]),10); });
 test("distance preserves three dimensional norm at scale 3", () => { assert.equal(distance([30,-12,21],[39,0,21]),15); });
+test("distance preserves three dimensional norm at scale 4", () => { assert.equal(distance([40,-16,28],[52,0,28]),20); });
