@@ -88,3 +88,4 @@ test("clamp retains fractional intensity 5 of 16", () => { assert.equal(clamp(5/
 test("clamp retains fractional intensity 6 of 16", () => { assert.equal(clamp(6/16),6/16); });
 test("clamp retains fractional intensity 7 of 16", () => { assert.equal(clamp(7/16),7/16); });
 test("clamp retains fractional intensity 8 of 16", () => { assert.equal(clamp(8/16),8/16); });
+test("clamp retains fractional intensity 9 of 16", () => { assert.equal(clamp(9/16),9/16); });
