@@ -29,3 +29,4 @@ test("distance computes signed one dimensional separation 1", () => { assert.equ
 test("distance computes signed one dimensional separation 2", () => { assert.equal(distance([-4],[6]),10); });
 test("distance computes signed one dimensional separation 3", () => { assert.equal(distance([-6],[9]),15); });
 test("distance computes signed one dimensional separation 4", () => { assert.equal(distance([-8],[12]),20); });
+test("distance computes signed one dimensional separation 5", () => { assert.equal(distance([-10],[15]),25); });
