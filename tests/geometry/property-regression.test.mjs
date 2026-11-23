@@ -68,3 +68,4 @@ test("ramp interpolates quarter activation at scale 15", () => { assert.equal(ra
 test("angle stays orthogonal under translations scale 1", () => { near(angle([3,2],[2,2],[2,5]),90); });
 test("angle stays orthogonal under translations scale 2", () => { near(angle([6,4],[4,4],[4,10]),90); });
 test("angle stays orthogonal under translations scale 3", () => { near(angle([9,6],[6,6],[6,15]),90); });
+test("angle stays orthogonal under translations scale 4", () => { near(angle([12,8],[8,8],[8,20]),90); });
