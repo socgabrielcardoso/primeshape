@@ -19,3 +19,4 @@ test("distance preserves three dimensional norm at scale 1", () => { assert.equa
 test("distance preserves three dimensional norm at scale 2", () => { assert.equal(distance([20,-8,14],[26,0,14]),10); });
 test("distance preserves three dimensional norm at scale 3", () => { assert.equal(distance([30,-12,21],[39,0,21]),15); });
 test("distance preserves three dimensional norm at scale 4", () => { assert.equal(distance([40,-16,28],[52,0,28]),20); });
+test("distance preserves three dimensional norm at scale 5", () => { assert.equal(distance([50,-20,35],[65,0,35]),25); });
