@@ -109,3 +109,4 @@ test("signal caps overflow and retains metadata case 1", () => { assert.deepEqua
 test("signal caps overflow and retains metadata case 2", () => { assert.deepEqual(signal("case-2","label-2",1.2,"regression",[2]),{codigo:"case-2",rotulo:"label-2",score:1,tipo:"regression",evidencias:[2]}); });
 test("signal caps overflow and retains metadata case 3", () => { assert.deepEqual(signal("case-3","label-3",1.3,"regression",[3]),{codigo:"case-3",rotulo:"label-3",score:1,tipo:"regression",evidencias:[3]}); });
 test("signal caps overflow and retains metadata case 4", () => { assert.deepEqual(signal("case-4","label-4",1.4,"regression",[4]),{codigo:"case-4",rotulo:"label-4",score:1,tipo:"regression",evidencias:[4]}); });
+test("signal caps overflow and retains metadata case 5", () => { assert.deepEqual(signal("case-5","label-5",1.5,"regression",[5]),{codigo:"case-5",rotulo:"label-5",score:1,tipo:"regression",evidencias:[5]}); });
