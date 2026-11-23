@@ -95,3 +95,4 @@ test("clamp retains fractional intensity 12 of 16", () => { assert.equal(clamp(1
 test("clamp retains fractional intensity 13 of 16", () => { assert.equal(clamp(13/16),13/16); });
 test("point maps signed three dimensional coordinates for case 1", () => { assert.deepEqual(point({x:-1/2,y:1,z:1/4}),[-1/2,1,1/4]); });
 test("point maps signed three dimensional coordinates for case 2", () => { assert.deepEqual(point({x:-2/2,y:2,z:2/4}),[-2/2,2,2/4]); });
+test("point maps signed three dimensional coordinates for case 3", () => { assert.deepEqual(point({x:-3/2,y:3,z:3/4}),[-3/2,3,3/4]); });
